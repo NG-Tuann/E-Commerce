@@ -1,0 +1,86 @@
+﻿<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="index.html">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Trang chủ</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#qltk" aria-expanded="false" aria-controls="qltk">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Quản lý tài khoản</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="qltk">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" asp-area="admin" asp-controller="user" asp-action="index">Xem tài khoản</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Tạo mới</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#qlsp" aria-expanded="false" aria-controls="qlsp">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Quản lý sản phẩm</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="qlsp">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Xem sản phẩm</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Tạo mới</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#dmsp" aria-expanded="false" aria-controls="dmsp">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Danh mục sản phẩm</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="dmsp">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Xem danh mục</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Tạo mới</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#qlqtc" aria-expanded="false" aria-controls="qlqtc">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Quản lý quyền truy cập</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="qlqtc">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" asp-area="admin" asp-controller="role" asp-action="index">Xem quyền</a></li>
+                    <li class="nav-item"> <a class="nav-link" asp-area="admin" asp-controller="role" asp-action="add">Tạo mới</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#qlud" aria-expanded="false" aria-controls="qlud">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Quản lý ưu đãi</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="qlud">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Xem ưu đãi</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Tạo mới</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Cấp ưu đãi</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="pages/documentation/documentation.html">
+                <i class="icon-paper menu-icon"></i>
+                <span class="menu-title">Trợ giúp</span>
+            </a>
+        </li>
+    </ul>
+</nav>
