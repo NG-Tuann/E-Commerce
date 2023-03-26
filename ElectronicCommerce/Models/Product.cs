@@ -11,16 +11,13 @@ namespace ElectronicCommerce.Models
         {
             Carts = new HashSet<Cart>();
             Images = new HashSet<Image>();
+            ProductDetails = new HashSet<ProductDetail>();
             ProductDiscounts = new HashSet<ProductDiscount>();
-            ProductPrices = new HashSet<ProductPrice>();
             Reviews = new HashSet<Review>();
         }
 
         public string Id { get; set; }
         public string Name { get; set; }
-        public int? Quantity { get; set; }
-        public int? Size { get; set; }
-        public int? ImportQuantity { get; set; }
         public string GeomancyId { get; set; }
         public string Image { get; set; }
         public string Color { get; set; }
@@ -38,8 +35,8 @@ namespace ElectronicCommerce.Models
         public virtual StoneType SubStone { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<ProductDetail> ProductDetails { get; set; }
         public virtual ICollection<ProductDiscount> ProductDiscounts { get; set; }
-        public virtual ICollection<ProductPrice> ProductPrices { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
     }
 }

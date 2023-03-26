@@ -272,6 +272,25 @@
 
                                                 }
                                             }
+                                        <li class='menu hassub'>
+                                            <a href="javascript:void(0)" target="_self">Trang sức phong thuỷ</a>
+                                            <div class="sub_megamenu">
+                                                <div class="wrapping">
+                                                    <div class="grsubmenu">
+                                                        <div class="colss">
+                                                            <ul>
+                                                                @foreach (var geo in ViewBag.geos)
+                                                                {
+                                                                    <li style="display:inline;">
+                                                                        <a>@geo.Name</a>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
                                         </ul>
 
                                     </div>

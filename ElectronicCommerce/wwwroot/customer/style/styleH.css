@@ -917,17 +917,24 @@
 
 .btn-add-to-cart {
     margin: auto;
-    width: 340px;
-    background-color: #003468;
-    height: 32px;
-    color: #FFFFFF;
-    display: flex;
-    border-radius: 5px;
+    width: 180px;
+    height: 43px;
+    border: 1px solid #8f7d59;
+    border-radius: 0;
+    background-color: transparent;
+    color: #333;
+    text-align: center;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
 }
 
     .btn-add-to-cart:hover {
         cursor: pointer;
         opacity: 0.9;
+        color: #FFFFFF;
+        animation: fadeIn ease-in 0.4s;
+        background-color: #8f7d59;
     }
 
 .hide {

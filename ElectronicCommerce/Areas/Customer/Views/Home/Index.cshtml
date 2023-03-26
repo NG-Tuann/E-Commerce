@@ -135,26 +135,17 @@
                 <div class="vhproductnn">
                     <div class="vhtitlenn">
                         <div class="title">
-                            <h2>TRANG SỨC</h2>
                         </div>
                         <div class="grtabview">
                             <div class="tab hidden-xs hidden-sm hidden-md">
                                 <ul>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/mat-day-chuyen.html">MẶT DÂY CHUYỀN
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/nhan.html">NHẪN
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/lac-va-vong-tay.html">LẮC &amp; VÒNG TAY
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/day-chuyen.html">DÂY LIỀN MẶT
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/bong-tai.html">BÔNG TAI
-                                    </li>
+                                    @foreach (var cate in ViewBag.cates)
+                                    {
+                                        if (cate.ParentId == null)
+                                        {
+                                            <li><a href="#">@cate.Name</a></li>
+                                        }
+                                    }
                                 </ul>
                             </div>
                             <div class="view">
@@ -185,30 +176,32 @@
                     </div>
                     <div class="vhcontnn">
                         <div class="grproductnn vhflex vhflex-scroll-block">
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/day-lien-mat-da-amethyst-22m-013nmbl.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/12_2022/thumbs/1600_crop_Day_lien_mat_da_Amethyst_22M013NMBL.jpg" alt="Dây liền mặt đá Amethyst 22M.013NMBL">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/day-lien-mat-da-amethyst-22m-013nmbl.html">Dây liền mặt đá Amethyst 22M.013NMBL</a>
-                                            </h3>
+                            @foreach (var item in ViewBag.homePros)
+                            {
+                                <div class="colsl">
+                                    <div class="itemproductall">
+                                        <div class="thumb">
+                                            <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="#">
+                                                <img src="~/admin/images/products/@item.Image" alt="@item.Name">
+                                            </a>
                                         </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">26,781,000 đ</span>
-                                        </div>
-                                        <div class="dsview">
+                                        <div class="decs">
+                                            <div class="dstile">
+                                                <h3>
+                                                    <a href="#">@item.Name</a>
+                                                </h3>
+                                            </div>
+                                            <div class="dsprive">
+                                                <span class="dsnews">26,781,000 đ</span>
+                                            </div>
+                                            <div class="dsview">
                                                 <input type="button" onclick="addToCart()" class="btn btn-add-to-cart" value="Thêm vào giỏ hàng">
-                                        </div>
+                                            </div>
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -222,20 +215,14 @@
                 <div class="vhproductnn">
                     <div class="vhtitlenn">
                         <div class="title">
-                            <h2>KIM CƯƠNG</h2>
                         </div>
                         <div class="grtabview">
                             <div class="tab hidden-xs hidden-sm hidden-md">
                                 <ul>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/mat-day-kim-cuong.html">MẶT DÂY KIM CƯƠNG
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/bong-tai-kim-cuong.html">BÔNG TAI KIM CƯƠNG
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/nhan-kim-cuong.html">NHẪN KIM CƯƠNG
-                                    </li>
+                                    @foreach(var geo in ViewBag.geos)
+                                    {
+                                    <li>Trang sức @geo.Name</li>
+                                    } 
                                 </ul>
                             </div>
                             <div class="view">
@@ -1009,104 +996,6 @@
                                 </div>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="boxhome">
-        <div class="newshome">
-            <div class="wrapping">
-                <div class="vhnewshome">
-                    <div class="vhtitlemm">
-                        <div class="title">
-                            <h2>Tin tức</h2>
-                        </div>
-                        <div class="view">
-                            <a href="https://ijc.vn/vn/tin-tuc.html">
-                                <span class="fa-angle-right">Xem tất cả</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="vhcontmm">
-                        <div class="lstnewshome">
-                            <div class="vhflex vhflex-wrap vhmargin-lg-col-15 vhmargin-md-col-10">
-
-                                <div class="vhcol-lg-3 vhcol-sm-1 vhcol-xs-1 vhpadding-lg-col-15 vhpadding-md-col-10 vhmargin-lg-bottom-15 ">
-                                    <div class="itemnews">
-                                        <div class="thumb">
-                                            <a class="vhthumbzoom vhthumb-65 vhthumb-full" href="https://ijc.vn/vn/ijc-nha-tai-tro-trang-suc-va-che-tac-vuong-mien-cho-cuoc-thi-hoa-hau-hoan-vu-viet-nam-2022.html">
-                                                <img src="https://ijc.vn/vnt_upload/news/06_2022/thumbs/740_crop_0189_ck_muvn_2022_photo_kiengcan_team.jpg" alt="IJC - NHÀ TÀI TRỢ TRANG SỨC VÀ CHẾ TÁC VƯƠNG MIỆN CHO CUỘC THI HOA HẬU HOÀN VŨ VIỆT NAM 2022">
-                                            </a>
-                                        </div>
-                                        <div class="decs">
-                                            <div class="dstitle">
-                                                <h3>
-                                                    <a href="https://ijc.vn/vn/ijc-nha-tai-tro-trang-suc-va-che-tac-vuong-mien-cho-cuoc-thi-hoa-hau-hoan-vu-viet-nam-2022.html">IJC - NHÀ TÀI TRỢ TRANG SỨC VÀ CHẾ TÁC VƯƠNG MIỆN CHO CUỘC THI HOA HẬU HOÀN VŨ VIỆT NAM 2022</a>
-                                                </h3>
-                                            </div>
-                                            <div class="dsdate">27/06/2022</div>
-                                            <div class="dstend">“Vina Woman” là cảm hứng chính để IJC lên ý tưởng thiết kế và hoàn thành 3 chiếc vương miện danh giá.</div>
-                                            <div class="dsview">
-                                                <a href="https://ijc.vn/vn/ijc-nha-tai-tro-trang-suc-va-che-tac-vuong-mien-cho-cuoc-thi-hoa-hau-hoan-vu-viet-nam-2022.html">
-                                                    <img src="https://ijc.vn/modules/main/images/line.png" alt="line" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="vhcol-lg-3 vhcol-sm-1 vhcol-xs-1 vhpadding-lg-col-15 vhpadding-md-col-10 vhmargin-lg-bottom-15 ">
-                                    <div class="itemnews">
-                                        <div class="thumb">
-                                            <a class="vhthumbzoom vhthumb-65 vhthumb-full" href="https://ijc.vn/vn/vuong-mien-the-power-of-life-by-ijc-.html">
-                                                <img src="https://ijc.vn/vnt_upload/news/11_2022/thumbs/740_crop_Can_canh_chiec_vuong_mien_bac_ty_cuoc_thi_Hoa_hau_Du_lich_The_gioi_2022_hoa_hau_the_gioi1_1668498412_951_width800height450.jpg" alt="VƯƠNG MIỆN “THE POWER OF LIFE BY IJC”">
-                                            </a>
-                                        </div>
-                                        <div class="decs">
-                                            <div class="dstitle">
-                                                <h3>
-                                                    <a href="https://ijc.vn/vn/vuong-mien-the-power-of-life-by-ijc-.html">VƯƠNG MIỆN “THE POWER OF LIFE BY IJC”</a>
-                                                </h3>
-                                            </div>
-                                            <div class="dsdate">17/11/2022</div>
-                                            <div class="dstend">Nhằm mang đến cái nhìn tích cực trong mắt bạn bè thế giới và góp một phần sức cho sự thành công của cuộc thi, IJC tự hào trở thành thương hiệu trang sức đồng hành, chế tác và tài trợ vương miện đăng quang cho cuộc thi Hoa hậu Du lịch Thế giới 2022.</div>
-                                            <div class="dsview">
-                                                <a href="https://ijc.vn/vn/vuong-mien-the-power-of-life-by-ijc-.html">
-                                                    <img src="https://ijc.vn/modules/main/images/line.png" alt="line" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="vhcol-lg-3 vhcol-sm-1 vhcol-xs-1 vhpadding-lg-col-15 vhpadding-md-col-10 vhmargin-lg-bottom-15 ">
-                                    <div class="itemnews">
-                                        <div class="thumb">
-                                            <a class="vhthumbzoom vhthumb-65 vhthumb-full" href="https://ijc.vn/vn/top-3-hoa-hau-hoan-vu-viet-nam-2022-tro-thanh-dai-su-thuong-hieu-trang-suc-ijc.html">
-                                                <img src="https://ijc.vn/vnt_upload/news/12_2022/thumbs/740_crop_dai_su_thuong_hieu_2.jpg" alt="TOP 3 HOA HẬU HOÀN VŨ VIỆT NAM 2022 TRỞ THÀNH ĐẠI SỨ THƯƠNG HIỆU TRANG SỨC IJC">
-                                            </a>
-                                        </div>
-                                        <div class="decs">
-                                            <div class="dstitle">
-                                                <h3>
-                                                    <a href="https://ijc.vn/vn/top-3-hoa-hau-hoan-vu-viet-nam-2022-tro-thanh-dai-su-thuong-hieu-trang-suc-ijc.html">TOP 3 HOA HẬU HOÀN VŨ VIỆT NAM 2022 TRỞ THÀNH ĐẠI SỨ THƯƠNG HIỆU TRANG SỨC IJC</a>
-                                                </h3>
-                                            </div>
-                                            <div class="dsdate">23/12/2022</div>
-                                            <div class="dstend">IJC xin chúc mừng Top 3 Hoa hậu Hoàn Vũ Việt Nam 2022 chính thức trở thành đại sứ thương hiệu Trang sức IJC.</div>
-                                            <div class="dsview">
-                                                <a href="https://ijc.vn/vn/top-3-hoa-hau-hoan-vu-viet-nam-2022-tro-thanh-dai-su-thuong-hieu-trang-suc-ijc.html">
-                                                    <img src="https://ijc.vn/modules/main/images/line.png" alt="line" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
                 </div>

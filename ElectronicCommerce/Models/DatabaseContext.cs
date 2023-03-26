@@ -27,6 +27,7 @@ namespace ElectronicCommerce.Models
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<OrderProduct> OrderProducts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductDetail> ProductDetails { get; set; }
         public virtual DbSet<ProductDiscount> ProductDiscounts { get; set; }
         public virtual DbSet<ProductPrice> ProductPrices { get; set; }
         public virtual DbSet<Promotion> Promotions { get; set; }
@@ -35,17 +36,7 @@ namespace ElectronicCommerce.Models
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<StoneType> StoneTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
         public virtual DbSet<RolesModel> RolesModels { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=DA_TMDT;Trusted_Connection=False;User ID=sa;Password=0903123884Abc");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -391,8 +382,6 @@ namespace ElectronicCommerce.Models
                     .IsUnicode(false)
                     .HasColumnName("IMAGE");
 
-                entity.Property(e => e.ImportQuantity).HasColumnName("IMPORT_QUANTITY");
-
                 entity.Property(e => e.MainStoneId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
@@ -406,10 +395,6 @@ namespace ElectronicCommerce.Models
                 entity.Property(e => e.Note)
                     .HasMaxLength(250)
                     .HasColumnName("NOTE");
-
-                entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
-
-                entity.Property(e => e.Size).HasColumnName("SIZE");
 
                 entity.Property(e => e.SubStoneId)
                     .HasMaxLength(10)
@@ -436,6 +421,49 @@ namespace ElectronicCommerce.Models
                     .WithMany(p => p.ProductSubStones)
                     .HasForeignKey(d => d.SubStoneId)
                     .HasConstraintName("FK__PRODUCTS__SUB_ST__3D2915A8");
+            });
+
+            modelBuilder.Entity<ProductDetail>(entity =>
+            {
+                entity.ToTable("PRODUCT_DETAIL");
+
+                entity.Property(e => e.ProductDetailId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("PRODUCT_DETAIL_ID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("date")
+                    .HasColumnName("CREATED_DATE");
+
+                entity.Property(e => e.ImportQuantity).HasColumnName("IMPORT_QUANTITY");
+
+                entity.Property(e => e.ProductId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("PRODUCT_ID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.ProductPriceId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("PRODUCT_PRICE_ID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
+
+                entity.Property(e => e.Size).HasColumnName("SIZE");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK__PRODUCT_D__PRODU__625A9A57");
+
+                entity.HasOne(d => d.ProductPrice)
+                    .WithMany(p => p.ProductDetails)
+                    .HasForeignKey(d => d.ProductPriceId)
+                    .HasConstraintName("FK__PRODUCT_D__PRODU__634EBE90");
             });
 
             modelBuilder.Entity<ProductDiscount>(entity =>
@@ -484,18 +512,13 @@ namespace ElectronicCommerce.Models
 
             modelBuilder.Entity<ProductPrice>(entity =>
             {
-                entity.HasKey(e => new { e.ProductId, e.Size })
-                    .HasName("PRODUCT_PRICES_PK");
-
                 entity.ToTable("PRODUCT_PRICES");
 
-                entity.Property(e => e.ProductId)
+                entity.Property(e => e.ProductPriceId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
-                    .HasColumnName("PRODUCT_ID")
+                    .HasColumnName("PRODUCT_PRICE_ID")
                     .IsFixedLength(true);
-
-                entity.Property(e => e.Size).HasColumnName("SIZE");
 
                 entity.Property(e => e.BasePrice).HasColumnName("BASE_PRICE");
 
@@ -503,19 +526,9 @@ namespace ElectronicCommerce.Models
                     .HasColumnType("date")
                     .HasColumnName("CREATED_DATE");
 
-                entity.Property(e => e.InActive)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .HasColumnName("IN_ACTIVE")
-                    .IsFixedLength(true);
+                entity.Property(e => e.InActive).HasColumnName("IN_ACTIVE");
 
                 entity.Property(e => e.SalePrice).HasColumnName("SALE_PRICE");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.ProductPrices)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PRODUCT_PRICES_PRODUCTS");
             });
 
             modelBuilder.Entity<Promotion>(entity =>

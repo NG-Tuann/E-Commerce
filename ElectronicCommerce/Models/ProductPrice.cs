@@ -7,13 +7,17 @@ namespace ElectronicCommerce.Models
 {
     public partial class ProductPrice
     {
-        public string ProductId { get; set; }
-        public int Size { get; set; }
+        public ProductPrice()
+        {
+            ProductDetails = new HashSet<ProductDetail>();
+        }
+
+        public string ProductPriceId { get; set; }
         public int? BasePrice { get; set; }
         public int? SalePrice { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public string InActive { get; set; }
+        public bool? InActive { get; set; }
 
-        public virtual Product Product { get; set; }
+        public virtual ICollection<ProductDetail> ProductDetails { get; set; }
     }
 }
