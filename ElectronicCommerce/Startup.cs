@@ -38,6 +38,8 @@ namespace ElectronicCommerce
             // INJECT SERVICE ADMIN
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICategoryProductService, CategoryProductService>();
+
 
             // INJECT SERVICE CUSTOMER
             services.AddScoped<IProductService, ProductService>();
