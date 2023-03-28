@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
 using ElectronicCommerce.Areas.Admin.Services;
+using ElectronicCommerce.Areas.Customer.Services;
 using ElectronicCommerce.Models;
 using ElectronicCommerce.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -34,9 +35,12 @@ namespace ElectronicCommerce
             // INJECT REPO
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
-            // INJECT SERVICE
+            // INJECT SERVICE ADMIN
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+
+            // INJECT SERVICE CUSTOMER
+            services.AddScoped<IProductService, ProductService>();
 
             var connectionString = _configuration["ConnectionStrings:DefaultConnection"].ToString();
             services.AddDbContext<DatabaseContext>(option => option.UseLazyLoadingProxies().UseSqlServer(connectionString));

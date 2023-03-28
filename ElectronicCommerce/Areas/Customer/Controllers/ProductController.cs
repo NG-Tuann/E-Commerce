@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ElectronicCommerce.Areas.Customer.Services;
 using ElectronicCommerce.Models;
 using ElectronicCommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,14 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
     {
         private IBaseRepository<CategoryProduct> _baseRepoCate;
         private IBaseRepository<Geomancy> _baseRepoGeomancy;
+        private IProductService _productService;
 
-        public ProductController(IBaseRepository<CategoryProduct> baseRepoCate, IBaseRepository<Geomancy> baseRepoGeomancy)
+        public ProductController(IBaseRepository<CategoryProduct> baseRepoCate, IBaseRepository<Geomancy> baseRepoGeomancy
+            , IProductService productService)
         {
             _baseRepoCate = baseRepoCate;
             _baseRepoGeomancy = baseRepoGeomancy;
+            _productService = productService;
         }
         [Route("index")]
         [Route("")]
@@ -36,6 +40,27 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             ViewBag.cates = _baseRepoCate.GetAll().ToList();
             ViewBag.geos = _baseRepoGeomancy.GetAll().ToList();
             return View("detail");
+        }
+
+        [HttpPost]
+        [Route("findProductById")]
+        public IActionResult findProductById(string product_id)
+        {
+            return new JsonResult(_productService.findProductById(product_id));
+        }
+
+        [HttpPost]
+        [Route("findAllSizeOfProducts")]
+        public IActionResult findAllSizeOfProducts(string product_id)
+        {
+            return new JsonResult(_productService.findAllSizeOfProducts(product_id));
+        }
+
+        [HttpPost]
+        [Route("findPriceBySizeAndId")]
+        public IActionResult findPriceBySizeAndId(int size, string product_id)
+        {
+            return new JsonResult(_productService.findPriceBySizeAndId(size, product_id));
         }
     }
 }

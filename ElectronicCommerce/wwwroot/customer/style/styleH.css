@@ -902,12 +902,13 @@
 }
 
 .size-box {
-    border: 1.2px solid #4C4C4C;
+    border: 1.2px solid #8f7d59;
     width: 28px;
     height: 34px;
     margin-right: 10px;
     border-radius: 5px;
     display: flex;
+    cursor:pointer;
 }
 
 .add-to-cart {
@@ -990,7 +991,7 @@
 .size__measure {
     margin-top: 20px;
     width: 100%;
-    height: 140px;
+    height: 150px;
     background-color: #EEEEEE;
     display: flex;
     position: relative;
@@ -1105,4 +1106,18 @@
     height: 44px;
     border-radius: 6px;
     color: #FFFFFF;
+}
+
+/*Button confirm add to cart after choose size*/
+.btn-add-to-cart__confirm {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    background-color: #8f7d59;
+    height: 40px;
+    color: #FFFFFF;
+}
+
+.btn-add-to-cart__confirm:hover {
+    opacity:0.8;
 }

@@ -14,7 +14,7 @@ namespace ElectronicCommerce.Models
 
         public string ProductPriceId { get; set; }
         public int? BasePrice { get; set; }
-        public int? SalePrice { get; set; }
+        public int SalePrice { get; set; }
         public DateTime? CreatedDate { get; set; }
         public bool? InActive { get; set; }
 

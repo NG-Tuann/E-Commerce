@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="item">
-                    <a href="https://ijc.vn/vn/dong-loat-khai-truong-15-chi-nhanh-ijc-chinh-thuc-so-huu-mang-luoi-29-chi-nhanh-tren-toan-quoc.html" title="" onmousedown="return rwt(this,'advertise',88)" target="_blank">
+                    <a href="https://ijc.vn/vn/dong-loat-khai-truong-8-chi-nhanh-ijc-chinh-thuc-so-huu-mang-luoi-29-chi-nhanh-tren-toan-quoc.html" title="" onmousedown="return rwt(this,'advertise',88)" target="_blank">
                         <div class="bg" style="background-image: url(https://ijc.vn/vnt_upload/weblink/he_thong_showroom_ijc_tren_toan_quoc.jpg);">
                             <img src="https://ijc.vn/vnt_upload/weblink/he_thong_showroom_ijc_tren_toan_quoc.jpg" alt="" />
                         </div>
@@ -182,20 +182,20 @@
                                     <div class="itemproductall">
                                         <div class="thumb">
                                             <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="#">
-                                                <img src="~/admin/images/products/@item.Image" alt="@item.Name">
+                                                <img src="~/admin/images/products/@item.IMAGE" alt="@item.NAME">
                                             </a>
                                         </div>
                                         <div class="decs">
                                             <div class="dstile">
                                                 <h3>
-                                                    <a href="#">@item.Name</a>
+                                                    <a href="#">@item.NAME</a>
                                                 </h3>
                                             </div>
                                             <div class="dsprive">
-                                                <span class="dsnews">26,781,000 đ</span>
+                                                <span class="dsnews">@item.PRICE.ToString("#,###") đ</span>
                                             </div>
                                             <div class="dsview">
-                                                <input type="button" onclick="addToCart()" class="btn btn-add-to-cart" value="Thêm vào giỏ hàng">
+                                                <input type="button" data-id="@item.PRODUCT_ID" class="btn btn-add-to-cart" value="Thêm vào giỏ hàng">
                                             </div>
 
                                         </div>
@@ -1143,14 +1143,14 @@
                 </div>
                 <div class="add-cart__body">
                     <div class="product-img">
-                        <img src="./customer/img/1000_Bong_tai_da_Amethyst_22B013NMBL.jpg" width="300px" height="300px" alt="Ear ring">
+                        <img src="" width="300px" height="300px" alt="#" id="product-img">
                     </div>
                     <div class="product-size__info" style="margin-top:14px;">
-                        <p style="font-size: 22px;">
+                        <p style="font-size: 22px;" class="product-name">
                             Bông tai đá Amethyst 22B.013NMBL
                         </p>
                         <div class="product-detail">
-                            <div style="color:darkgrey;">Mã SP: 1CB200149</div>
+                            <div style="color:darkgrey;" class="product-id">Mã SP: 1CB200149</div>
                             <div class="product-rate">
                                 <div style="margin-right: 30px;"><span style="color:#FFC108" class="fa fa-star checked"></span> <i>4 (5)</i></div>
                                 <div><span>2000+ đã bán</span></div>
@@ -1180,7 +1180,7 @@
                                             </div>
 
                                             <div class="size-guide-wrap" style="padding:0;">
-                                                <p style="font-size: 13px;;">2. Dùng thước đo chiều dài đoạn dây vừa đo được (đơn vị cm)</p>
+                                                <p style="font-size: 13px;">2. Dùng thước đo chiều dài đoạn dây vừa đo được (đơn vị cm)</p>
                                                 <p style="text-align: center;"> <img class="image-lazyload" alt="1. Dùng chỉ hoặc giấy bản nhỏ đo quấn quanh khớp tay, đánh dấu vị trí cắt nhau" src="https://cdn.pnj.io/images/image-update/2022/guide-size/thuoc-do.svg" style="display: inline;"> </p>
                                             </div>
                                         </div>
@@ -1188,25 +1188,31 @@
                                             <div class="size__measure-wrap">
                                                 <span style="font-size: 14px;">Kết quả:</span>
                                                 <div class="size-result-wrap">
-                                                    <div><input type="radio"> 3.6 cm </div>
-                                                    <div><input type="radio"> 3.8 cm </div>
-                                                    <div><input type="radio"> 4.0 cm </div>
-                                                    <div><input type="radio"> 4.2 cm </div>
-                                                    <div><input type="radio"> 4.4 cm </div>
-                                                    <div><input type="radio"> 4.6 cm </div>
-                                                    <div><input type="radio"> 4.8 cm </div>
-                                                    <div><input type="radio"> 5.0 cm </div>
-                                                    <div><input type="radio"> 5.2 cm </div>
-                                                    <div><input type="radio"> 5.4 cm </div>
+                                                    <div><input type="radio" name="chu_vi_ngon_tay" value="9"> 3.6 cm </div>
+                                                    <div><input type="radio" name="chu_vi_ngon_tay" value="10"> 3.8 cm </div>
+                                                    <div><input type="radio" name="chu_vi_ngon_tay" value="11"> 4.0 cm </div>
+                                                    <div><input type="radio" name="chu_vi_ngon_tay" value="12"> 4.2 cm </div>
+                                                    <div><input type="radio" name="chu_vi_ngon_tay" value="13"> 4.4 cm </div>
+                                                    <div><input type="radio" name="chu_vi_ngon_tay" value="14"> 4.6 cm </div>
+                                                    <div><input type="radio" name="chu_vi_ngon_tay" value="15"> 4.8 cm </div>
                                                 </div>
                                             </div>
+                                            @* Script chon size nhan *@
+                                            <script>
+                                                $(document).ready(function () {
+                                                    $('input[type=radio][name=chu_vi_ngon_tay]').change(function () {
+                                                        console.log(this.value);
+                                                        $('#size-result').val(this.value);
+                                                    });
+                                                });
+                                            </script>
 
                                             <div class="size-description-wrap">
                                                 <span style="font-size: 14px;">Bảng size phổ biến</span>
                                                 <img src="https://cdn.pnj.io/images/image-update/2022/guide-size/nhan_v2.svg" alt="Ruler" style="display: inline; margin-top: 6px;">
                                                 <br>
-                                                <div style="display: flex; flex-direction: row; margin-top: 52px;">
-                                                    <span style="font-size: 13px;align-self: center;">Size nhẫn: </span> <input type="text" id="size-result" readonly="readonly">
+                                                <div style="display: flex; flex-direction: row; margin-top: 30px;">
+                                                    <span style="font-size: 13px;align-self: center;">Size nhẫn: </span> <input type="text" style="text-align: center; color: #8F7D59;" id="size-result" readonly="readonly">
                                                 </div>
                                             </div>
                                         </div>
@@ -1216,24 +1222,7 @@
                             </div>
                         </div>
                         <div class="product-size__box">
-                            <div class="size-box">
-                                <span style="margin: auto;font-weight:lighter;font-size: 14px;">8</span>
-                            </div>
-                            <div class="size-box">
-                                <span style="margin: auto;font-weight:lighter;font-size: 14px;">9</span>
-                            </div>
-                            <div class="size-box">
-                                <span style="margin: auto;font-weight:lighter;font-size: 14px;">10</span>
-                            </div>
-                            <div class="size-box">
-                                <span style="margin: auto;font-weight:lighter;font-size: 14px;">11</span>
-                            </div>
-                            <div class="size-box">
-                                <span style="margin: auto;font-weight:lighter;font-size: 14px;">12</span>
-                            </div>
-                            <div class="size-box">
-                                <span style="margin: auto;font-weight:lighter;font-size: 14px;">13</span>
-                            </div>
+                            
                         </div>
                         <div class="product-stock" style="margin-top: 10px;font-size: 14px;color:#003468;">
                             Còn hàng

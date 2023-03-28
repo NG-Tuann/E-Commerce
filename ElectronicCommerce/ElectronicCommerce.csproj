@@ -37,6 +37,7 @@
     <None Remove="BCrypt.Net" />
     <None Remove="BCrypt.Net-Next" />
     <None Remove="Areas\Customer\Views\Product\" />
+    <None Remove="Areas\Customer\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\" />
@@ -70,6 +71,7 @@
     <Folder Include="wwwroot\customer\modules\product\css\" />
     <Folder Include="wwwroot\customer\js\" />
     <Folder Include="wwwroot\admin\" />
+    <Folder Include="Areas\Customer\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />

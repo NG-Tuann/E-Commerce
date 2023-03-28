@@ -13,7 +13,7 @@ namespace ElectronicCommerce.Models
         public int? ImportQuantity { get; set; }
         public string ProductPriceId { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public int? Size { get; set; }
+        public int Size { get; set; }
 
         public virtual Product Product { get; set; }
         public virtual ProductPrice ProductPrice { get; set; }
