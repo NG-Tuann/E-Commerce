@@ -41,12 +41,8 @@
     <None Remove="Areas\Customer\Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\" />
-    <Folder Include="Areas\Admin\" />
     <Folder Include="Areas\Customer\" />
     <Folder Include="Models\" />
-    <Folder Include="Areas\Admin\Controllers\" />
-    <Folder Include="Areas\Admin\Views\" />
     <Folder Include="Areas\Customer\Controllers\" />
     <Folder Include="Areas\Customer\Views\" />
     <Folder Include="wwwroot\" />
@@ -63,7 +59,6 @@
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Repositories\" />
     <Folder Include="Areas\Admin\Views\AdminRole\" />
-    <Folder Include="Areas\Admin\Services\" />
     <Folder Include="Areas\Admin\Views\AdminUser\" />
     <Folder Include="Areas\Admin\Helpers\" />
     <Folder Include="Areas\Customer\Views\Product\" />
@@ -88,6 +83,9 @@
     <Content Remove="wwwroot\customer\js\" />
     <Content Remove="wwwroot\admin\" />
     <Content Remove="Areas\Customer\Views\Product\CartPage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Areas\Admin\Views\AdminCategoryProduct\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0" />
