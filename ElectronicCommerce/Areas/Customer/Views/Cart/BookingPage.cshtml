@@ -1,0 +1,176 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="~/customer/style/booking_page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/customer/style/pre-loader.css" />
+
+    <!-- SCRIPT JS-->
+    <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="~/customer/lib/booking_page.js"></script>
+
+</head>
+<body>
+    <header>
+        <div class="header__wrapper">
+            <div style="display: flex;">
+                <div class="header__logo">
+                    <img src="https://ijc.vn/vnt_upload/weblink/Logo_IJC__Slogan_1.png" alt="" class="logo" width="120" height="36">
+                </div>
+                <div class="header__wrapper-title">
+                    <span><i class="fa-sharp fa-solid fa-lock" style="font-size: 20px; margin-left: 4px;"></i></span>
+                    <span style="font-size:12px;">THANH TOÁN AN TOÀN</span>
+                </div>
+            </div>
+            <div class="header__continue-wrapper">
+                <a href="http://localhost:5000" class="header__continue-sale">
+                    TIẾP TỤC MUA SẮM
+                    <span></span>
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="cart__container">
+        <div class="cart__wrapper">
+            <div class="process__wrapper">
+                <span>Giỏ hàng</span>
+                <span style="color:#333;font-weight:600;">Đặt hàng</span>
+                <span>Trả tiền</span>
+                <span>Hoàn thành đơn hàng</span>
+            </div>
+
+            <div class="booking__wrapper-container">
+                <div class="booking__information-container">
+                    <p class="header__title">Địa chỉ giao hàng</p>
+                    <div class="area__wrapper" style="margin-top:26px;">
+                        <span>Vị trí*</span>
+                        <span style="margin-top:10px;">Vietnam</span>
+                    </div>
+
+                    <div class="name__wrapper">
+                        <div class="full_name">
+                            <input type="text" class="full_name-input" required />
+                            <span class="full_name-holder">Họ và tên*</span>
+                        </div>
+
+                        <div class="customer_mail">
+                            <input type="text" class="customer_mail-input" required />
+                            <span class="customer_mail-holder">Địa chỉ gmail*</span>
+                        </div>
+                    </div>
+
+                    <div class="phone__wrapper">
+                        <div class="zip__code">
+                            <span>VN +84</span>
+                        </div>
+
+                        <div class="phone__wrapper-box">
+                            <div class="phone__wrapper-txb">
+                                <input type="text" class="phone-input" required />
+                                <span class="phone-holder" style="padding-top:3px;">Số điện thoại liên lạc*</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="address__wrapper">
+                        <span class="address_title" a>Địa chỉ đường phố*</span>
+                        <textarea placeholder="Địa chỉ đường phố ,căn hộ, Suĩte, Đơn vi,v.v."></textarea>
+                    </div>
+
+                    <div class="policy__wrapper">
+                        <a href="#">Chính sách bảo mật & Cookie</a>
+                        <a href="#">ghi chú địa chỉ chung</a>
+                    </div>
+
+                    <div class="overview_cart__summary-wrapper">
+                        <div class="overview_cart-title-wrapper">
+                            <span style="color:#333; font-weight:bolder;font-size:24px;">Giỏ hàng</span>
+                            <span style="color:#333; font-size:14px;padding-top:10px;">Kiểm tra những sản phẩm thanh toán</span>
+                        </div>
+                        <div class="cart-detail-wrapper">
+                            <div class="cart-item-box">
+                                <img src="~/admin/images/products/f1f90203-07a5-44dd-8836-6ffa7be22de4.jpg" alt="" style="width:135px;height:180px;" />
+                                <div class="cart-quantity">
+                                    <span style="font-size:12px;font-weight:bolder;">x2</span>
+                                </div>
+                                <div class="product-detail-wrapper">
+                                    <span style="text-overflow:ellipsis;color:#999;margin-top:6px;">Vòng tay đá Amethyst 22L.013NMBL</span>
+                                    <span style="margin-top:6px;">500.000 đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shipping-wrapper">
+                        <span style="font-size:20px;font-weight:bolder">Bảo Hiểm Vận Chuyển</span>
+                    </div>
+                    <div class="shipping-title">
+                        <span><i class="fa fa-check"></i>  Đảm bảo vận chuyển <b>$0.00</b></span>
+                    </div>
+
+                    <div class="payment-method-wrapper">
+                        <span style="font-size:20px;font-weight:bolder">Phương Thức Thanh Toán</span>
+                    </div>
+                    <div class="payment-method-choose-wrapper">
+                        <label class="container">
+                            <span style="font-size:18px;color:#333;">Thanh toán bằng PayPal</span>
+                            <input type="radio" name="radio" id="1">
+                            <span class="checkmark" style="margin-top:12px;"></span>
+                        </label>
+                        <label class="container">
+                            <span style="font-size:18px;color:#333;">Thanh toán bằng Momo</span>
+                            <input type="radio" name="radio" id="2">
+                            <span class="checkmark" style="margin-top:12px;"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="booking__summary-container">
+                    <div class="title__summary">
+                        <h4>Tóm Tắt Đơn Hàng</h4>
+                    </div>
+                    <div class="total__summary-wrapper">
+                        <div class="temp-total">
+                            <span style="color: #333">Tạm tính:</span>
+                            <span style="color:#333; font-weight:bolder;font-size:22px;" id="total-booking-price">513.000₫</span>
+                        </div>
+                    </div>
+                    <div class="point-count" style="margin-top:14px;float:right;">
+                        <span style="color: #767676;">Phần thưởng</span><span style="color: #C44900;"> 21</span><span style="color:#333;position:relative;" id="point-seperate"> điểm SHEIN</span>
+                    </div>
+                    <div class="promotion__wrapper" style="margin-top:80px;">
+                        <span>Mã phiếu giảm giá <i class="fa fa-question-circle" aria-hidden="true"></i></span>
+                        <div class="promotion__wrapper-txb">
+                            <input type="text" class="promotion-txb" />
+                            <button class="btn btn-apply-promo">Áp dụng</button>
+                        </div>
+                    </div>
+                    <div class="submit-area">
+                        <input type="submit" class="btn-booking" value="ĐẶT HÀNG" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preloader -->
+    <div class="wrapperanimate" id="pre-loader" style="display:none;">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+        <div class="shadow"></div>
+    </div>
+</body>
+</html>
+
+<script>
+    loadCartDoubleCheck();
+</script>
