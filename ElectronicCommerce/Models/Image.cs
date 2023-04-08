@@ -9,9 +9,7 @@ namespace ElectronicCommerce.Models
     {
         public int Id { get; set; }
         public string NameImages { get; set; }
-        public int? Levels { get; set; }
         public string ProductId { get; set; }
-
         public virtual Product Product { get; set; }
     }
 }

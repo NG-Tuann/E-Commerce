@@ -38,6 +38,7 @@
     <None Remove="BCrypt.Net-Next" />
     <None Remove="Areas\Customer\Views\Product\" />
     <None Remove="Areas\Customer\Services\" />
+    <None Remove="Areas\Customer\Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\" />
@@ -72,6 +73,7 @@
     <Folder Include="wwwroot\customer\js\" />
     <Folder Include="wwwroot\admin\" />
     <Folder Include="Areas\Customer\Services\" />
+    <Folder Include="Areas\Customer\Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />
@@ -85,6 +87,7 @@
     <Content Remove="wwwroot\customer\modules\product\css\" />
     <Content Remove="wwwroot\customer\js\" />
     <Content Remove="wwwroot\admin\" />
+    <Content Remove="Areas\Customer\Views\Product\CartPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0" />

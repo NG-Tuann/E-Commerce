@@ -9,7 +9,6 @@ namespace ElectronicCommerce.Models
     {
         public Product()
         {
-            Carts = new HashSet<Cart>();
             Images = new HashSet<Image>();
             ProductDetails = new HashSet<ProductDetail>();
             ProductDiscounts = new HashSet<ProductDiscount>();
@@ -33,7 +32,6 @@ namespace ElectronicCommerce.Models
         public virtual Geomancy Geomancy { get; set; }
         public virtual StoneType MainStone { get; set; }
         public virtual StoneType SubStone { get; set; }
-        public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<Image> Images { get; set; }
         public virtual ICollection<ProductDetail> ProductDetails { get; set; }
         public virtual ICollection<ProductDiscount> ProductDiscounts { get; set; }
