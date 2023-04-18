@@ -37,8 +37,6 @@ namespace ElectronicCommerce.Models
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<StoneType> StoneTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
-        // DB mapping
         public virtual DbSet<RolesModel> RolesModels { get; set; }
         public virtual DbSet<OverViewProductHomeFlag> OverViewProductHomeFlags { get; set; }
         public virtual DbSet<VMProductDetail> VMProductDetails { get; set; }
@@ -83,10 +81,10 @@ namespace ElectronicCommerce.Models
                     .HasColumnName("ORDER_ID")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.ProductId)
+                entity.Property(e => e.ProductDetailId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
-                    .HasColumnName("PRODUCT_ID")
+                    .HasColumnName("PRODUCT_DETAIL_ID")
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
@@ -101,10 +99,10 @@ namespace ElectronicCommerce.Models
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_CARTS_ORDER_PRODUCTS");
 
-                entity.HasOne(d => d.Product)
+                entity.HasOne(d => d.ProductDetail)
                     .WithMany(p => p.Carts)
-                    .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK_CARTS_PRODUCTS");
+                    .HasForeignKey(d => d.ProductDetailId)
+                    .HasConstraintName("FK__CARTS__PRODUCT_D__0697FACD");
             });
 
             modelBuilder.Entity<CategoryProduct>(entity =>
@@ -238,9 +236,6 @@ namespace ElectronicCommerce.Models
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
-
-                entity.Property(e => e.Levels).HasColumnName("LEVELS");
-
                 entity.Property(e => e.NameImages)
                     .HasMaxLength(255)
                     .IsUnicode(false)
@@ -260,15 +255,12 @@ namespace ElectronicCommerce.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasKey(e => new { e.ProductId, e.OrderId })
-                    .HasName("PK_ORDER_DETAIL");
-
                 entity.ToTable("ORDER_DETAILS");
 
-                entity.Property(e => e.ProductId)
+                entity.Property(e => e.OrderDetailId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
-                    .HasColumnName("PRODUCT_ID")
+                    .HasColumnName("ORDER_DETAIL_ID")
                     .IsFixedLength(true);
 
                 entity.Property(e => e.OrderId)
@@ -277,13 +269,23 @@ namespace ElectronicCommerce.Models
                     .HasColumnName("ORDER_ID")
                     .IsFixedLength(true);
 
+                entity.Property(e => e.ProductDetailId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("PRODUCT_DETAIL_ID")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ORDER_DETAILS_ORDER_PRODUCTS");
+                    .HasConstraintName("FK__ORDER_DET__ORDER__0A688BB1");
+
+                entity.HasOne(d => d.ProductDetail)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductDetailId)
+                    .HasConstraintName("FK__ORDER_DET__PRODU__0B5CAFEA");
             });
 
             modelBuilder.Entity<OrderProduct>(entity =>
@@ -656,6 +658,12 @@ namespace ElectronicCommerce.Models
                 entity.Property(e => e.Title)
                     .HasMaxLength(50)
                     .HasColumnName("TITLE");
+
+                entity.Property(e => e.Created_Date)
+                    .HasColumnType("date")
+                    .HasColumnName("CREATED_DATE");
+
+                entity.Property(e => e.Is_Update).HasColumnName("IS_UPDATE");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Reviews)

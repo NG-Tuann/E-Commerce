@@ -47,6 +47,9 @@ namespace ElectronicCommerce
 
             var connectionString = _configuration["ConnectionStrings:DefaultConnection"].ToString();
             services.AddDbContext<DatabaseContext>(option => option.UseLazyLoadingProxies().UseSqlServer(connectionString));
+
+            // Add session service
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +59,8 @@ namespace ElectronicCommerce
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSession();
 
             app.UseRouting();
 

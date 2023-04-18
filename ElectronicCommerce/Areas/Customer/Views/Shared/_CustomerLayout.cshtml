@@ -93,7 +93,7 @@
                                             </div>
                                         </div>
                                         <div class="logo">
-                                            <a onmousedown="return rwt(this,'advertise',1)" href='https://ijc.vn/vn/' target='_self' title=''>
+                                            <a asp-area="customer" asp-controller="home" asp-action="index">
                                                 <img src='https://ijc.vn/vnt_upload/weblink/Logo_IJC__Slogan_1.png' alt='' />
                                             </a>
                                             <h1 style="display:none"></h1>
@@ -146,7 +146,7 @@
                                         </div>
                                         <div class="colt">
                                             <div class="cartDesk">
-                                                <a href="https://ijc.vn/vn/san-pham/shopping/method.html">
+                                                <a>
                                                     <span class="icon">
                                                         <img src="https://ijc.vn/skins/default/images/i-cart.svg" alt="cart" />
                                                     </span>
@@ -342,16 +342,41 @@
                                         </div>
                                         <div class="colt">
                                             <div class="cartDesk">
-                                                <a href="https://ijc.vn/vn/san-pham/shopping/method.html">
+                                                <a asp-area="customer" asp-controller="cart" asp-action="cartpage">
                                                     <span class="icon">
                                                         <img src="https://ijc.vn/skins/default/images/i-cart.svg" alt="cart" />
                                                     </span>
                                                     <div class="header__cart-list" id="header__cart-list">
-                                                        <span>Chua co san pham nao</span>
+                                                        <!-- Empty cart -->
+                                                        <div class="header__cart-no-cart" style="margin:auto; margin-top:140px;" id="header__cart-no-cart">
+                                                            <img src="~/admin/images/products/bag.png" alt="Empty cart" width="70px;" style="opacity:0.5;" />
+                                                            <p>Giỏ hàng rỗng</p>
+                                                        </div>
+                                                        <div class="not-empty-cart" id="not-empty-cart">
+                                                            <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
+                                                            <hr style="opacity:0.8;margin:0; width:94%; margin-left:10px;" />
+                                                            <!-- Not empty cart -->
+                                                            <ul class="header__cart-list-item">
+                                                                <!-- <li> tag render vao day -->
+                                                            </ul>
+                                                        </div>
+                                                        <div class="header__checkout" id="header__checkout">
+                                                            <div class="checkout-footer">
+                                                                <div class="checkout-body">
+                                                                    <div class="form-check">
+                                                                        <label class="form-check-label" style="font-weight:200;">Tất cả</label>
+                                                                    </div>
+                                                                    <div class="checkout-total">
+                                                                        <span style="color:#333;">Tổng cộng:</span>
+                                                                        <span class="checkout-total-money">26.500.000 đ</span>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="button" style="margin-top:6px;" class="btn btn-checkout" value="XEM GIỎ HÀNG" />
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <span class="numb has">0</span>
+                                                    <span class="numb has" id="cartQuantity">0</span>
                                                 </a>
-
                                             </div>
                                         </div>
 
@@ -820,3 +845,6 @@
     </div>
 </body>
 </html>
+<script>
+    loadCart();
+</script>

@@ -9,5 +9,9 @@ namespace ElectronicCommerce.Areas.Customer.Models
         public string IMAGE { get; set; }
         public string NAME { get; set; }
         public int PRICE { get; set; }
+        public int? DISCOUNT_VALUE { get; set; }
+        public string? UNIT { get; set; }
+        public string? IS_REDEEM { get; set; }
+
     }
 }

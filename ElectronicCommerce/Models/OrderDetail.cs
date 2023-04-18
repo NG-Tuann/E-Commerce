@@ -7,10 +7,12 @@ namespace ElectronicCommerce.Models
 {
     public partial class OrderDetail
     {
-        public string ProductId { get; set; }
+        public string OrderDetailId { get; set; }
         public string OrderId { get; set; }
+        public string ProductDetailId { get; set; }
         public int? Quantity { get; set; }
 
         public virtual OrderProduct Order { get; set; }
+        public virtual ProductDetail ProductDetail { get; set; }
     }
 }

@@ -7,6 +7,12 @@ namespace ElectronicCommerce.Models
 {
     public partial class ProductDetail
     {
+        public ProductDetail()
+        {
+            Carts = new HashSet<Cart>();
+            OrderDetails = new HashSet<OrderDetail>();
+        }
+
         public string ProductDetailId { get; set; }
         public string ProductId { get; set; }
         public int? Quantity { get; set; }
@@ -17,5 +23,7 @@ namespace ElectronicCommerce.Models
 
         public virtual Product Product { get; set; }
         public virtual ProductPrice ProductPrice { get; set; }
+        public virtual ICollection<Cart> Carts { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
