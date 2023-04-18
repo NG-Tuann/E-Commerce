@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace ElectronicCommerce.Models
 {
     public partial class CategoryProduct
-    {
+    { 
         public CategoryProduct()
         {
             InverseParent = new HashSet<CategoryProduct>();

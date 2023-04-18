@@ -45,7 +45,6 @@
     <Folder Include="Models\" />
     <Folder Include="Areas\Customer\Controllers\" />
     <Folder Include="Areas\Customer\Views\" />
-    <Folder Include="wwwroot\" />
     <Folder Include="Areas\Customer\Views\Home\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="wwwroot\customer\" />
@@ -53,7 +52,6 @@
     <Folder Include="wwwroot\customer\style\iconmoon\" />
     <Folder Include="wwwroot\customer\img\" />
     <Folder Include="wwwroot\customer\lib\" />
-    <Folder Include="Areas\Admin\ViewModels\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
@@ -66,11 +64,11 @@
     <Folder Include="wwwroot\customer\modules\product\" />
     <Folder Include="wwwroot\customer\modules\product\css\" />
     <Folder Include="wwwroot\customer\js\" />
-    <Folder Include="wwwroot\admin\" />
     <Folder Include="Areas\Customer\Services\" />
     <Folder Include="Areas\Customer\Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="Areas\Admin\Views\AdminProduct\ProductDetailModalPopUp.cshtml" />
     <Content Remove="wwwroot\" />
     <Content Remove="wwwroot\customer\" />
     <Content Remove="wwwroot\customer\css\" />
