@@ -39,10 +39,11 @@ namespace ElectronicCommerce
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
+            services.AddScoped<Areas.Admin.Services.IProductService, Areas.Admin.Services.ProductService>();
+
 
 
             // INJECT SERVICE CUSTOMER
-            services.AddScoped<IProductService, ProductService>();
 
             var connectionString = _configuration["ConnectionStrings:DefaultConnection"].ToString();
             services.AddDbContext<DatabaseContext>(option => option.UseLazyLoadingProxies().UseSqlServer(connectionString));

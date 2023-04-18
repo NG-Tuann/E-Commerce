@@ -30,7 +30,6 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
 
         // GET: /<controller>/
         [Route("")]
-        [Route("~/")]
         [Route("index")]
         public IActionResult Index()
         {

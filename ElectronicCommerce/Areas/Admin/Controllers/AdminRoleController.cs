@@ -42,6 +42,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         public IActionResult Add()
         {
             ViewBag.roles = _baseRepo.GetAll().ToList();
+
             return View("Add", new Role());
         }
 

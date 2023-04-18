@@ -22,9 +22,9 @@ namespace ElectronicCommerce.Models
         public string Image { get; set; }
         public string Color { get; set; }
         public string Note { get; set; }
-        public bool? BestSeller { get; set; }
-        public bool? HomeFlag { get; set; }
-        public bool? Active { get; set; }
+        public bool BestSeller { get; set; }
+        public bool HomeFlag { get; set; }
+        public bool Active { get; set; }
         public string CatId { get; set; }
         public string MainStoneId { get; set; }
         public string SubStoneId { get; set; }
