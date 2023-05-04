@@ -22,6 +22,7 @@ namespace ElectronicCommerce.Models
         public string Code { get; set; }
         public int? MaxDiscount { get; set; }
         public int? MinOrder { get; set; }
+        public bool Activate { get; set; }
 
         public virtual ICollection<PromotionDetail> PromotionDetails { get; set; }
     }
