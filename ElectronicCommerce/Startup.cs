@@ -1,11 +1,15 @@
-﻿using AspNetCoreHero.ToastNotification;
-using AspNetCoreHero.ToastNotification.Extensions;
+﻿using System;
+using AspNetCoreHero.ToastNotification;
 using ElectronicCommerce.Areas.Admin.Services;
 using ElectronicCommerce.Areas.Customer.Services;
 using ElectronicCommerce.Models;
 using ElectronicCommerce.Repositories;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +43,22 @@ namespace ElectronicCommerce
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
+            services.AddScoped<IOrderProductService, OrderProductService>();
+            services.AddScoped<ICustomerService, CustomerService>();
 
+            // Them xac thuc google
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+                .AddCookie()
+                .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+                {
+                    options.ClientId = _configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
+                    options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+                });
 
             // INJECT SERVICE CUSTOMER
             services.AddScoped<IProductService, ProductService>();
@@ -48,7 +67,13 @@ namespace ElectronicCommerce
             services.AddDbContext<DatabaseContext>(option => option.UseLazyLoadingProxies().UseSqlServer(connectionString));
 
             // Add session service
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(240);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +89,10 @@ namespace ElectronicCommerce
             app.UseRouting();
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

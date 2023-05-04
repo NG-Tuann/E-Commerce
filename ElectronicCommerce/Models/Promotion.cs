@@ -24,5 +24,6 @@ namespace ElectronicCommerce.Models
         public int? MinOrder { get; set; }
 
         public virtual ICollection<PromotionDetail> PromotionDetails { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

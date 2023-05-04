@@ -39,6 +39,13 @@
     <None Remove="Areas\Customer\Views\Product\" />
     <None Remove="Areas\Customer\Services\" />
     <None Remove="Areas\Customer\Views\Cart\" />
+    <None Remove="Stripe.net" />
+    <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <None Remove="Areas\Customer\Views\Customer\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.Google" />
+    <None Remove="Microsoft.Owin.Security.Google" />
+    <None Remove="Microsoft.AspNetCore.CookiePolicy" />
+    <None Remove="Microsoft.AspNetCore.Http" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customer\" />
@@ -69,6 +76,7 @@
     <Folder Include="wwwroot\admin\" />
     <Folder Include="Areas\Customer\Services\" />
     <Folder Include="Areas\Customer\Views\Cart\" />
+    <Folder Include="Areas\Customer\Views\Customer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\" />
@@ -102,5 +110,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.17" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
   </ItemGroup>
 </Project>

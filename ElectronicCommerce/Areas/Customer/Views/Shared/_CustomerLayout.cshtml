@@ -1,17 +1,13 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
-    <title>IJC Trang Sức Đá Quý - Tỏa Sáng Từng Khoảnh Khắc</title>
-    <meta name="keywords" CONTENT="IJC, INFINITY JEWELRY COMPANY, Trang sức đá quý, trang suc da quy, vàng IJC, vang IJC, đá quý IJC, da quy, lắc tay, nhẫn, vòng tay, dây chuyền, kim cương, bông tai, nhẫn cưới." />
-    <meta name="description" CONTENT="IJC - Tỏa Sáng Từng Khoảnh Khắc. CÔNG TY CỔ PHẦN TRANG SỨC ĐÁ QUÝ INFINITY là thương hiệu trang sức đá quý rất nhiều mẫu mã độc quyền từ Vàng 10k, 14k, 18K, 24K" />
+    <title>PTJ Trang Sức Đá Quý - Tỏa Sáng Từng Khoảnh Khắc</title>
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://ijc.vn/vn/" />
-    <link rel="alternate" media="handheld" href="https://ijc.vn/vn/" />
     <meta property="fb:app_id" content="564941807505847" />
-    <link rel="SHORTCUT ICON" href="/vnt_upload/File/Image/icon_ijc.png" type="image/x-icon" />
-    <link rel="icon" href="/vnt_upload/File/Image/icon_ijc.png" type="image/gif" />
+    <link rel="SHORTCUT ICON" href="~/customer/img/ptjlogo.svg" type="image/x-icon" />
+    <link rel="icon" href="~/customer/img/ptjlogo.svg" type="image/gif" />
     <link href="https://ijc.vn/js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="https://ijc.vn/js/slick/slick.css" rel="stylesheet" type="text/css" />
     <link href="https://ijc.vn/js/slick/slick-theme.css" rel="stylesheet" />
@@ -24,10 +20,11 @@
 
 
     <link href="~/customer/style/all.css" rel="stylesheet" />
-        <link href="~/customer/style/styleH.css" rel="stylesheet" />
-        <link href="~/customer/style/animate.css" rel="stylesheet" />
-        <link href="~/customer/style/hover-min.css" rel="stylesheet" />
-        <link href="~/customer/style/screen.css" rel="stylesheet" />
+    <link href="~/customer/style/styleH.css" rel="stylesheet" />
+    <link href="~/customer/style/animate.css" rel="stylesheet" />
+    <link href="~/customer/style/hover-min.css" rel="stylesheet" />
+    <link href="~/customer/style/screen.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/customer/style/pre-loader.css" />
 
     <script language="javascript">var ROOT = "https://ijc.vn/";
         var ROOT_MOD = "https://ijc.vn/vn/trang-chu";
@@ -66,6 +63,21 @@
     <script type="text/javascript" src="https://ijc.vn/js/custom.js"></script>
     <link rel="stylesheet" href="https://ijc.vn/skins/default/style/custom.css" />
     <script src="~/customer/lib/cart.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var isLoginSuccess = @((ViewBag.customerSession != null).ToString().ToLower());
+            if (isLoginSuccess) {
+                $("#signIn").css("display", "none");
+                $("#signOut").css("display", "block");
+                }
+            else {
+                $("#signIn").css("display", "block");
+                $("#signOut").css("display", "none");
+            }
+
+            });
+    </script>
 </head>
 <body>
     <div id="vnt-wrapper">
@@ -94,7 +106,7 @@
                                         </div>
                                         <div class="logo">
                                             <a asp-area="customer" asp-controller="home" asp-action="index">
-                                                <img src='https://ijc.vn/vnt_upload/weblink/Logo_IJC__Slogan_1.png' alt='' />
+                                                <img width="130" height="60" src='~/customer/img/ptjlogo.svg' alt='' />
                                             </a>
                                             <h1 style="display:none"></h1>
                                         </div>
@@ -126,7 +138,7 @@
                                                     <div class="listNot">
                                                         <ul>
                                                             <li>
-                                                                <a href="https://ijc.vn/vn/member/login.html">Đăng nhập</a>
+                                                                <a asp-area="customer" asp-controller="customer" asp-action="login">Đăng nhập</a>
                                                             </li>
                                                             <li>
                                                                 <a class="v2" href="https://ijc.vn/vn/member/register.html">Tạo tài khoản</a>
@@ -169,6 +181,15 @@
 
                                     </div>
                                     <div class="div right hidden-sm hidden-xs">
+                                        <div class="linkTop" id="sign">
+                                            <a id="signIn" asp-area="customer" asp-controller="customer" asp-action="login">
+                                                <span>Đăng nhập</span>
+                                            </a>
+
+                                            <a id="signOut" asp-area="customer" asp-controller="customer" asp-action="logout">
+                                                <span>Đăng xuất</span>
+                                            </a>
+                                        </div>
                                         <div class="linkTop">
                                             <a href="https://ijc.vn/vn/tin-tuc.html" _self=_self>
                                                 <span>Tin tức</span>
@@ -247,7 +268,7 @@
                                                 if (cate.ParentId == null)
                                                 {
                                                     <li class='menu hassub'>
-                                                        <a href="javascript:void(0)" target="_self">@cate.Name</a>
+                                                        <a asp-area="customer" asp-controller="product" asp-action="index" asp-route-id="@cate.Id">@cate.Name</a>
                                                         <div class="sub_megamenu">
                                                             <div class="wrapping">
                                                                 <div class="grsubmenu">
@@ -257,11 +278,10 @@
                                                                             {
                                                                                 if (subCate.ParentId != null && subCate.ParentId.Equals(cate.Id))
                                                                                 {
-                                                                                        <li style="display:inline;">
-                                                                                            <a>@subCate.Name</a>
-                                                                                        </li>
+                                                                                    <li style="display:inline;">
+                                                                                        <a asp-area="customer" asp-controller="product" asp-action="index" asp-route-id="@subCate.Id">@subCate.Name</a>
+                                                                                    </li>
                                                                                 }
-
                                                                             }
                                                                         </ul>
                                                                     </div>
@@ -272,25 +292,28 @@
 
                                                 }
                                             }
-                                        <li class='menu hassub'>
-                                            <a href="javascript:void(0)" target="_self">Trang sức phong thuỷ</a>
-                                            <div class="sub_megamenu">
-                                                <div class="wrapping">
-                                                    <div class="grsubmenu">
-                                                        <div class="colss">
-                                                            <ul>
-                                                                @foreach (var geo in ViewBag.geos)
-                                                                {
-                                                                    <li style="display:inline;">
-                                                                        <a>@geo.Name</a>
-                                                                    </li>
-                                                                }
-                                                            </ul>
+                                            <li class='menu hassub'>
+                                                <a href="javascript:void(0)" target="_self">Trang sức phong thuỷ</a>
+                                                <div class="sub_megamenu">
+                                                    <div class="wrapping">
+                                                        <div class="grsubmenu">
+                                                            <div class="colss">
+                                                                <ul>
+                                                                    @foreach (var geo in ViewBag.geos)
+                                                                    {
+                                                                        <li style="display:inline;">
+                                                                            <a>@geo.Name</a>
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
+                                            </li>
+                                            <li class="menu">
+                                                <a asp-area="customer" asp-controller="home" asp-action="ordertrack">Đơn hàng của bạn</a>
+                                            </li>
                                         </ul>
 
                                     </div>
@@ -322,7 +345,7 @@
                                                     <div class="listNot">
                                                         <ul>
                                                             <li>
-                                                                <a href="https://ijc.vn/vn/member/login.html">Đăng nhập</a>
+                                                                <a asp-area="customer" asp-controller="customer" asp-action="login">Đăng nhập</a>
                                                             </li>
                                                             <li>
                                                                 <a class="v2" href="https://ijc.vn/vn/member/register.html">Tạo tài khoản</a>
@@ -347,19 +370,76 @@
                                                         <img src="https://ijc.vn/skins/default/images/i-cart.svg" alt="cart" />
                                                     </span>
                                                     <div class="header__cart-list" id="header__cart-list">
-                                                        <!-- Empty cart -->
-                                                        <div class="header__cart-no-cart" style="margin:auto; margin-top:140px;" id="header__cart-no-cart">
-                                                            <img src="~/admin/images/products/bag.png" alt="Empty cart" width="70px;" style="opacity:0.5;" />
-                                                            <p>Giỏ hàng rỗng</p>
+                                                        <!-- Preloader -->
+                                                        <div class="wrapperanimate" id="pre-loader" style="display:none;">
+                                                            <div class="circle"></div>
+                                                            <div class="circle"></div>
+                                                            <div class="circle"></div>
+                                                            <div class="shadow"></div>
+                                                            <div class="shadow"></div>
+                                                            <div class="shadow"></div>
                                                         </div>
+
+                                                        <!-- Empty cart -->
+                                                        @if (ViewBag.cart == null)
+                                                        {
+                                                            <div class="header__cart-no-cart" style="margin:auto; margin-top:140px;" id="header__cart-no-cart">
+                                                                <img src="~/admin/images/products/bag.png" alt="Empty cart" width="70px;" style="opacity:0.5;" />
+                                                                <p>Giỏ hàng rỗng</p>
+                                                            </div>
+                                                        }
                                                         <div class="not-empty-cart" id="not-empty-cart">
                                                             <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
                                                             <hr style="opacity:0.8;margin:0; width:94%; margin-left:10px;" />
                                                             <!-- Not empty cart -->
                                                             <ul class="header__cart-list-item">
                                                                 <!-- <li> tag render vao day -->
+                                                                @if (ViewBag.cart != null)
+                                                                {
+                                                                    @foreach (var item in ViewBag.cart)
+                                                                    {
+                                                                        <li class="header__cart-item">
+                                                                            <div class="cart__over-wrapper" style="display:flex;margin-left:18px;margin-right:20px;">
+                                                                                <span style="position: relative;">
+                                                                                    <label class="checkbox-container">
+                                                                                        @if (item.isCheck)
+                                                                                        {
+                                                                                            <input onclick="checkPaidProduct('@item.product_detail_id');" class="paid-product" data-id="@item.product_detail_id" id="check-@item.product_detail_id" type="checkbox" checked="checked" />
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <input onclick="checkPaidProduct('@item.product_detail_id');" class="paid-product" data-id="@item.product_detail_id" id="check-@item.product_detail_id" type="checkbox" />
+                                                                                        }
+                                                                                        <span class="checkmark" style="position: absolute;top:-9px;"></span>
+                                                                                    </label>
+                                                                                </span>
+                                                                            </div>
+                                                                            <img src="/admin/images/products/@item.image" alt="Watch" class="header__cart-img" />
+                                                                            <div class="header__cart-item-info">
+                                                                                <div class="header__cart-item-head">
+                                                                                    <h5 class="header__cart-item-name">@item.name</h5>
+                                                                                    <div class="header__cart-item-price-wrap">
+                                                                                        <span class="header__cart-item-price">@item.price $</span>
+                                                                                        <span class="header__cart-item-multiply">x</span>
+                                                                                        <span class="header__cart-item-quantity" id="@item.product_detail_id.Trim()" >@item.quantity</span>
+                                                                                        <input type="hidden" value="@(item.price * item.quantity)" id="subTotal-@item.product_detail_id.Trim()" />
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="header__cart-item-body">
+                                                                                    <span class="header__cart-item-description">
+                                                                                        Kích cỡ sản phẩm đã chọn: @item.size
+                                                                                    </span>
+                                                                                    <span class="header__cart-item-remove" onclick="removeItemFromCart(event,'@item.product_detail_id');">Xoá</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                }
                                                             </ul>
                                                         </div>
+
+
                                                         <div class="header__checkout" id="header__checkout">
                                                             <div class="checkout-footer">
                                                                 <div class="checkout-body">
@@ -368,14 +448,14 @@
                                                                     </div>
                                                                     <div class="checkout-total">
                                                                         <span style="color:#333;">Tổng cộng:</span>
-                                                                        <span class="checkout-total-money">26.500.000 đ</span>
+                                                                        <span class="checkout-total-money">@ViewBag.total $</span>
                                                                     </div>
                                                                 </div>
                                                                 <input type="button" style="margin-top:6px;" class="btn btn-checkout" value="XEM GIỎ HÀNG" />
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <span class="numb has" id="cartQuantity">0</span>
+                                                    <span class="numb has" id="cartQuantity">@ViewBag.quantity</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -408,10 +488,6 @@
                         <div class="vhgripfoot">
                             <div class="colb">
                                 <div class="vhltfoot">
-                                    <div class="logofoot">
-                                        <img alt="logo" src="/vnt_upload/File/Image/logo.png" />
-                                    </div>
-
                                     <div class="vhdcfoot">
                                         <div class="dcname">CÔNG TY CỔ PHẦN TRANG SỨC ĐÁ QUÝ INFINITY</div>
 
@@ -421,7 +497,7 @@
                                             <span>Hotline:</span>
                                             1900 636 774 -
                                             <span> Email:</span>
-                                            ijc@ijc.vn
+                                            ptj@ptj.vn
                                         </div>
                                     </div>
                                 </div>
@@ -453,19 +529,19 @@
                                         <div class="botLink">
                                             <ul>
                                                 <li>
-                                                    <a href="https://ijc.vn/vn/gioi-thieu-ijc.html">Thông tin về IJC</a>
+                                                    <a >Thông tin về IJC</a>
                                                 </li>
                                                 <li>
-                                                    <a href="https://ijc.vn/vn/dinh-huong-phat-trien.html">Định hướng phát triển</a>
+                                                    <a >Định hướng phát triển</a>
                                                 </li>
                                                 <li>
-                                                    <a href="https://ijc.vn/vn/cua-hang.html">Hệ thống cửa hàng</a>
+                                                    <a >Hệ thống cửa hàng</a>
                                                 </li>
                                                 <li>
-                                                    <a href="https://ijc.vn/vn/tin-charm-group.html">Tin Charm Group</a>
+                                                    <a >Tin Charm Group</a>
                                                 </li>
                                                 <li>
-                                                    <a href="https://ijc.vn/vn/tin-tuc.html">Tin tức</a>
+                                                    <a >Tin tức</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -845,6 +921,9 @@
     </div>
 </body>
 </html>
-<script>
-    loadCart();
-</script>
+@*<script>loadCart();</script>*@
+
+
+
+@await Component.InvokeAsync("Notyf")
+@await RenderSectionAsync("Scripts", required: false)  

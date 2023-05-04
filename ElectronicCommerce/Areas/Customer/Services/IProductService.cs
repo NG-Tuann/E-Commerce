@@ -33,5 +33,8 @@ namespace ElectronicCommerce.Areas.Customer.Services
 
         // Tim cac review ve san pham theo product_id
         public List<CustomerReview> findAllReviewById(string id);
+
+        // Tim ve danh sach san pham theo category id
+        public List<OverViewProductHomeFlag> findAllProductByCategory(string id);
     }
 }

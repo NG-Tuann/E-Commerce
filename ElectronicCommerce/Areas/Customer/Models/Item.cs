@@ -3,9 +3,11 @@ using ElectronicCommerce.Models;
 
 namespace ElectronicCommerce.Areas.Customer.Models
 {
+    [Serializable]
     public class Item
     {
-        public ProductDetail product { get; set; }
+        public string product_detail_id { get; set; }
+        public string product_id { get; set; }
         public string image { get; set; }
         public int size { get; set; }
         public string name { get; set; }

@@ -84,6 +84,12 @@ namespace ElectronicCommerce.Models
 
                 entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
 
+                entity.Property(e => e.Is_Check)
+                .HasColumnType("bit")
+                .HasColumnName("IS_CHECK");
+
+                entity.Property(e => e.SavePrice).HasColumnName("SAVEPRICE");
+
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Carts)
                     .HasForeignKey(d => d.CustomerId)
@@ -345,6 +351,12 @@ namespace ElectronicCommerce.Models
 
                 entity.Property(e => e.TotalPay).HasColumnName("TOTAL_PAY");
 
+                entity.Property(e => e.PromotionId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("PROMOTION_ID")
+                    .IsFixedLength(true);
+
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.OrderProducts)
                     .HasForeignKey(d => d.CustomerId)
@@ -354,6 +366,14 @@ namespace ElectronicCommerce.Models
                     .WithMany(p => p.OrderProducts)
                     .HasForeignKey(d => d.IdUser)
                     .HasConstraintName("FK_ORDER_PRODUCTS_USERS");
+                entity.Property(e => e.MailNonCus)
+                    .HasMaxLength(100)
+                    .HasColumnName("MAIL_NON_CUS");
+
+                entity.HasOne(d => d.PromotionIdNavigation)
+                  .WithMany(p => p.OrderProducts)
+                  .HasForeignKey(d => d.PromotionId)
+                  .HasConstraintName("FK_PromotionOrder");
             });
 
             modelBuilder.Entity<Product>(entity =>
