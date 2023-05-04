@@ -25,21 +25,18 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         private ICategoryProductService _categoryProductService;
         private IBaseRepository<StoneType> _baseRepoStoneType;
         private IBaseRepository<Geomancy> _baseRepoGeomancy;
-
         private INotyfService _notyfService;
-        private IProductService _productService;
         private IBaseRepository<ProductDetail> _baseRepoProductDetail;
         private IBaseRepository<ProductPrice> _baseRepoProductPrice;
 
 
-        public AdminProductController(IBaseRepository<Product> baseRepoProduct, INotyfService notyfService, IProductService productService,
+        public AdminProductController(IBaseRepository<Product> baseRepoProduct, INotyfService notyfService,
             ICategoryProductService categoryProductService, IBaseRepository<StoneType> baseRepoStoneType,
             IBaseRepository<Geomancy> baseRepoGeomancy, IBaseRepository<CategoryProduct> baseRepoCategory,
              IBaseRepository<ProductDetail> baseRepoProductDetail, IBaseRepository<ProductPrice> baseRepoProductPrice)
         {
             _baseRepoProduct = baseRepoProduct;
             _notyfService = notyfService;
-            _productService=productService;
             _categoryProductService=categoryProductService;
             _baseRepoStoneType = baseRepoStoneType;
             _baseRepoGeomancy = baseRepoGeomancy;
@@ -51,7 +48,6 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [Route("index")]
         [Route("")]
-        [Route("~/")]
         public IActionResult Index()
         {
             var product = _baseRepoProduct.GetAll().ToList();
@@ -59,9 +55,9 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             ViewBag.stoneTypes = _baseRepoStoneType.GetAll().ToList();
             ViewBag.Categories = _baseRepoCategory.GetAll().ToList().Where(i => i.ParentId != null).ToList();
             ViewBag.Geomancies = _baseRepoGeomancy.GetAll().ToList();
-            return View("index",new Product());
+            return View("index");
         }
-
+        // cap nhat bestseller
         [Route("updatebestseller")]
         [HttpPost]
         public IActionResult UpdateBestSeller(string product_id)
@@ -80,7 +76,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             _baseRepoProduct.Save();
             return new JsonResult(new {message="Success"});
         }
-
+        //cajp nhat homeflag
         [Route("updatehomeflag")]
         [HttpPost]
         public IActionResult UpdateHomeFlag(string product_id)
@@ -99,7 +95,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             _baseRepoProduct.Save();
             return new JsonResult(new { message = "Success" });
         }
-
+        // cap nhat trang thai
         [Route("updateactive")]
         [HttpPost]
         public IActionResult UpdateActive(string product_id)
@@ -122,34 +118,42 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         [Route("detail/{id}")]
         public IActionResult Detail(string id)
         {
-            var product = _baseRepoProduct.GetAll().ToList().SingleOrDefault(p => p.Id.Equals(id));
-            ViewBag.products = product; 
-            List<VMProductDetail> productDetail = _productService.findAllProduct().ToList().Where(i => i.ProductId.Equals(id)).ToList();
-            ViewBag.productDetails = productDetail;
-            ViewBag.stoneTypes = _baseRepoStoneType.GetAll().ToList();
-            ViewBag.Categories = _baseRepoCategory.GetAll().ToList().Where(i => i.ParentId != null).ToList();
-            ViewBag.Geomancies = _baseRepoGeomancy.GetAll().ToList();
-            return View("detail");
-        }
+            // hien thi thong tin san pham trong trang detail
+            var commonProductModel = new CommonProductModel();
 
+            var product = _baseRepoProduct.GetAll().ToList().SingleOrDefault(p => p.Id.Equals(id));
+
+
+            commonProductModel.PRODUCT = product;
+            ViewBag.product = product;
+            //lay danh sach chi tiet san pham
+            List<ProductDetail> productDetails = _baseRepoProductDetail.GetAll().ToList().Where(i => i.ProductId.Equals(id)).ToList(); ;
+            ViewBag.productDetails = productDetails;
+            // selection 
+            ViewBag.categories = _baseRepoCategory.GetAll().ToList().Where(i => i.ParentId != null).ToList();
+            ViewBag.geomancies = _baseRepoGeomancy.GetAll().ToList();
+            ViewBag.stoneTypes = _baseRepoStoneType.GetAll().ToList();
+            return View("detail", commonProductModel);
+        }
+        // chinh sua san pham
         [HttpPost]
         [Route("update")]
-        public IActionResult Update(VMProductDetail vM)
+        public IActionResult Update(CommonProductModel commonProduct)
         {
-            var product = _baseRepoProduct.GetAll().ToList().SingleOrDefault(p => p.Id.Equals(vM.ProductId));
-            product.Name = vM.ProductName;
-            product.GeomancyId = vM.GeomancyId;
-            product.MainStoneId = vM.MainStoneId;
-            product.SubStoneId = vM.SubStoneId;
-            product.Color = vM.Color;
-            product.Note = vM.Note;
-            product.CatId = vM.CategoryId;
+            var product = _baseRepoProduct.GetAll().ToList().SingleOrDefault(p => p.Id.Equals(commonProduct.PRODUCT.Id));
+            product.Name = commonProduct.PRODUCT.Name;
+            product.CatId = commonProduct .PRODUCT.CatId;
+            product.MainStoneId = commonProduct.PRODUCT.MainStoneId;
+            product.SubStoneId = commonProduct.PRODUCT.SubStoneId;
+            product.GeomancyId = commonProduct.PRODUCT.GeomancyId;
+            product.Color = commonProduct.PRODUCT.Color;
+            product.Note = commonProduct.PRODUCT.Note;
             _baseRepoProduct.Update(product);
             _baseRepoProduct.Save();
 
-            return RedirectToAction("detail", new { id=product.Id });
+            return RedirectToAction("detail", new { id = product.Id });
         }
-
+        // them chi tiet san pham
         [HttpPost]
         [Route("addProductDetail")]
         public IActionResult addProductDetail(int size, int import_quantity, int base_price, int sale_price, string product_id)
@@ -170,6 +174,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             productDetail.ProductPriceId = productPrice.ProductPriceId;
             productDetail.CreatedDate = DateTime.Now;
             productDetail.Size = size;
+            productDetail.ProductId = product_id;
             _baseRepoProductDetail.Insert(productDetail);
             _baseRepoProductDetail.Save();
 
@@ -182,39 +187,38 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         [Route("importQuantity")]
         public IActionResult importQuantity(string id, int import_quantity)
         {
-            List<VMProductDetail> product = _productService.findAllProduct().ToList().Where(i => i.ProductDetailId.Equals(id)).ToList();
-            string product_id = product[0].ProductId;
             var productDetail = _baseRepoProductDetail.GetAll().ToList().SingleOrDefault(p => p.ProductDetailId.Equals(id));
-            productDetail.ImportQuantity = productDetail.ImportQuantity + import_quantity;
+            productDetail.ImportQuantity = import_quantity + productDetail.ImportQuantity;
             productDetail.Quantity = productDetail.Quantity + import_quantity;
             _baseRepoProductDetail.Update(productDetail);
             _baseRepoProductDetail.Save();
-            return RedirectToAction("detail", new { id = product_id });
+            return RedirectToAction("detail", new { id = productDetail.ProductId });
 
         }
 
         [Route("deleteProductDetail/{id}")]
         public IActionResult deleteProductDetail(string id)
-		{
-            List<VMProductDetail> product = _productService.findAllProduct().ToList().Where(i => i.ProductDetailId.Equals(id)).ToList();
-            string product_id = product[0].ProductId;
-            _baseRepoProductDetail.Delete(id);
+        {
+            var productDetail = _baseRepoProductDetail.GetAll().ToList().SingleOrDefault(p => p.ProductDetailId.Equals(id));
+            _baseRepoProductDetail.Delete(productDetail.ProductDetailId);
             _baseRepoProductDetail.Save();
-            return RedirectToAction("detail", new { id = product_id});
+            return RedirectToAction("detail", new { id = productDetail.ProductId });
 
         }
 
         [Route("add")]
         [HttpPost]
         public IActionResult Add(Product product)
-		{
-            product.Id = "SP"+ PrimarykeyHelper.RandomString(3);
+        {
+            product.Id = "SP" + PrimarykeyHelper.RandomString(3);
             product.BestSeller = false;
             product.Active = false;
             product.HomeFlag = false;
             _baseRepoProduct.Insert(product);
             _baseRepoProduct.Save();
             return RedirectToAction("index");
-		}
+        }
+
+        
     }
 }

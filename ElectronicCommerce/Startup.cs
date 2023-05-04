@@ -39,7 +39,6 @@ namespace ElectronicCommerce
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
-            services.AddScoped<Areas.Admin.Services.IProductService, Areas.Admin.Services.ProductService>();
 
 
 

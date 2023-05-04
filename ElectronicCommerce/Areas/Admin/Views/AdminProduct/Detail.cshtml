@@ -1,38 +1,38 @@
-﻿@model ElectronicCommerce.Areas.Admin.ViewModels.VMProductDetail
+﻿@model ElectronicCommerce.Areas.Admin.ViewModels.CommonProductModel
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 <link rel="stylesheet" href="~/admin/vendors/mdi/css/materialdesignicons.min.css">
 <div class="content-wrapper">
 
-	<h3 style="color: #4B49AC">@ViewBag.products.Id - @ViewBag.products.Name</h3>
-	<p class="card-description">@ViewBag.products.Cat.Name</p>
+	<h3 style="color: #4B49AC">@ViewBag.product.Id - @ViewBag.product.Name</h3>
+	<p class="card-description">@ViewBag.product.Cat.Name</p>
 	<div class="table-responsive">
 		<table>
 			<tr>
 				<th>Loại đá chính: </th>
-				<td style="padding-left:20px;">@ViewBag.products.MainStone.Name</td>
+				<td style="padding-left:20px;">@ViewBag.product.MainStone.Name</td>
 			</tr>
 			<tr>
 				<th>Loại đá phụ: </th>
-				<td style="padding-left:20px;">@ViewBag.products.SubStone.Name</td>
+				<td style="padding-left:20px;">@ViewBag.product.SubStone.Name</td>
 			</tr>
 			<tr>
 				<th>Mệnh: </th>
-				<td style="padding-left:20px;">@ViewBag.products.Geomancy.Name</td>
+				<td style="padding-left:20px;">@ViewBag.product.Geomancy.Name</td>
 			</tr>
 			<tr>
 				<th>Màu sắc: </th>
-				<td style="padding-left:20px;">@ViewBag.products.Color</td>
+				<td style="padding-left:20px;">@ViewBag.product.Color</td>
 			</tr>
 			<tr>
 				<th>Note: </th>
-				<td style="padding-left:20px;">@ViewBag.products.Note</td>
+				<td style="padding-left:20px;">@ViewBag.product.Note</td>
 			</tr>
 		</table>
 	</div>
 	<br />
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateProduct" asp-area="admin" asp-controller="product" asp-action="update">Chỉnh sửa</button>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateProduct" asp-area="admin" asp-controller="product" asp-action="update" >Chỉnh sửa</button>
 	<br />
 	<!-- The Modal -->
 	<form method="post" asp-area="admin" asp-controller="product" asp-action="update">
@@ -50,9 +50,9 @@
 				<div class="modal-body">
 
 					<label >Tên sản phẩm</label>
-					<input type="text" class="form-control" asp-for=ProductName placeholder="Nhập tên sản phẩm">
+					<input type="text" class="form-control" placeholder="Nhập tên sản phẩm" asp-for="PRODUCT.Name">
 					<label for="product_category">Danh mục sản phẩm</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=CategoryId>
+					<select class="js-example-basic-single form-control select2-single" asp-for="PRODUCT.CatId">
 						<option selected value="">Chọn danh mục</option>
 						@foreach (var category in ViewBag.categories)
 						{
@@ -60,7 +60,7 @@
 						}
 					</select>
 					<label for="product_main_stone">Loại đá chính</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=MainStoneId>
+					<select class="js-example-basic-single form-control select2-single" asp-for="PRODUCT.MainStoneId">
 						<option selected value="">Chọn loại đá chính</option>
 						@foreach (var stoneType in ViewBag.stoneTypes)
 						{
@@ -68,7 +68,7 @@
 						}
 					</select>
 					<label for="product_main_stone">Loại đá phụ</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=SubStoneId>
+					<select class="js-example-basic-single form-control select2-single" asp-for="PRODUCT.SubStoneId">
 						<option selected value="">Chọn loại đá phụ</option>
 						@foreach (var stoneType in ViewBag.stoneTypes)
 						{
@@ -76,7 +76,7 @@
 						}
 					</select>
 					<label for="product_main_stone">Loại mệnh</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=GeomancyId>
+					<select class="js-example-basic-single form-control select2-single" asp-for="PRODUCT.GeomancyId">
 						<option selected value="">Chọn loại đá chính</option>
 						@foreach (var geomancy in ViewBag.geomancies)
 						{
@@ -84,11 +84,11 @@
 						}
 					</select>
 					<label >Màu sắc</label>
-					<input type="text" class="form-control" asp-for=Color placeholder="Nhập màu sản phẩm">
+					<input type="text" class="form-control" placeholder="Nhập màu sản phẩm" asp-for="PRODUCT.Color">
 					<label >Note</label>
-					<input type="text" class="form-control" asp-for=Note placeholder="Ghi chú">
+					<input type="text" class="form-control" placeholder="Ghi chú" asp-for="PRODUCT.Note">
 
-					 <input type="hidden" asp-for="ProductId" />
+					 <input type="hidden" asp-for="PRODUCT.Id"/>
 			</div>
 
 			<!-- Modal footer -->
@@ -134,7 +134,7 @@
 					<input type="number" class="form-control" name="base_price" placeholder="Nhập giá nhập">
 					<label>Giá bán</label>
 					<input type="number" class="form-control" name="sale_price" placeholder="Nhập giá bán">
-					 <input type="hidden" name="product_id" value="@ViewBag.products.Id" />
+					 <input type="hidden" name="product_id" value="@ViewBag.product.Id"/>
 
 					
 			</div>
@@ -250,13 +250,13 @@
 							</td>
 							<td>@item.Quantity</td>
 							<td>
-								@item.BasePrice
+								@item.ProductPrice.BasePrice
 							</td>
 							<td>
-								@item.SalePrice
+								@item.ProductPrice.SalePrice
 							</td>
 							<td>
-								@item.CreatedDatePrice
+								@item.CreatedDate
 							</td>
 							<td><a asp-area="admin" asp-controller="product" asp-action="deleteProductDetail" asp-route-id="@item.ProductDetailId"><i class="mdi mdi-delete" onclick="alert('Xóa sản phẩm này?')"></i></a></td>
 							
@@ -268,6 +268,7 @@
 	</div>
 </div>
 </div>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

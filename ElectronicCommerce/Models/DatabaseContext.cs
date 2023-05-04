@@ -39,16 +39,11 @@ namespace ElectronicCommerce.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<RolesModel> RolesModels { get; set; }
         public virtual DbSet<OverViewProductHomeFlag> OverViewProductHomeFlags { get; set; }
-        public virtual DbSet<VMProductDetail> VMProductDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<VMProductDetail>(entity =>
-            {
-                entity.HasNoKey();
-            });
             modelBuilder.Entity<OverViewProductHomeFlag>(entity =>
             {
                 entity.HasNoKey();
@@ -589,6 +584,8 @@ namespace ElectronicCommerce.Models
                 entity.Property(e => e.StartDate)
                     .HasColumnType("date")
                     .HasColumnName("START_DATE");
+
+                entity.Property(e => e.Activate).HasColumnName("ACTIVATE");
             });
 
             modelBuilder.Entity<PromotionDetail>(entity =>
@@ -625,6 +622,12 @@ namespace ElectronicCommerce.Models
                     .WithMany(p => p.PromotionDetails)
                     .HasForeignKey(d => d.PromotionId)
                     .HasConstraintName("FK_PROMOTION_DETAIL_PROMOTIONS");
+
+                entity.Property(e => e.CustomerTypeId)
+                   .HasMaxLength(10)
+                   .IsUnicode(false)
+                   .HasColumnName("CUS_TYPE_ID")
+                   .IsFixedLength(true);
             });
 
             modelBuilder.Entity<Review>(entity =>
