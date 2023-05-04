@@ -45,6 +45,7 @@ namespace ElectronicCommerce
             services.AddScoped<ICategoryProductService, CategoryProductService>();
             services.AddScoped<IOrderProductService, OrderProductService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICategoryProductService, CategoryProductService>();
 
             // Them xac thuc google
             services.AddAuthentication(options =>
@@ -61,7 +62,6 @@ namespace ElectronicCommerce
                 });
 
             // INJECT SERVICE CUSTOMER
-            services.AddScoped<IProductService, ProductService>();
 
             var connectionString = _configuration["ConnectionStrings:DefaultConnection"].ToString();
             services.AddDbContext<DatabaseContext>(option => option.UseLazyLoadingProxies().UseSqlServer(connectionString));

@@ -604,6 +604,8 @@ namespace ElectronicCommerce.Models
                 entity.Property(e => e.StartDate)
                     .HasColumnType("date")
                     .HasColumnName("START_DATE");
+
+                entity.Property(e => e.Activate).HasColumnName("ACTIVATE");
             });
 
             modelBuilder.Entity<PromotionDetail>(entity =>
@@ -640,6 +642,12 @@ namespace ElectronicCommerce.Models
                     .WithMany(p => p.PromotionDetails)
                     .HasForeignKey(d => d.PromotionId)
                     .HasConstraintName("FK_PROMOTION_DETAIL_PROMOTIONS");
+
+                entity.Property(e => e.CustomerTypeId)
+                   .HasMaxLength(10)
+                   .IsUnicode(false)
+                   .HasColumnName("CUS_TYPE_ID")
+                   .IsFixedLength(true);
             });
 
             modelBuilder.Entity<Review>(entity =>

@@ -19,10 +19,11 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         private INotyfService _notyfService;
         private ICategoryProductService _categoryProductService;
 
-        public AdminCategoryProductController(IBaseRepository<CategoryProduct> baseRepoCategoryProduct, ICategoryProductService categoryProductService)
+        public AdminCategoryProductController(IBaseRepository<CategoryProduct> baseRepoCategoryProduct, ICategoryProductService categoryProductService,INotyfService notyfService)
         {
             _baseRepoCategoryProduct = baseRepoCategoryProduct;
             _categoryProductService = categoryProductService;
+            _notyfService = notyfService;
         }
 
 
@@ -68,13 +69,13 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
                 _baseRepoCategoryProduct.Delete(id);
                 _baseRepoCategoryProduct.Save();
                 _notyfService.Success("Success", 3);
-                return RedirectToAction("add");
+                return RedirectToAction("index");
 
             }
             catch (Exception e)
             {
                 _notyfService.Error("Fail", 3);
-                return RedirectToAction("add");
+                return RedirectToAction("index");
             }
         }
     }
