@@ -74,8 +74,7 @@ header {
 
 .cart__container {
     background-color: #FFFFFF;
-    height: 100%;
-    min-height: 1200px;
+    height: 1000px;
 }
 
 .cart__wrapper {
@@ -445,7 +444,7 @@ header {
 
 .booking__summary-container {
     width: 355px;
-    height: 778px;
+    height: 620px;
     padding-left: 40px;
     padding-right: 10px;
     margin-bottom: 30px;
@@ -511,8 +510,10 @@ header {
 
 .promotion-txb {
     background-color: #FFFFFF;
-    width: 195px;
-    height: 28px;
+    width: 100%;
+    height: 40px;
+    font-size:24px;
+    text-align:center;
     outline: none;
     padding: 0 12px;
     border: 1px solid #000000;
@@ -531,15 +532,20 @@ header {
 .btn-apply-promo {
     width: 80px;
     height: 28px;
-    padding: 0 10px;
     border: 1px solid #000000;
     background-color:#FFFFFF;
-    margin-top:15px;
+    float:right;
+}
+
+.btn-apply-promo:hover {
+    background-color:#000000;
+    color:#FFFFFF;
+    cursor:pointer;
 }
 
 .submit-area {
-    margin-top:30px;
-    width:305px;
+    margin-top: 30px;
+    width: 305px;
 }
 
     .submit-area .btn-booking {
@@ -554,8 +560,10 @@ header {
         box-sizing:unset;
     }
 
+.btn-booking:hover {
+    cursor:pointer;
+}
 /* Overview cart summary */
-
 .overview_cart__summary-wrapper {
     width: 753px;
     height: 356px;
@@ -699,3 +707,245 @@ header {
     .container input:checked ~ .checkmark:after {
         display: block;
     }
+
+.shipping-information__wrapper {
+    height:80px;
+    display:block;
+    text-align:center;
+}
+
+.btn-confirm-information {
+    width: 220px;
+    height:52px;
+    background-color: #000000;
+    outline: none;
+    color: #FFFFFF;
+    font-size:20px;
+    font-weight:bolder;
+    border:1px solid #000000;
+    box-sizing:unset;
+    padding:0;
+
+}
+
+/* Style card information shipping */
+.letter-information-wrapper {
+    width: 325px;
+    height: 103px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid #E5E5E5;
+    position: relative;
+    border-left: none;
+    padding: 25px 20px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size:12px;
+}
+
+    .letter-information-wrapper:before {
+        position: absolute;
+        top: 0px;
+        left: 0;
+        content: '';
+        width: 4px;
+        height: 100%;
+        background-image: url(https://sheinsz.ltwebstatic.com/she_dist/images/border-e8fd9a0d48.png);
+    }
+
+.name-and-phone {
+    font-size: 13px;
+}
+
+    .name-and-phone span {
+        margin-right: 6px;
+    }
+
+.letter-information-wrapper div {
+    margin-bottom: 16px;
+}
+
+.default-address {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .default-address div {
+        background-color: #F5FCFB;
+        color: #1A8054;
+        width: 100px;
+        height: 14px;
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+
+    .default-address span {
+        font-size: 13px;
+        color: #2C68A8;
+    }
+
+    /* Payment modal css */
+
+.hide {
+    display: none;
+}
+
+.show-modal {
+    display:flex;
+}
+
+
+@keyframes growth {
+    from {
+        transform: scale(var(--growth-from));
+    }
+
+    to {
+        transform: scale(var(--growth-to));
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: fadeIn linear 0.1s;
+    z-index:999999;
+}
+
+.modal__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal__body {
+    --growth-from: 0.7;
+    --growth-to: 0.1;
+    margin: auto;
+    position: relative;
+    animation: growth linear 0.1s;
+}
+
+.modal__close {
+    position: absolute;
+    right: 20px;
+    top: 14px;
+}
+
+    .modal__close:hover {
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+.choose_payment-popup {
+    width: 760px;
+    background-color: #fff;
+    border-radius: 5px;
+    /* Neu thang con vuot ra ngoai gioi han thang cha thi an di */
+    /* Xu ly mat bo goc o left and right bottom coner */
+}
+
+.choose-payment__header {
+    background-color: #000000;
+    height: 50px;
+    display: flex;
+    color:#FFFFFF;
+}
+
+.choose-payment__heading {
+    margin: auto;
+}
+
+.choose-payment__body {
+    padding: 0px 22px;
+    display: flex;
+    height:220px;
+}
+
+/* Paypal button css */
+.choose-payment-wrapper {
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+}
+.btn-paypal-gateway {
+    outline: 0;
+    padding: 0;
+    height: 60px;
+    width: 420px;
+    margin-bottom: 30px;
+    text-align:center;
+    border: 1px solid #E5E5E5;
+    background-color:#FFFFFF;
+    font-size:22px;
+    font-weight:bolder;
+    color:#333;
+}
+
+    .btn-paypal-gateway:hover {
+        color:#FFFFFF;
+        background-color:#000000;
+    }
+
+.cod-area {
+    text-align: center;
+    line-height: 2.5;
+    height: 60px;
+    width: 420px;
+    font-size: 22px;
+    font-weight: 800;
+    background-color: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    outline: none;
+    color: #333;
+}
+
+    .cod-area:hover {
+        color: #FFFFFF;
+        background-color: #000000;
+    }
+
+.customer__promotion-wrapper {
+    width:100%;
+    max-height:270px;
+    overflow-y:scroll;
+    margin:20px 0px;
+}
+
+.customer__promotion-item {
+    padding: 10px 20px;
+    border: 1px solid #E5E5E5;
+    height: 70px;
+    margin-bottom: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.promotion__header-title {
+    display:flex;
+    justify-content:space-between;
+}
+
+.promotion-info {
+    padding-top:4px;
+    font-size:13px;
+}
+
+.promotion-info-detail {
+    font-size: 13px;
+}

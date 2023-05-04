@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<!-- Styles -->
+<link rel="stylesheet" href="~/customer/style/login.css" />
+<div id="vnt-content">
+    <div id="vnt-product-c2">
+        <div class="boxproduct">
+            <div class="vhpadding-lg-top-40 vhpadding-lg-bottom-50" style="min-height:260px;">
+                <div class="vhformpt">
+                    <div class="wrapper">
+                        <div class="login">
+                            <div class="login__left-bar">
+                                <h3 class="login__title">Đăng nhập</h3>
+                                <form class="login__form" action="/" method="post">
+                                    <div class="login__text-field">
+                                        <label for="phoneNumber">Số điện thoại di động hoặc địa chỉ email:</label>
+                                        <input id="phoneNumber" type="text" placeholder="" />
+                                    </div>
+                                    <div class="login__text-field mt-20px">
+                                        <label for="password">Mật khẩu:</label>
+                                        <input id="password" type="password" placeholder="" />
+                                    </div>
+                                </form>
+                                <a class="login__button" href="/">
+                                    <button class="btnn btn-login">
+                                        <span>Đăng nhập</span>
+                                    </button>
+                                </a>
+                                <a href="/" class="login__btn-forgot-password">Quên mật khẩu?</a>
+                                <div class="login__or">
+                                    <span>Hoặc</span>
+                                </div>
+                                <a asp-area="customer" asp-controller="customer" asp-action="GoogleLogin">
+                                    <button class="btn-social">
+                                        <i class="google-icon"></i>
+                                        Đăng nhập bằng Google
+                                    </button>
+                                </a>
+                                <a href="/">
+                                    <button class="btn-social">
+                                        <i class="facebook-icon"></i>
+                                        Đăng nhập bằng Facebook
+                                    </button>
+                                </a>
+                                <p class="login__policy">
+                                    Bằng cách đăng nhập vào tài khoản của bạn, bạn đồng ý với
+                                    <a href="/" class="">Chính sách bảo mật &amp; Cookie</a> và
+                                    <a href="/" class="">Điều khoản và Điều kiện</a>
+                                    của chúng tôi.
+                                </p>
+                                <div class="login__discount">
+                                    <p class="login__discount-highlight">ĐĂNG NHẬP ĐỂ NHẬN THÊM ƯU ĐÃI</p>
+                                    <p>
+                                        xác nhận và kiếm thêm
+                                        <span class="login__discount-highlight">100</span>
+                                        điểm
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="login__middle-bar">
+                                <div class="middle-bar__sep"></div>
+                            </div>
+                            <div class="login__right-bar">
+                                <h3 class="login__title">Mới Đến PTJ</h3>
+                                <form class="login__form" action="/" method="post">
+                                    <div class="login__text-field">
+                                        <label for="phoneNumberJustComing">Số điện thoại di động hoặc địa chỉ email:</label>
+                                        <input id="phoneNumberJustComing" type="text" placeholder="" />
+                                    </div>
+                                </form>
+                                <div class="login__favorite mt-20px">
+                                    <a class="login__button" href="/">
+                                        <button class="btnn btn-continue">
+                                            <span>Tiếp tục</span>
+                                        </button>
+                                    </a>
+                                    <div class="login__first-discount">
+                                        <p>GIẢM THÊM 15% CHO ĐƠN HÀNG ĐẦU TIÊN</p>
+                                    </div>
+                                    <div class="login__why-register">
+                                        <a href="/">Tại sao đăng ký?</P>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ElectronicCommerce.Areas.Customer.Models;
 using ElectronicCommerce.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElectronicCommerce.Areas.Customer.Services
@@ -176,6 +177,20 @@ namespace ElectronicCommerce.Areas.Customer.Services
             }
 
             return customerReviews;
+        }
+
+        public List<OverViewProductHomeFlag> findAllProductByCategory(string id)
+        {
+            var param = new SqlParameter[] {
+                        new SqlParameter() {
+                            ParameterName = "@cat_id",
+                            SqlDbType =  System.Data.SqlDbType.Char,
+                            Size = 10,
+                            Direction = System.Data.ParameterDirection.Input,
+                            Value = id
+                        }};
+            var result = _db.OverViewProductHomeFlags.FromSqlRaw("[dbo].[sp_findall_product_by_cat_id_with_min_price] @cat_id", param).ToList();
+            return result;
         }
     }
 }

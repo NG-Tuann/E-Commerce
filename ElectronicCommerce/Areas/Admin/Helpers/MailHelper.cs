@@ -33,6 +33,8 @@ namespace ElectronicCommerce.Areas.Admin.Helpers
                     EnableSsl = enable,
                 };
                 var mailMessage = new MailMessage(from, to, subject, content);
+                mailMessage.Body = content;
+                mailMessage.Subject = subject;
                 mailMessage.IsBodyHtml = true;
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = new NetworkCredential(username, "wxwuuxbvvgjzdhsq");

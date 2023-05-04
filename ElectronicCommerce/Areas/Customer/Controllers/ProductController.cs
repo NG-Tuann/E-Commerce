@@ -22,20 +22,26 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         private IBaseRepository<Geomancy> _baseRepoGeomancy;
         private IBaseRepository<ProductDiscount> _baseProductDiscount;
         private IProductService _productService;
+        private ICustomerService _customerService;
 
         public ProductController(IBaseRepository<CategoryProduct> baseRepoCate, IBaseRepository<Geomancy> baseRepoGeomancy
-            , IProductService productService, IBaseRepository<ProductDiscount> baseProductDiscount)
+            , IProductService productService, IBaseRepository<ProductDiscount> baseProductDiscount, ICustomerService customerService)
         {
             _baseRepoCate = baseRepoCate;
             _baseRepoGeomancy = baseRepoGeomancy;
             _productService = productService;
             _baseProductDiscount = baseProductDiscount;
+            _customerService = customerService;
         }
-        [Route("index")]
+        [Route("index/{id}")]
         [Route("")]
         // GET: /<controller>/
-        public IActionResult Index()
+        public IActionResult Index(string id)
         {
+            ViewBag.cates = _baseRepoCate.GetAll().ToList();
+            ViewBag.geos = _baseRepoGeomancy.GetAll().ToList();
+
+            ViewBag.pros = _productService.findAllProductByCategory(id);
             return View();
         }
 
@@ -109,7 +115,17 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         [Route("findProductById")]
         public IActionResult findProductById(string product_id)
         {
-            return new JsonResult(_productService.findProductById(product_id));
+            var product = _productService.findProductById(product_id);
+
+            if(!(product.NAME.StartsWith("Nhẫn")) && !(product.NAME.StartsWith("Vòng")))
+            {
+                return new JsonResult("free-size");
+            }
+            else
+            {
+                return new JsonResult(product);
+            }
+
         }
 
         [HttpPost]
@@ -126,25 +142,11 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             return new JsonResult(_productService.findPriceBySizeAndId(size, product_id));
         }
 
-        [HttpGet]
-        [Route("findAllCart")]
-        public IActionResult findAllCart()
-        {
-            if (HttpContext.Session.GetString("cart") == null)
-            {
-                return new JsonResult(null);
-            }
-            else
-            {
-                var cartSession = JsonConvert.DeserializeObject<List<Item>>(HttpContext.Session.GetString("cart"));
-                return new JsonResult(cartSession);
-            }
-        }
-
         [HttpPost]
         [Route("AddToCart")]
         public IActionResult AddToCart(int size, string product_id)
         {
+            // Mai lam task them vao gio hang khi khach hang da dang nhap
             ProductDetail product_detail = _productService.findProductDetailByProductIdAndSize(size, product_id);
 
             var isDiscount = _baseProductDiscount.GetAll().ToList().SingleOrDefault(i => i.ProductId.Equals(product_detail.Product.Id));
@@ -168,14 +170,34 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 savePrice = (int)(product_detail.ProductPrice.SalePrice * disPrice1);
                 actualPrice = (int)(product_detail.ProductPrice.SalePrice * disPrice2);
             }
+            // Kiem tra customer session
+            // Kiem tra neu khach hang dang dang nhap vao thuc hien them vao gio hang
+            // Kiem tra neu khach hang thanh vien thi them vao cart trong db
+            if (HttpContext.Session.GetString("customer") != null)
+            {
+                // Doc session cua customer
+                var customer = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
 
-            // Tao session
+                int indexCartDB = ExistsInCartDb(product_detail.ProductDetailId, customer.Id);
+
+                if (indexCartDB == -1)
+                {
+                    _customerService.addToCartInDb(savePrice, true, product_detail.ProductDetailId, customer, 1);
+                }
+                else
+                {
+                    _customerService.updateQuantityCartInDb(indexCartDB,"plus");
+                }
+            }
+            // Tien hanh xu ly cart session nhu bth
+            // Tao session cart
             if (HttpContext.Session.GetString("cart") == null)
             {
                 var cart = new List<Item>();
-                cart.Add(new Item
+                var item = new Item
                 {
-                    product = product_detail,
+                    product_detail_id = product_detail.ProductDetailId,
+                    product_id = product_id,
                     image = product_detail.Product.Image,
                     size = product_detail.Size,
                     name = product_detail.Product.Name,
@@ -183,10 +205,22 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                     price = actualPrice,
                     isCheck = true,
                     savePrice = savePrice
-                }) ;
+                };
+                cart.Add(item);
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
-                var cartSession = JsonConvert.DeserializeObject<List<Item>>(HttpContext.Session.GetString("cart"));
-                return new JsonResult(cartSession);
+
+                var addItem = new Item();
+                addItem.product_detail_id = product_detail.ProductDetailId;
+                addItem.product_id = product_id;
+                addItem.image = product_detail.Product.Image;
+                addItem.size = product_detail.Size;
+                addItem.name = product_detail.Product.Name;
+                addItem.quantity = 1;
+                addItem.price = actualPrice;
+                addItem.isCheck = true;
+                addItem.savePrice = savePrice;
+
+                return new JsonResult(addItem);
             }
             else
             {
@@ -198,7 +232,8 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 {
                     cart.Add(new Item
                     {
-                        product = product_detail,
+                        product_detail_id = product_detail.ProductDetailId,
+                        product_id = product_id,
                         image = product_detail.Product.Image,
                         size = product_detail.Size,
                         name = product_detail.Product.Name,
@@ -208,20 +243,31 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                         savePrice = savePrice
                     });
                     HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
+
+                    var addItem = new Item();
+                    addItem.product_detail_id = product_detail.ProductDetailId;
+                    addItem.product_id = product_id;
+                    addItem.image = product_detail.Product.Image;
+                    addItem.size = product_detail.Size;
+                    addItem.name = product_detail.Product.Name;
+                    addItem.quantity = 1;
+                    addItem.price = actualPrice;
+                    addItem.isCheck = true;
+                    addItem.savePrice = savePrice;
+
+                    return new JsonResult(addItem);
                 }
                 else
                 {
                     if(cart[index].quantity == product_detail.Quantity)
                     {
-                        return new JsonResult(new { message = "Outstock" });
+                        return new JsonResult("Outstock");
                     }
                     cart[index].quantity++;
                     cart[index].savePrice += savePrice;
                     HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
+                    return new JsonResult("Exists "+ product_detail.ProductDetailId);
                 }
-
-                var cartSession = JsonConvert.DeserializeObject<List<Item>>(HttpContext.Session.GetString("cart"));
-                return new JsonResult(cartSession);
             }
         }
 
@@ -229,11 +275,19 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult removeFromCart(string product_detail_id)
         {
+            // KIEM TRA KHACH HANG
+            // Kiem tra khach hang thanh vien co dang nhap hay ko
+            if(HttpContext.Session.GetString("customer")!=null)
+            {
+                var customer = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
+                _customerService.removeItemFromCartInDb(product_detail_id, customer.Id);
+            }
+
             var cart = JsonConvert.DeserializeObject<List<Item>>(HttpContext.Session.GetString("cart"));
             int index = Exists(product_detail_id, cart);
             cart.RemoveAt(index);
 
-            if(cart.Count == 0)
+            if(cart.Count ==0)
             {
                 HttpContext.Session.Remove("cart");
             }
@@ -242,6 +296,8 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
             }
 
+            CartController.promotionCode = null;
+
             return new JsonResult(new { message = "success" });
         }
 
@@ -249,12 +305,17 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         {
             for (int i = 0; i < cart.Count; i++)
             {
-                if (cart[i].product.ProductDetailId == id)
+                if (cart[i].product_detail_id == id)
                 {
                     return i;
                 }
             }
             return -1;
+        }
+
+        private int ExistsInCartDb(string id, string customerId)
+        {
+            return _customerService.checkExistsInDb(id, customerId);
         }
 
         private bool isViewed(string id, List<OverViewProduct> viewedProducts)

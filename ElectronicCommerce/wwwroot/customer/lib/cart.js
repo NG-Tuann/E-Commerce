@@ -1,89 +1,4 @@
 ﻿// Show modal choose finger size
-function loadCart() {
-    console.log('star loadCart');
-    $.ajax({
-        type: 'GET',
-        url: '/customer/product/findAllCart',
-        success: function (cart) {
-            console.log(cart);
-            if (cart != null) {
-                console.log("Cart length: "+cart.length);
-                var result = ``;
-                var total = 0;
-
-                for (let i = 0; i < cart.length; i++) {
-                    var priceFormatted = cart[i].price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
-                    if (cart[i].isCheck) {
-                        total += cart[i].price * cart[i].quantity;
-                    }
-                    result += `<li class="header__cart-item">
-                            <div class="cart__over-wrapper" style="display:flex;margin-left:18px;margin-right:20px;">
-                                <span style="position: relative;">
-                                    <label class="checkbox-container">
-                                        <input onclick="checkPaidProduct('${cart[i].product.productDetailId}');" class="paid-product" data-id="${cart[i].product.productDetailId}" id="check-${cart[i].product.productDetailId}" type="checkbox" ${cart[i].isCheck ? `checked="checked"` : ``}>
-                                        <span class="checkmark" style="position: absolute;top:-9px;"></span>
-                                    </label>
-                                </span>
-                            </div>
-                   <img src="/admin/images/products/${cart[i].image}" alt="Watch" class="header__cart-img" />
-                             <div class="header__cart-item-info">
-                             <div class="header__cart-item-head">
-                             <h5 class="header__cart-item-name">${cart[i].name}</h5>
-                                                                            <div class="header__cart-item-price-wrap">
-                                                                                <span class="header__cart-item-price">${priceFormatted}đ</span>
-                                                                                <span class="header__cart-item-multiply">x</span>
-                                                                                <span class="header__cart-item-quantity">${cart[i].quantity}</span>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="header__cart-item-body">
-                                                                            <span class="header__cart-item-description">
-                                                                                Kích cỡ sản phẩm đã chọn: ${cart[i].size}
-                                                                            </span>
-                                                                            <span class="header__cart-item-remove" onclick="removeItemFromCart(event,'${cart[i].product.productDetailId}');">Xoá</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>`
-                }
-
-                $('.header__cart-list-item').html(result);
-
-                // Tong tien gio hang
-
-                var totalFormatted = total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })
-                $('.checkout-total-money').text(totalFormatted);
-
-                // So luong san pham trong gio hang
-                $('#cartQuantity').text(cart.length);
-
-                var noCart = document.getElementById("header__cart-no-cart");
-                noCart.style.display = "none";
-
-                var checkOut = document.getElementById("header__checkout");
-                checkOut.style.display = "block";
-
-                var notEmptyCart = document.getElementById("not-empty-cart");
-                notEmptyCart.style.display = "block";
-
-            } else {
-                var noCart = document.getElementById("header__cart-no-cart");
-                noCart.style.display = "block";
-
-                var notEmptyCart = document.getElementById("not-empty-cart");
-                notEmptyCart.style.display = "none";
-
-                var checkOut = document.getElementById("header__checkout");
-                checkOut.style.display = "none";
-
-                // So luong san pham trong gio hang bang 0
-                $('#cartQuantity').text(0);
-            }
-        }
-    });
-
-    console.log('End loadCart');
-}
-
 function removeItemFromCart(e, id) {
     e.preventDefault();
     console.log("product detail id: " + id);
@@ -91,6 +6,8 @@ function removeItemFromCart(e, id) {
 }
 
 function removeItem(id) {
+    var sendDate = (new Date()).getTime();
+    $('#pre-loader').show();
     $.ajax({
         type: 'POST',
         data: {
@@ -98,8 +15,13 @@ function removeItem(id) {
         },
         url: '/customer/product/removeFromCart',
         success: function (result) {
-            console.log(result);
-            loadCart();
+            var receiveDate = (new Date()).getTime();
+            var responseTimeMs = receiveDate - sendDate;
+            
+            setTimeout(function () {
+                $('#pre-loader').hide();
+                $('#' + id.trim()).closest('li').remove();
+            }, responseTimeMs);
         }
     });
 }
@@ -121,6 +43,12 @@ function showModalWristSize() {
 
 function confirmAddToCart(id, size) {
     // Goi ajax nhan ve cart session
+    showCartDisplay();
+    $('#pre-loader').show();
+
+    $('.header__cart-no-cart').css("display", "none");
+
+    var sendDate = (new Date()).getTime();
     $.ajax({
         type: 'POST',
         async: false,
@@ -129,24 +57,87 @@ function confirmAddToCart(id, size) {
             product_id: id
         },
         url: '/customer/product/AddToCart',
-        success: function (cart) {
-            if (cart.message == 'Outstock') {
+        success: function (result) {
+            console.log(result);
+            var receiveDate = (new Date()).getTime();
+            var responseTimeMs = receiveDate - sendDate;
+
+            if (result == 'Outstock') {
                 alert("Out of stock !");
-                console.log("out of stock");
+                setTimeout(function () {
+                    $('#pre-loader').hide();
+                }, responseTimeMs);
+            }
+            else if (typeof result == "string" && result.indexOf('Exists') > -1) {
+                setTimeout(function () {
+                    $('#pre-loader').hide();
+
+                    const data = result.split(" ");
+
+                    let p_detail_id = data[1];
+
+                    console.log("abc: " + p_detail_id);
+                    console.log("abc: " + $('#' + p_detail_id.trim()).text());
+                    var numb = parseInt($('#' + p_detail_id.trim()).text());
+                    numb = numb + 1;
+
+                    $('#' + p_detail_id.trim()).text(numb);
+
+
+                },responseTimeMs);
             }
             else {
-                console.log(cart);
-                loadCart();
+
+                // Ok
+
+                console.log("add new item");
+                setTimeout(function () {
+                    $('#pre-loader').hide();
+
+                    var numb = parseInt($('#cartQuantity').text());
+
+                    numb = numb + 1;
+
+                    $('#cartQuantity').text(numb);
+
+                    // Append san pham vao gio hang
+
+                    var newItem =
+                        `<li class="header__cart-item">
+                            <div class="cart__over-wrapper" style="display:flex;margin-left:18px;margin-right:20px;">
+                                <span style="position: relative;">
+                                    <label class="checkbox-container">
+                                        <input onclick="checkPaidProduct('${result.product_detail_id}');" class="paid-product" data-id="${result.product_detail_id}" id="check-${result.product_detail_id}" type="checkbox" ${result.isCheck ? `checked="checked"`:``} />
+                                        <span class="checkmark" style="position: absolute;top:-9px;"></span>
+                                    </label>
+                                </span>
+                            </div>
+                            <img src="/admin/images/products/${result.image}" alt="Watch" class="header__cart-img" />
+                            <div class="header__cart-item-info">
+                                <div class="header__cart-item-head">
+                                    <h5 class="header__cart-item-name">${result.name}</h5>
+                                    <div class="header__cart-item-price-wrap">
+                                        <span class="header__cart-item-price">${result.price} đ</span>
+                                        <span class="header__cart-item-multiply">x</span>
+                                        <span class="header__cart-item-quantity" id="${result.product_detail_id.trim()}" >${result.quantity}</span>
+                                        <input type="hidden" value="${result.price * result.quantity}" id="subTotal-${result.product_detail_id.trim()}" />
+                                    </div>
+                                </div>
+
+                                <div class="header__cart-item-body">
+                                    <span class="header__cart-item-description">
+                                        Kích cỡ sản phẩm đã chọn: ${result.size}
+                                                                                    </span>
+                                    <span class="header__cart-item-remove" onclick="removeItemFromCart(event,'${result.product_detail_id}');">Xoá</span>
+                                </div>
+                            </div>
+                        </li>`;
+                    $('.header__cart-list-item').prepend(newItem);
+                }, responseTimeMs);
+                setTimeout(timeOutCartDisplay, 5000);
             }
         }
     });
-
-    // Hien thi cart trong vong 3s
-
-    showCartDisplay();
-    setTimeout(timeOutCartDisplay, 3000);
-    console.log(id);
-    console.log(size);
 }
 
 
@@ -168,34 +159,32 @@ $(document).ready(function () {
                 product_id: productId
             },
             url: '/customer/product/findProductById',
-            success: function (product) {
-                if (product.name.startsWith("Nhẫn") || product.name.startsWith("Vòng")) {
+            success: function (result) {
+                console.log(result);
 
-                    if (product.name.startsWith("Nhẫn")) {
+                if (result == 'free-size') {
+                    console.log("Day khong can chon size");
+                    confirmAddToCart(productId, 0);
+                }
+                else {
+                    if (result.name.startsWith("Nhẫn")) {
                         console.log("Show nhan size guide");
                         showModalFingerSize();
                     }
-                    else if (product.name.startsWith("Vòng")) {
+                    else if (result.name.startsWith("Vòng")) {
                         console.log("Show vong size guide");
                         showModalWristSize();
                     }
                     // Ajax hien thi san pham tuong ung vao modal
 
-                    console.log(product);
-                    $('.product-name').text(product.name);
-                    $('.product-id').text('Mã sản phẩm: ' + product.producT_ID);
-                    $('.product-thumbnail').attr('src', '/admin/images/products/' + product.image);
-                    console.log(product.image);
-                    var priceFormatted = product.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-                    $('.product-price').text(priceFormatted.replace('.', ','));
+                    $('.product-name').text(result.name);
+                    $('.product-id').text('Mã sản phẩm: ' + result.producT_ID);
+                    $('.product-thumbnail').attr('src', '/admin/images/products/' + result.image);
+                    $('.product-price').text(result.price +"$");
 
                     // Tim ve tat ca size cua san pham tuong ung
-                    findAllSizeOfProducts(productId);
 
-                }
-                else {
-                    console.log("Day khong can chon size");
-                    confirmAddToCart(productId, 0);
+                    findAllSizeOfProducts(productId);
                 }
 
             }
@@ -341,8 +330,11 @@ function showCartDisplay() {
 // Xu ly nguoi dung chon san pham nao de thanh toan
 function checkPaidProduct(id) {
     // Kiem tra nguoi dung chon san pham nao de thanh toan
+    var sendDate = (new Date()).getTime();
+    
 
     $('.paid-product').each(function () {
+        $('#pre-loader').show();
         if ($(this).attr('data-id') == id) {
             // Cap nhat trang thai isCheck trong cart
 
@@ -356,7 +348,14 @@ function checkPaidProduct(id) {
                     },
                     url: '/customer/cart/updatePaidProduct',
                     success: function (result) {
-                        console.log(result);
+                        var receiveDate = (new Date()).getTime();
+                        var responseTimeMs = receiveDate - sendDate;
+                        $('#')
+                        console.log()
+
+                        setTimeout(function () {
+                            $('#pre-loader').hide();
+                        }, responseTimeMs);
                     }
                 });
             }
@@ -370,14 +369,15 @@ function checkPaidProduct(id) {
                     },
                     url: '/customer/cart/updatePaidProduct',
                     success: function (result) {
-                        console.log(result);
+                        var receiveDate = (new Date()).getTime();
+                        var responseTimeMs = receiveDate - sendDate;
+
+                        setTimeout(function () {
+                            $('#pre-loader').hide();
+                        }, responseTimeMs);
                     }
                 });
             }
         }
     });
-
-    // Load lai cart
-
-    loadCart();
 }
