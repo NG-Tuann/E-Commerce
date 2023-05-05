@@ -39,7 +39,7 @@ namespace ElectronicCommerce
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
-
+            services.AddScoped<IProductService, ProductService>();
 
 
             // INJECT SERVICE CUSTOMER
