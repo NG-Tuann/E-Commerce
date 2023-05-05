@@ -18,14 +18,19 @@
     <script src="~/customer/lib/cart.js"></script>
     <!-- for render cart session on cart page -->
     <script src="~/customer/lib/cart_page.js"></script>
-
+    <script>
+        var success = @((TempData["outstock"] != null).ToString().ToLower());
+        if (success == true) {
+            alert("Vượt quá số lượng ở kho");
+        }
+    </script>
 </head>
 <body>
     <header>
         <div class="header__wrapper">
             <div style="display: flex;">
                 <div class="header__logo">
-                    <img src="https://ijc.vn/vnt_upload/weblink/Logo_IJC__Slogan_1.png" alt="" class="logo" width="120" height="36">
+                    <img src="~/customer/img/ptj_cart.svg" alt="" class="logo" width="120" height="36">
                 </div>
                 <div class="header__wrapper-title">
                     <span><i class="fa-sharp fa-solid fa-lock" style="font-size: 20px; margin-left: 4px;"></i></span>
@@ -48,17 +53,20 @@
                 <span>Trả tiền</span>
                 <span>Hoàn thành đơn hàng</span>
             </div>
-            <div class="empty-cart" id="empty-cart">
-                <div class="cart__wrapper-no-cart">
-                    <div class="cart__empty">
-                        <img src="//sheinsz.ltwebstatic.com/she_dist/images/shoppingcart-empty-50eb82fb72.png" class="empty-img">
-                        <p class="empty-tip bold">GIỎ HÀNG CỦA BẠN TRỐNG</p>
-                        <button class="shopping-button">
-                            <span class="shopping-button-title">MUA NGAY</span>
-                        </button>
+            @if (!(ViewBag.cart != null))
+            {
+                <div class="empty-cart" id="empty-cart">
+                    <div class="cart__wrapper-no-cart">
+                        <div class="cart__empty">
+                            <img src="//sheinsz.ltwebstatic.com/she_dist/images/shoppingcart-empty-50eb82fb72.png" class="empty-img">
+                            <p class="empty-tip bold">GIỎ HÀNG CỦA BẠN TRỐNG</p>
+                            <button class="shopping-button">
+                                <span class="shopping-button-title">MUA NGAY</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
             <div id="cart-detail">
                 <div class="cart__wrapper-body">
                     <div class="cart__wrapper-description">
@@ -111,9 +119,76 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="cart__summary-item-wrapper">
-                                <!-- Render cart detail -->
-                            </div>
+                            @if (ViewBag.cart != null)
+                            {
+                        <div class="cart__summary-item-wrapper">
+                            <!-- Render cart detail -->
+                            @foreach (var item in ViewBag.cart)
+                            {
+                                <div class="cart__summary-item">
+                                    <div class="cart__over-wrapper" style="display: flex;">
+                                        <span style="position: relative;">
+                                            <label class="checkbox-container">
+                                                @if (item.isCheck)
+                                                {
+                                                    <input onclick="checkPaidProduct('@item.product_detail_id');" class="paid-product" data-id="@item.product_detail_id" id="check-@item.product_detail_id}" type="checkbox" checked="checked">
+                                                }
+                                                else
+                                                {
+                                                    <input onclick="checkPaidProduct('@item.product_detail_id');" class="paid-product" data-id="@item.product_detail_id" id="check-@item.product_detail_id}" type="checkbox">
+                                                }
+                                                <span class="checkmark" style="position: absolute;top:40px;"></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="item-image">
+                                        <img src="/admin/images/products/@item.image" width="120" height="100">
+                                    </div>
+                                    <div class="cart__summary-info">
+                                        <div>
+                                            <span style="font-size: 13px;">@item.name</span>
+                                        </div>
+                                        <div class="cart__summary-info-value">
+                                            <span style="font-size: 13px;">Size sản phẩm: @item.size</span>
+                                            <span>@item.price$</span>
+                                            <span>
+                                                <div style="margin-left:50px;" class="input__quantity-wrapper">
+                                                    @if (item.quantity == 1)
+                                                    {
+                                                        <div class="minus_item" id="minus-item-disable">-</div>
+                                                    }
+                                                    else
+                                                    {
+                                                    <form method="post" asp-area="customer" asp-controller="cart" asp-action="updateQuantity">
+                                                        <input type="hidden" name="product_detail_id" value="@item.product_detail_id" />
+                                                        <input type="hidden" name="action" value="minus" />
+                                                        <button type="submit" class="minus_item">
+                                                            -
+                                                        </button>
+                                                    </form>    
+                                                    }
+                                                    <div class="quantity_result" id="quantity_@item.product_detail_id">
+                                                        @item.quantity
+                                                    </div>
+                                                    <form method="post" asp-area="customer" asp-controller="cart" asp-action="updateQuantity">
+                                                        <input type="hidden" name="product_detail_id" value="@item.product_detail_id" />
+                                                        <input type="hidden" name="action" value="plus" />
+                                                        <button type="submit" class="add_item">
+                                                            +
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </span>
+                                            <span style="margin-left:120px;">@(item.price*item.quantity)$</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-size: 13px;">Xoá</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                            }
                         </div>
                     </div>
                     <div>
@@ -122,7 +197,12 @@
                             <div class="summary-cart">
                                 <div class="summary-cart-total">
                                     <small>giá còn</small>
-                                    <span class="cart-total"><span style="font-size: 14px;font-weight: 400;">đ</span></span>
+                                    <span class="cart-total"><span style="font-size: 14px;font-weight: 400;">
+                                    @if (ViewBag.cartTotal != null)
+                                    {
+                                        <span style="font-size:24px;font-weight:bolder;" id="cart-temp-total">@ViewBag.cartTotal</span> <span>$</span>
+                                    }
+                                    </span></span>
                                 </div>
 
                                 <div class="summary-cart-save">
@@ -133,7 +213,7 @@
                                     <span style="font-size: 13px;">Phần thưởng (<span style="color:#C44900">30</span>) điểm tích luỹ thành viên nếu có</span>
                                 </div>
 
-                                <button class="summary-cart-checkout"  onclick="window.location.href='http://localhost:5000/customer/cart/BookingPage'">
+                                <button class="summary-cart-checkout" onclick="window.location.href='http://localhost:5000/customer/cart/BookingPage'">
                                     <span class="summary-cart-checkout-title">THANH TOÁN NGAY</span>
                                 </button>
 
@@ -167,7 +247,3 @@
     </div>
 </body>
 </html>
-
-<script>
-    loadCartSummary();
-</script>

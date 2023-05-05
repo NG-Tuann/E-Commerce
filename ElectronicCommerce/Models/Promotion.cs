@@ -25,5 +25,6 @@ namespace ElectronicCommerce.Models
         public bool Activate { get; set; }
 
         public virtual ICollection<PromotionDetail> PromotionDetails { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

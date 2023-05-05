@@ -27,8 +27,11 @@ namespace ElectronicCommerce.Models
         public DateTime? ShipDate { get; set; }
         public int? ShipFee { get; set; }
         public string IdUser { get; set; }
+        public string MailNonCus { get; set; }
+        public string PromotionId { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual Promotion PromotionIdNavigation { get; set; }
         public virtual User IdUserNavigation { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
