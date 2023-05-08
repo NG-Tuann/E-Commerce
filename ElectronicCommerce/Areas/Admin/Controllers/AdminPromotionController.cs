@@ -30,7 +30,6 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [Route("index")]
         [Route("")]
-        [Route("~/")]
         public IActionResult Index()
         {
             List<Promotion> promotions = _baseRepoPromotion.GetAll().ToList();
@@ -52,8 +51,12 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [Route("detail/{id}")]
         // trang chi tiet khuyen mai
-        public IActionResult Detail(string id)
+        public IActionResult Detail(string id, string message)
         {
+            if (message != null)
+            {
+                ViewBag.msg = message;
+            }
             var commonPromotion = new CommonPromotionModel();
             var promotion = _baseRepoPromotion.GetAll().ToList().SingleOrDefault(p => p.Id.Equals(id));
             ViewBag.promotion = promotion;
@@ -125,7 +128,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         [Route("addCustomerType")]
         public IActionResult addCustomerType(string customer_type_id, string promotion_id)
         {
-            if(customer_type_id == "")
+            if(customer_type_id == null)
 			{
                 return RedirectToAction("detail", new { id = promotion_id });
             }
@@ -146,10 +149,11 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         [Route("deleteCustomerType/{id}")]
         public IActionResult deleteCustomerType(string id)
         {
-          
+            List<PromotionDetail> promotionDetail = _baseRepoPromotionDetail.GetAll().ToList().Where(p => p.IdPromotionDetail.Equals(id)).ToList();
+            string promotionId = promotionDetail[0].PromotionId;
             _baseRepoPromotionDetail.Delete(id);
             _baseRepoPromotionDetail.Save();
-            return RedirectToAction("detail", new { id = id });
+            return RedirectToAction("detail", new { id = promotionId , message = "sua thanh cong" });
         }
 
     }

@@ -6,11 +6,11 @@
 	<div class="row">
 		<div class="col-md-12 grid-margin">
 			<div class="row">
-				<h3>Quản lý khuyến mãi</h3>
+				<h3>Danh sách phiếu giảm giá</h3>
 			</div>
 			<div class="row">
 				<div class="create-new-access d-flex flex-row-reverse">
-					<a class="btn btn-primary" data-toggle="modal" data-target="#addPromotion" asp-area="admin" asp-controller="promotion" asp-action="add">Tạo khuyến mãi</a>
+					<a class="btn btn-primary" data-toggle="modal" data-target="#addPromotion" asp-area="admin" asp-controller="promotion" asp-action="add">Tạo phiếu giảm giá</a>
 				</div>
 			</div>
 		</div>
@@ -20,7 +20,7 @@
 			<thead>
 				<tr>
 					<th>Mã</th>
-					<th>Tên khuyến mãi</th>
+					<th>Tên phiếu giảm giá</th>
 					<th>Giảm</th>
 					<th>Ngày bắt đầu</th>
 					<th>Ngày kết thúc</th>
@@ -52,17 +52,17 @@
 
 					<!-- Modal Header -->
 					<div class="modal-header">
-						<h4 class="modal-title">Tạo khuyến mãi mới</h4>
+						<h4 class="modal-title">Tạo phiếu giảm giá mới</h4>
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 
 					<!-- Modal body -->
 					<div class="modal-body">
 
-						<label>Tên khuyến mãi</label>
-						<input type="text" class="form-control" asp-for=Name placeholder="Nhập tên khuyến mãi">
+						<label>Tên phiếu giảm giá</label>
+						<input type="text" class="form-control" asp-for=Name placeholder="Nhập tên phiếu giảm giá">
 						<label>Giá trị giảm</label>
-						<input type="number" class="form-control" asp-for=DiscountValue placeholder="Nhập giá trị khuyến mãi">
+						<input type="number" class="form-control" asp-for=DiscountValue placeholder="Nhập giá trị giảm giá">
 						<label>Đơn vị</label>
 						<select class="js-example-basic-single form-control select2-single" asp-for=DiscountUnit>
 							<option selected value="">Chọn đơn vị</option>

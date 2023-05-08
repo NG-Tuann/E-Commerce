@@ -47,6 +47,9 @@ namespace ElectronicCommerce
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
 
+            services.AddScoped<IProductService, ProductService>();
+
+
             // Them xac thuc google
             services.AddAuthentication(options =>
             {

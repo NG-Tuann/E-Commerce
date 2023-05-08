@@ -39,6 +39,7 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         // GET: /<controller>/
         [Route("")]
         [Route("index")]
+        
         public IActionResult Index()
         {
             ViewBag.cates = _baseRepoCate.GetAll().ToList();
