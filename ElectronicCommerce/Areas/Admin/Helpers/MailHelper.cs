@@ -37,7 +37,8 @@ namespace ElectronicCommerce.Areas.Admin.Helpers
                 mailMessage.Subject = subject;
                 mailMessage.IsBodyHtml = true;
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential(username, "wxwuuxbvvgjzdhsq");
+                Debug.WriteLine(username + " " + password);
+                smtpClient.Credentials = new NetworkCredential(username, password);
                 smtpClient.Send(mailMessage);
                 smtpClient.EnableSsl = true;
 

@@ -188,7 +188,7 @@
                                 <!-- Profile -->
                                 <div class="flex items-center">
                                     <img class="hidden h-16 w-16 rounded-full sm:block"
-                                         src="~/customer/img/temp-avt.jpg"
+                                         src="~/customer/img/@ViewBag.customer.Avatar"
                                          alt="">
                                     <div>
                                         <div class="flex items-center">
@@ -196,7 +196,7 @@
                                                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.6&w=256&h=256&q=80"
                                                  alt="">
                                             <h1 class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
-                                                Xin chào, Trần Phạm Hà Phương
+                                                Xin chào bạn quay trở lại
                                             </h1>
                                         </div>
                                         <dl class="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
@@ -208,7 +208,7 @@
                                                           d="M4 16.5v-13h-.25a.75.75 0 010-1.5h12.5a.75.75 0 010 1.5H16v13h.25a.75.75 0 010 1.5h-3.5a.75.75 0 01-.75-.75v-2.5a.75.75 0 00-.75-.75h-2.5a.75.75 0 00-.75.75v2.5a.75.75 0 01-.75.75h-3.5a.75.75 0 010-1.5H4zm3-11a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-1zM7.5 9a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h1a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-1zM11 5.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-1zm.5 3.5a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h1a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5h-1z"
                                                           clip-rule="evenodd" />
                                                 </svg>
-                                                828 Sư Vạn Hạnh Phường 5 Quận 10 TPHCM
+                                                @ViewBag.customer.Address
                                             </dd>
                                             <dt class="sr-only">Account status</dt>
                                             <dd class="mt-3 flex items-center text-sm font-medium capitalize text-gray-500 sm:mr-6 sm:mt-0">
@@ -240,7 +240,7 @@
                             <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                                 <div class="flex justify-between">
                                     <h2 class="text-lg font-medium leading-6 text-gray-900">Tổng quan</h2>
-                                    <a href="#" class="text-md font-semibold text-gray-600">Xem tất cả ></a>
+                                    <a asp-area="customer" asp-controller="customer" asp-action="promotion" class="text-md font-semibold text-gray-600">Xem tất cả ></a>
                                 </div>
                                 <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                                     <!-- Card -->
@@ -358,7 +358,7 @@
                                 <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
                                     <div class="flex justify-between">
                                         <h2 class="text-lg font-medium leading-6 text-gray-900">Đơn hàng của tôi</h2>
-                                        <a href="#" class="text-md font-semibold text-gray-600">Xem tất cả ></a>
+                                        <a asp-area="customer" asp-controller="customer" asp-action="order" class="text-md font-semibold text-gray-600">Xem tất cả ></a>
                                     </div>
 
                                     <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
