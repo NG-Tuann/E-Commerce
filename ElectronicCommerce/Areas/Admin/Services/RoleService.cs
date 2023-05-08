@@ -17,7 +17,7 @@ namespace ElectronicCommerce.Areas.Admin.Services
 
         public List<RolesModel> findAllRoleWithTotalUser()
         {
-            return _db.RolesModels.FromSqlRaw("[dbo].[sp_findall_roles_with_totaluser]").ToList();
+            return _db.RolesModels.FromSqlRaw("sp_findall_roles_with_totaluser").ToList();
         }
     }
 }

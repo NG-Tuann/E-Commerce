@@ -525,12 +525,6 @@ namespace ElectronicCommerce.Models
 
                 entity.Property(e => e.DiscountValue).HasColumnName("DISCOUNT_VALUE");
 
-                entity.Property(e => e.IsRedeem)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .HasColumnName("IS_REDEEM")
-                    .IsFixedLength(true);
-
                 entity.Property(e => e.ProductId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
@@ -540,6 +534,12 @@ namespace ElectronicCommerce.Models
                 entity.Property(e => e.ValidUntil)
                     .HasColumnType("date")
                     .HasColumnName("VALID_UNTIL");
+
+                entity.Property(e => e.Active).HasColumnName("ACTIVE");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("NAME");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductDiscounts)

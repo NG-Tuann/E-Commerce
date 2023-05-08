@@ -13,7 +13,9 @@ namespace ElectronicCommerce.Models
         public string DiscountUnit { get; set; }
         public DateTime? DateCreated { get; set; }
         public DateTime? ValidUntil { get; set; }
-        public string IsRedeem { get; set; }
+        public bool Active { get; set; }
+
+        public string Name { get; set; }
 
         public virtual Product Product { get; set; }
     }
