@@ -263,16 +263,20 @@ header {
     background-color: #DBB15B;
 }
 
-.summary-cart-checkout-title {
-    font-size: 18px;
-    color:#FFFFFF;
-    font-weight: bolder;
-}
+    .summary-cart-checkout-title {
+        font-size: 18px;
+        color: #FFFFFF;
+        font-weight: bolder;
+    }
+
+    .summary-cart-checkout a:link {
+        text-decoration:none;
+    }
 
 .summary-cart-note {
     text-align: center;
     margin-top: 16px;
-    color:#666666;
+    color: #666666;
 }
 
 .cart__summary-header {

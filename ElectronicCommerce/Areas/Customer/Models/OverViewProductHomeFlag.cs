@@ -11,7 +11,8 @@ namespace ElectronicCommerce.Areas.Customer.Models
         public int PRICE { get; set; }
         public int? DISCOUNT_VALUE { get; set; }
         public string? UNIT { get; set; }
-        public string? IS_REDEEM { get; set; }
+        public bool ACTIVE { get; set; }
+        public string? DIS_NAME { get; set; }
 
     }
 }
