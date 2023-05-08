@@ -177,10 +177,16 @@ namespace ElectronicCommerce.Models
                     .HasColumnName("PHONE")
                     .IsFixedLength(true);
 
+                entity.Property(e => e.Avatar)
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .HasColumnName("AVATAR")
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.ScorePay).HasColumnName("SCORE_PAY");
 
                 entity.Property(e => e.Username)
-                    .HasMaxLength(30)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("USERNAME");
 

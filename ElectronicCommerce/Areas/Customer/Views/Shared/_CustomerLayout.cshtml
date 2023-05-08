@@ -68,12 +68,53 @@
         $(document).ready(function () {
             var isLoginSuccess = @((ViewBag.customerSession != null).ToString().ToLower());
             if (isLoginSuccess) {
+                // Doi dang nhap thanh dang xuat
                 $("#signIn").css("display", "none");
                 $("#signOut").css("display", "block");
+
+                // Doi popup cua accountTop
+
+
+                var popup = `<div class="listNot">
+                                                        <ul>
+                                                            <li>
+                                                                @Html.ActionLink("Thông tin cá nhân", "index", "customer", new { area = "customer" })
+
+                                                            </li>
+                                                            <li>
+                                                                @Html.ActionLink("Đơn hàng của bạn", "order", "customer", new { area = "customer" })
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                   `;
+
+                document.getElementById("account_pop_up").innerHTML = popup;
+
                 }
             else {
+
+                // Doi dang nhap thanh dang xuat
                 $("#signIn").css("display", "block");
                 $("#signOut").css("display", "none");
+
+                // Doi popup cua accountTop
+
+                var popup = `<div class="listNot">
+                                                        <ul>
+                                                            <li>
+                                                                @Html.ActionLink("Đăng nhập", "login", "customer", new { area = "customer" })
+
+                                                            </li>
+                                                            <li>
+                                                                @Html.ActionLink("Tạo tài khoản", "login", "customer", new { area = "customer" })
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                   `;
+
+                document.getElementById("account_pop_up").innerHTML = popup;
+
+
             }
 
             });
@@ -144,14 +185,6 @@
                                                                 <a class="v2" href="https://ijc.vn/vn/member/register.html">Tạo tài khoản</a>
                                                             </li>
                                                         </ul>
-                                                    </div>
-                                                    <div class="listSocial">
-                                                        <div class="txt">Hoặc đăng nhập bằng</div>
-                                                        <div class="soc">
-                                                            <a href="javascript:void(0);" class="facebook facebookLogin">
-                                                                <span class="fa-facebook">Facebook</span>
-                                                            </a>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -341,7 +374,7 @@
                                                 <div class="icon">
                                                     <img src="https://ijc.vn/skins/default/images/user.png" alt="user" />
                                                 </div>
-                                                <div class="popup">
+                                                <div id="account_pop_up" class="popup">
                                                     <div class="listNot">
                                                         <ul>
                                                             <li>
@@ -422,7 +455,7 @@
                                                                                         <span class="header__cart-item-price">@item.price $</span>
                                                                                         <span class="header__cart-item-multiply">x</span>
                                                                                         <span class="header__cart-item-quantity" id="@item.product_detail_id.Trim()" >@item.quantity</span>
-                                                                                        <input type="hidden" value="@(item.price * item.quantity)" id="subTotal-@item.product_detail_id.Trim()" />
+                                                                                        <input type="hidden" value="@(item.price * item.quantity)" class="subTotal" id="subTotal-@item.product_detail_id.Trim()" />
                                                                                     </div>
                                                                                 </div>
 

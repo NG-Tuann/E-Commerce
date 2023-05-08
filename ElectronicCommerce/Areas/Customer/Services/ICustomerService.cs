@@ -22,6 +22,8 @@ namespace ElectronicCommerce.Areas.Customer.Services
 
         public ElectronicCommerce.Models.Customer findCustomerById(string id);
 
+        public ElectronicCommerce.Models.Customer findCustomerByMail(string mail);
+
         public bool removeItemFromCartInDb(string product_detail_id, string customer_id);
 
         public void updateIsCheckCartInDb(string product_tail_id, Boolean isCheck, string customer_id);
@@ -35,5 +37,6 @@ namespace ElectronicCommerce.Areas.Customer.Services
         public List<Promotion> findAllPromotionsOfCustomer(string customer_id);
 
         public List<OrderProduct> findAllOrderProductOfCustomer(string customer_id);
+
     }
 }

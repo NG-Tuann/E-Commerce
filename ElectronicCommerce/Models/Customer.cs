@@ -29,6 +29,7 @@ namespace ElectronicCommerce.Models
         public int? ScorePay { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
+        public string Avatar { get; set; }
 
         public virtual CustomerType CustomerType { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
@@ -50,6 +51,23 @@ namespace ElectronicCommerce.Models
                 {
                     customer.Username = reader.Value.ToString();
                 }
+
+                else if (reader.LineNumber == 4 && reader.Value.ToString() != "avatar")
+                {
+                    customer.Avatar = reader.Value.ToString();
+                }
+                else if(reader.LineNumber == 5 && reader.Value !=null)
+                {
+                    if(reader.LineNumber == 5 && reader.Value.ToString() != "address")
+                    {
+                        customer.Address = reader.Value.ToString();
+                    }
+                }
+                
+                //else if (reader.LineNumber == 6 && reader.Value.ToString() != "phone")
+                //{
+                //    customer.Phone = reader.Value.ToString();
+                //}
             }
             return customer;
         }
@@ -70,6 +88,15 @@ namespace ElectronicCommerce.Models
 
                 writer.WritePropertyName("username");
                 writer.WriteValue(customer.Username);
+
+                writer.WritePropertyName("avatar");
+                writer.WriteValue(customer.Avatar);
+
+                writer.WritePropertyName("address");
+                writer.WriteValue(customer.Address);
+
+                //writer.WritePropertyName("phone");
+                //writer.WriteValue(customer.Phone);
 
                 writer.WriteEndObject();
             }

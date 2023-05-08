@@ -259,7 +259,7 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 }
                 else
                 {
-                    if(cart[index].quantity == product_detail.Quantity)
+                    if(cart[index].quantity >= product_detail.Quantity)
                     {
                         return new JsonResult("Outstock");
                     }
