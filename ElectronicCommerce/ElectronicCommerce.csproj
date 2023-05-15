@@ -46,6 +46,7 @@
     <None Remove="Microsoft.Owin.Security.Google" />
     <None Remove="Microsoft.AspNetCore.CookiePolicy" />
     <None Remove="Microsoft.AspNetCore.Http" />
+    <None Remove="Areas\Admin\Views\AdminOrder\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customer\" />
@@ -72,6 +73,7 @@
     <Folder Include="Areas\Customer\Services\" />
     <Folder Include="Areas\Customer\Views\Cart\" />
     <Folder Include="Areas\Customer\Views\Customer\" />
+    <Folder Include="Areas\Admin\Views\AdminOrder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\AdminProduct\ProductDetailModalPopUp.cshtml" />

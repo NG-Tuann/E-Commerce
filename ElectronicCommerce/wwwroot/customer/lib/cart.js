@@ -1,4 +1,28 @@
-﻿// Show modal choose finger size
+﻿// Calculate total
+
+function calculateTotal() {
+    var total = 0;
+    var cartQuantity = 0;
+    $('.header__cart-item-price-wrap').each(function () {
+        var price = parseInt($(this).find('.subPrice').val());
+        var quantity = parseInt($(this).find('.subQuantity').val());
+
+        total = total + (price * quantity);
+
+        cartQuantity = cartQuantity + quantity;
+    });
+    console.log(" Total: " + total);
+    $('.checkout-total-money').text(total + ' $');
+
+    $('#cartQuantity').text(cartQuantity);
+
+    // Cap nhat lai so luong tren gio hang
+
+
+}
+
+// Show modal choose finger size
+
 function removeItemFromCart(e, id) {
     e.preventDefault();
     console.log("product detail id: " + id);
@@ -21,6 +45,7 @@ function removeItem(id) {
             setTimeout(function () {
                 $('#pre-loader').hide();
                 $('#' + id.trim()).closest('li').remove();
+                calculateTotal();
             }, responseTimeMs);
         }
     });
@@ -67,6 +92,7 @@ function confirmAddToCart(id, size) {
                 setTimeout(function () {
                     $('#pre-loader').hide();
                 }, responseTimeMs);
+                timeOutCartDisplay();
             }
             else if (typeof result == "string" && result.indexOf('Exists') > -1) {
                 setTimeout(function () {
@@ -83,8 +109,13 @@ function confirmAddToCart(id, size) {
 
                     $('#' + p_detail_id.trim()).text(numb);
 
+                    $('#hide' + p_detail_id.trim()).val(numb);
 
-                },responseTimeMs);
+                    // Tinh tong tien
+                    calculateTotal();
+
+                }, responseTimeMs);
+                setTimeout(timeOutCartDisplay, 5000);
             }
             else {
 
@@ -120,7 +151,8 @@ function confirmAddToCart(id, size) {
                                         <span class="header__cart-item-price">${result.price} đ</span>
                                         <span class="header__cart-item-multiply">x</span>
                                         <span class="header__cart-item-quantity" id="${result.product_detail_id.trim()}" >${result.quantity}</span>
-                                        <input type="hidden" value="${result.price * result.quantity}" id="subTotal-${result.product_detail_id.trim()}" />
+                                        <input type="hidden" value="${result.price}" class="subPrice"/>
+                                        <input type="hidden" value="${result.quantity}" class="subQuantity" id="hide${result.product_detail_id.trim()}"/>
                                     </div>
                                 </div>
 
@@ -133,6 +165,10 @@ function confirmAddToCart(id, size) {
                             </div>
                         </li>`;
                     $('.header__cart-list-item').prepend(newItem);
+
+                    // Tinh tong tien
+                    calculateTotal();
+
                 }, responseTimeMs);
                 setTimeout(timeOutCartDisplay, 5000);
             }

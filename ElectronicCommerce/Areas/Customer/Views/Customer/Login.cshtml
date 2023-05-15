@@ -2,6 +2,50 @@
     Layout = "~/Areas/Customer/Views/Shared/_CustomerLayout.cshtml";
 }
 
+<script>
+    function forgotPassword(e) {
+        e.preventDefault();
+
+        var action = `<h3 class="forgot__title">Quên mật khẩu</h3>
+                                    <form class="forgot__form" action="forgot" method="post">
+                                        <div class="forgot__text-field">
+                                            <label for="phoneNumber">Số điện thoại di động hoặc địa chỉ email:</label>
+                                            <input id="phoneNumber" required type="text" name="mail" placeholder="" />
+                                        </div>
+                                        
+                                        <button type="submit" class="btnn btn-forgot">
+                                            <span>Gửi xác thực</span>
+                                        </button>
+                                    </form>
+                                    <a onclick="backToLogin(event);" class="back__btn-back-password">Quay trở lại</a>`;
+
+        document.getElementById("action__wrapper").innerHTML = action;
+    }
+
+    function backToLogin(e) {
+        e.preventDefault();
+
+        var action = `<h3 class="login__title">Đăng nhập</h3>
+                                    <form class="login__form" asp-area="customer" asp-controller="customer" asp-action="accountlogin" method="post">
+                                        <div class="login__text-field">
+                                            <label for="phoneNumber">Số điện thoại di động hoặc địa chỉ email:</label>
+                                            <input id="phoneNumber" required type="text" name="username" placeholder="" />
+                                        </div>
+                                        <div class="login__text-field mt-20px">
+                                            <label for="password">Mật khẩu:</label>
+                                            <input id="password" required type="password" name="password" placeholder="" />
+                                        </div>
+                                        <button type="submit" class="btnn btn-login">
+                                            <span>Đăng nhập</span>
+                                        </button>
+                                    </form>
+                                    <a onclick="forgotPassword(event);" class="login__btn-forgot-password">Quên mật khẩu?</a>`;
+
+        document.getElementById("action__wrapper").innerHTML = action;
+
+    }
+</script>
+
 <!-- Styles -->
 <link rel="stylesheet" href="~/customer/style/login.css" />
 <div id="vnt-content">
@@ -12,23 +56,23 @@
                     <div class="wrapper">
                         <div class="login">
                             <div class="login__left-bar">
-                                <h3 class="login__title">Đăng nhập</h3>
-                                <form class="login__form" action="/" method="post">
-                                    <div class="login__text-field">
-                                        <label for="phoneNumber">Số điện thoại di động hoặc địa chỉ email:</label>
-                                        <input id="phoneNumber" type="text" placeholder="" />
-                                    </div>
-                                    <div class="login__text-field mt-20px">
-                                        <label for="password">Mật khẩu:</label>
-                                        <input id="password" type="password" placeholder="" />
-                                    </div>
-                                </form>
-                                <a class="login__button" href="/">
-                                    <button class="btnn btn-login">
-                                        <span>Đăng nhập</span>
-                                    </button>
-                                </a>
-                                <a href="/" class="login__btn-forgot-password">Quên mật khẩu?</a>
+                                <div id="action__wrapper">
+                                    <h3 class="login__title">Đăng nhập</h3>
+                                    <form class="login__form" asp-area="customer" asp-controller="customer" asp-action="accountlogin" method="post">
+                                        <div class="login__text-field">
+                                            <label for="phoneNumber">Số điện thoại di động hoặc địa chỉ email:</label>
+                                            <input id="phoneNumber" required type="text" name="username" placeholder="" />
+                                        </div>
+                                        <div class="login__text-field mt-20px">
+                                            <label for="password">Mật khẩu:</label>
+                                            <input id="password" required type="password" name="password" placeholder="" />
+                                        </div>
+                                        <button type="submit" class="btnn btn-login">
+                                            <span>Đăng nhập</span>
+                                        </button>
+                                    </form>
+                                    <a onclick="forgotPassword(event);" class="login__btn-forgot-password">Quên mật khẩu?</a>
+                                </div>
                                 <div class="login__or">
                                     <span>Hoặc</span>
                                 </div>
@@ -63,26 +107,26 @@
                                 <div class="middle-bar__sep"></div>
                             </div>
                             <div class="login__right-bar">
-                                <h3 class="login__title">Mới Đến PTJ</h3>
-                                <form class="login__form" action="/" method="post">
+                                <form class="login__form" asp-area="customer" asp-controller="customer" asp-action="register" method="post">
+                                    <h3 class="login__title">Mới Đến PTJ</h3>
                                     <div class="login__text-field">
                                         <label for="phoneNumberJustComing">Số điện thoại di động hoặc địa chỉ email:</label>
-                                        <input id="phoneNumberJustComing" type="text" placeholder="" />
+                                        <input id="phoneNumberJustComing" name="mail" type="text" placeholder="" />
+                                    </div>
+                                    <div class="login__favorite mt-20px">
+                                        <a class="login__button" href="/">
+                                            <button type="submit" class="btnn btn-continue">
+                                                <span>Tiếp tục</span>
+                                            </button>
+                                        </a>
+                                        <div class="login__first-discount">
+                                            <p>GIẢM THÊM 15% CHO ĐƠN HÀNG ĐẦU TIÊN</p>
+                                        </div>
+                                        <div class="login__why-register">
+                                            <a href="/">Tại sao đăng ký?</P>
+                                        </div>
                                     </div>
                                 </form>
-                                <div class="login__favorite mt-20px">
-                                    <a class="login__button" href="/">
-                                        <button class="btnn btn-continue">
-                                            <span>Tiếp tục</span>
-                                        </button>
-                                    </a>
-                                    <div class="login__first-discount">
-                                        <p>GIẢM THÊM 15% CHO ĐƠN HÀNG ĐẦU TIÊN</p>
-                                    </div>
-                                    <div class="login__why-register">
-                                        <a href="/">Tại sao đăng ký?</P>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>

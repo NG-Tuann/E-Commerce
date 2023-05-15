@@ -92,7 +92,7 @@ namespace ElectronicCommerce.Areas.Customer.Services
 
         public List<Item> findAllCartByCustomerId(string id)
         {
-            var carts = _db.Carts.Where(i => i.CustomerId.Equals(id)).ToList();
+            var carts = _db.Carts.Where(i => i.CustomerId.Equals(id) && i.OrderId == null).ToList();
             var items = new List<Item>();
             foreach (var cart in carts)
             {
@@ -134,7 +134,12 @@ namespace ElectronicCommerce.Areas.Customer.Services
 
         public ElectronicCommerce.Models.Customer findCustomerById(string id)
         {
-            return _db.Customers.AsNoTracking().SingleOrDefault(i => i.Id.Equals(id));
+            return _db.Customers.ToList().SingleOrDefault(i => i.Id.Equals(id));
+        }
+
+        public ElectronicCommerce.Models.Customer findCustomerByMail(string mail)
+        {
+            return _db.Customers.ToList().SingleOrDefault(i => i.Username.Equals(mail));
         }
 
         public bool isCustomerFilledInfo(string customer_id)
@@ -191,6 +196,7 @@ namespace ElectronicCommerce.Areas.Customer.Services
                 var newCustomer = new ElectronicCommerce.Models.Customer();
                 newCustomer.Id = "MB" + Admin.Helpers.PrimarykeyHelper.RandomString(6);
                 newCustomer.Username = mail;
+                newCustomer.Avatar = "temp-avt.jpg";
 
                 _db.Customers.Add(newCustomer);
                 _db.SaveChanges();
@@ -203,7 +209,7 @@ namespace ElectronicCommerce.Areas.Customer.Services
             var carts = new List<Cart>();
             if(_db.Carts.ToList().Count >0)
             {
-                carts = _db.Carts.ToList().Where(i => i.CustomerId.Equals(customer.Id)).ToList();
+                carts = _db.Carts.ToList().Where(i => i.CustomerId.Equals(customer.Id) && i.OrderId == null).ToList();
             }
             // Lap qua session
             foreach (var item in items)

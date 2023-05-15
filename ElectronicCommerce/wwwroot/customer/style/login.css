@@ -289,3 +289,45 @@ a {
   color: var(--blue-thin-color);
   text-align: center;
 }
+
+/* forgot password */
+
+.forgot__title {
+    font-size: 18px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+
+.forgot__text-field label {
+    display: block;
+    padding-bottom: 6px;
+    color: #666666;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.forgot__text-field input {
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 40px;
+    height: 40px;
+    border: 1px solid var(--light-gray-color);
+    outline: none;
+}
+
+    .forgot__text-field input:hover,
+    .forgot__text-field input:focus {
+        border: 1px solid var(--primary-color);
+    }
+
+.btn-forgot {
+    margin-top: 20px;
+}
+
+.back__btn-back-password {
+    display: block;
+    padding-top: 12px;
+    font-size: 12px;
+    text-align: center;
+}

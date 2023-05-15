@@ -48,8 +48,8 @@ namespace ElectronicCommerce
             services.AddScoped<ICategoryProductService, CategoryProductService>();
             services.AddScoped<ISaleReportService, SaleReportService>();
 
+            // INJECT PRODUCT SERVICE
             services.AddScoped<IProductService, ProductService>();
-
 
             // Them xac thuc google
             services.AddAuthentication(options =>

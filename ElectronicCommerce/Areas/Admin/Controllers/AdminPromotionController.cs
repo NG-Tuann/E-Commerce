@@ -30,6 +30,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [Route("index")]
         [Route("")]
+        //[Route("~/")]
         public IActionResult Index()
         {
             List<Promotion> promotions = _baseRepoPromotion.GetAll().ToList();

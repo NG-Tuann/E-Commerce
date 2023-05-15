@@ -1,0 +1,180 @@
+﻿@model ElectronicCommerce.Models.OrderProduct;
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
+@*
+    Date picker
+*@
+<link rel="stylesheet" href="~/admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
+<script src="~/admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js" defer></script>
+
+<style>
+    #date_filter {
+        padding: 30px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #444444;
+        cursor: pointer;
+    }
+
+    #check_order {
+        padding: 30px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+        cursor: pointer;
+    }
+</style>
+
+<script>$(document).ready(function () {
+        $('.datepicker').datepicker({
+            setDate: new Date(),
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoclose: true,
+        });
+        $('.datepicker_from').datepicker({
+            setDate: new Date(),
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoclose: true,
+        });
+        $('.datepicker_to').datepicker({
+            format: 'dd/mm/yyyy',
+            todayHighlight: true,
+            autoclose: true,
+
+        });
+
+        // Click open filter modal
+        $('#date_filter').click(function () {
+            $('#filter_order_date').modal('show');
+        });
+
+        // Click open check_order_status modal
+
+    $('#check_order').click(function () {
+            $('#check_order_status').modal('show');
+        });
+    });</script>
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12 grid-margin">
+            <div class="row">
+                <div class="col-md-5" style="border:1.5px solid #E5E5E5;padding:30px;border-radius:10px;">
+                    <span id="date_filter"><i class="fa fa-filter"></i> Bộ lọc thời gian</span>
+                    <a asp-area="admin" asp-controller="order" asp-action="index">Xem tất cả</a>
+
+                    <span id="check_order"><i class="fa fa-check"></i> Duyệt đơn hàng</span>
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="create-new-access d-flex flex-row-reverse">
+                    </div>
+                    <div class="table-responsive" style="width:100%;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>NGÀY TẠO</th>
+                                    <th>ĐỊA CHỈ GIAO NHẬN </th>
+                                    <th>TRẠNG THÁI THANH TOÁN</th>
+                                    <th>TRẠNG THÁI ĐƠN HÀNG</th>
+                                    <th>MÃ KHUYẾN MÃI</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.orders)
+                                {
+                                    <tr>
+                                        <td>@item.DateCreated.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.AddressDelivery</td>
+                                        <td>@item.PayType</td>
+                                        <td>@item.OrderState</td>
+                                        <td>@item.PromotionId</td>
+                                        <td><a class="btn btn-info">Xem chi tiết</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal filter cac hoa don tu ngay may den ngay may -->
+
+<div class="modal fade" id="filter_order_date" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Chọn quãng thời gian cần lọc</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form method="post" asp-area="admin" asp-controller="order" asp-action="filterOrderByDate">
+                <div class="modal-body">
+                    <div class="card-body">
+                        <p class="card-description">Định dạng tìm kiếm sẽ theo mẫu: ngày/tháng/năm</p>
+                        <div class="input-group input-daterange d-flex align-items-center">
+                            <input type="text" class="form-control datepicker_from" name="start_date" id="start_date_filter" value="dd/MM/yyyy">
+                            <div class="input-group-addon mx-4">tới</div>
+                            <input type="text" class="form-control datepicker_to" name="end_date" id="end_date_filter" value="dd/MM/yyyy">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Áp dụng bộ lọc</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal duyet don hang cac hoa don tu ngay may den ngay may -->
+
+<div class="modal fade" id="check_order_status" tabindex="-1" aria-labelledby="ModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Chọn quãng thời gian cần lọc</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form method="post" asp-area="admin" asp-controller="order" asp-action="checkOrderStatus">
+                <div class="modal-body">
+                    <div class="card-body">
+                        <p class="card-description">Định dạng tìm kiếm sẽ theo mẫu: ngày/tháng/năm</p>
+                        <div class="input-group input-daterange d-flex align-items-center">
+                            <input type="text" class="form-control datepicker_from" name="start_date" id="start_date_filter" value="dd/MM/yyyy">
+                            <div class="input-group-addon mx-4">tới</div>
+                            <input type="text" class="form-control datepicker_to" name="end_date" id="end_date_filter" value="dd/MM/yyyy">
+                        </div>
+                        <p class="mt-3">
+                            Cập nhật trạng thái đơn hàng:
+                        </p>
+                        <input type="text" class="form-control" name="status" placeholder="Trạng thái đơn">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Xác nhận</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
