@@ -16,19 +16,16 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         IBaseRepository<ProductDiscount> _baseRepoProductDiscount;
         IBaseRepository<Geomancy> _baseRepoGeomancy;
         IBaseRepository<StoneType> _baseRepoStoneType;
-        IProductDiscountService _productDiscountService;
 
         public AdminProductDiscountController(IBaseRepository<ProductDiscount> baseRepoProductDiscount, IBaseRepository<Geomancy> baseRepoGeomancy,
-            IBaseRepository<StoneType> baseRepoStoneType, IProductDiscountService productDiscountService)
+            IBaseRepository<StoneType> baseRepoStoneType)
         {
             _baseRepoProductDiscount = baseRepoProductDiscount;
             _baseRepoGeomancy = baseRepoGeomancy;
-            _baseRepoStoneType = baseRepoStoneType;
-            _productDiscountService = productDiscountService;
+            _baseRepoStoneType = baseRepoStoneType; 
         }
         [Route("index")]
         [Route("")]
-        [Route("~/")]
         public IActionResult Index()
         {
             // hien thi danh sach khuyen mai
