@@ -47,6 +47,7 @@ namespace ElectronicCommerce
             services.AddScoped<IOrderProductService, OrderProductService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
+            services.AddScoped<ISaleReportService, SaleReportService>();
 
             // INJECT PRODUCT SERVICE
             services.AddScoped<IProductService, ProductService>();
