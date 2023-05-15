@@ -39,10 +39,23 @@ namespace ElectronicCommerce.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<RolesModel> RolesModels { get; set; }
         public virtual DbSet<OverViewProductHomeFlag> OverViewProductHomeFlags { get; set; }
+        public virtual DbSet<SaleReport> SaleReports { get; set; }
+        public virtual DbSet<SaleReportOption> SaleReportOptions { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.Entity<SaleReportOption>(entity =>
+            {
+                entity.HasNoKey();
+            });
+
+            modelBuilder.Entity<SaleReport>(entity =>
+            {
+                entity.HasNoKey();
+            });
 
             modelBuilder.Entity<OverViewProductHomeFlag>(entity =>
             {
