@@ -135,7 +135,7 @@
                             </div>
                         </div>
                         <div class="point-count" style="margin-top:14px;float:right;">
-                            <span style="color: #767676;">Phần thưởng</span><span style="color: #C44900;"> 21</span><span style="color:#333;position:relative;" id="point-seperate"> điểm SHEIN</span>
+                            <span style="color: #767676;">Phần thưởng</span><span style="color: #C44900;"> @ViewBag.pointCount</span><span style="color:#333;position:relative;" id="point-seperate"> điểm PTJ</span>
                         </div>
                         <div class="promotion__wrapper" style="margin-top:80px;">
                             <span>Mã phiếu giảm giá <i class="fa fa-question-circle" aria-hidden="true"></i></span>
@@ -221,7 +221,7 @@
 
                                 <input type="hidden" value="01" name="item_number_1" />
                                 <input type="hidden" value="Cart" name="item_name_1" />
-                                <input type="hidden" value="@total" id="total-cart-paid" name="amount_1" />
+                                <input type="hidden" value="@ViewBag.total" class="total-cart-paid" name="amount_1" />
                                 <input type="hidden" value="1" name="quantity_1" />
 
 
@@ -231,9 +231,16 @@
                             </form>
                         </div>
 
-                        <div class="cod-area">
-                            Thanh toán khi nhận hàng
-                        </div>
+                        @*<a asp-area="customer" asp-controller="cart" asp-action="cod">
+                            <div class="cod-area">
+                                Thanh toán khi nhận hàng
+                            </div>
+                        </a>*@
+                        <form method="post" asp-area="customer" asp-controller="cart" asp-action="cod">
+                            <input type="hidden" value="@ViewBag.total" name="total" class="total-cart-paid" />
+                            <input class="cod-area" type="submit" value="Thanh toán khi nhận hàng" />
+                        </form>
+
                     </div>
                 </div>
             </div>

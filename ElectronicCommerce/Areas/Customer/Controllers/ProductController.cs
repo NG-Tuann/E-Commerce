@@ -59,10 +59,6 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
 
             ViewBag.customerReviews = _productService.findAllReviewById(id);
 
-            // San pham cung dong
-
-            ViewBag.relateProducts = _productService.findProductWithSameCategoryById(id);
-
             // Tao session luu nhung san pham da xem cua khach hang
 
             if (HttpContext.Session.GetString("viewed") == null)
@@ -149,13 +145,31 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             // Mai lam task them vao gio hang khi khach hang da dang nhap
             ProductDetail product_detail = _productService.findProductDetailByProductIdAndSize(size, product_id);
 
-            var isDiscount = _baseProductDiscount.GetAll().ToList().SingleOrDefault(i => i.ProductId.Equals(product_detail.Product.Id));
-
             int discountValue = 0;
 
-            if(isDiscount !=null)
+            foreach (var item in _baseProductDiscount.GetAll().ToList())
             {
-                discountValue = (int)isDiscount.DiscountValue;
+                if(item.ProductId !=null)
+                {
+                    if(item.ProductId.Equals(product_id))
+                    {
+                        discountValue = (int)item.DiscountValue;
+                    }
+                }
+                else if(item.GemId !=null)
+                {
+                    if (item.GemId.Equals(product_detail.Product.GeomancyId))
+                    {
+                        discountValue = (int)item.DiscountValue;
+                    }
+                }
+                else if(item.StoneId !=null)
+                {
+                    if (item.GemId.Equals(product_detail.Product.MainStoneId))
+                    {
+                        discountValue = (int)item.DiscountValue;
+                    }
+                }
             }
 
             int actualPrice = product_detail.ProductPrice.SalePrice;

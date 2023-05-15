@@ -5,10 +5,13 @@ using ElectronicCommerce.Areas.Admin.Services;
 using ElectronicCommerce.Areas.Admin.ViewModels;
 using ElectronicCommerce.Models;
 using ElectronicCommerce.Repositories;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace ElectronicCommerce.Areas.Admin.Controllers
@@ -28,12 +31,15 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         private INotyfService _notyfService;
         private IBaseRepository<ProductDetail> _baseRepoProductDetail;
         private IBaseRepository<ProductPrice> _baseRepoProductPrice;
+        private DatabaseContext _db;
 
+        private IWebHostEnvironment _webHostEnvironment; // !IMPORTANT
 
         public AdminProductController(IBaseRepository<Product> baseRepoProduct, INotyfService notyfService,
             ICategoryProductService categoryProductService, IBaseRepository<StoneType> baseRepoStoneType,
             IBaseRepository<Geomancy> baseRepoGeomancy, IBaseRepository<CategoryProduct> baseRepoCategory,
-             IBaseRepository<ProductDetail> baseRepoProductDetail, IBaseRepository<ProductPrice> baseRepoProductPrice)
+             IBaseRepository<ProductDetail> baseRepoProductDetail, IBaseRepository<ProductPrice> baseRepoProductPrice,
+            IWebHostEnvironment webHostEnvironment, DatabaseContext db)
         {
             _baseRepoProduct = baseRepoProduct;
             _notyfService = notyfService;
@@ -43,6 +49,8 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             _baseRepoCategory = baseRepoCategory;
             _baseRepoProductDetail = baseRepoProductDetail;
             _baseRepoProductPrice = baseRepoProductPrice;
+            _webHostEnvironment = webHostEnvironment;
+            _db = db;
         }
 
 
@@ -208,14 +216,47 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [Route("add")]
         [HttpPost]
-        public IActionResult Add(Product product)
+        public IActionResult Add(Product product, IFormFile photo, IFormFile[] photos)
         {
             product.Id = "SP" + PrimarykeyHelper.RandomString(3);
             product.BestSeller = false;
             product.Active = false;
             product.HomeFlag = false;
+            if (photo != null)
+            {
+                var newFileName = Admin.Helpers.FileHelper.GenerateFileName(photo.ContentType);
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "admin/images/products", newFileName);
+                using (var fileStream = new FileStream(path, FileMode.Create)) // !IMPORTANT
+                {
+                    // upload file vao fileStream
+                    photo.CopyTo(fileStream);
+                }
+                product.Image = newFileName;
+            }
+
             _baseRepoProduct.Insert(product);
             _baseRepoProduct.Save();
+
+            if (photos.Length >0)
+            {
+                foreach (var item in photos)
+                {
+                    var newFileName = Admin.Helpers.FileHelper.GenerateFileName(item.ContentType);
+                    var path = Path.Combine(_webHostEnvironment.WebRootPath, "admin/images/products", newFileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create)) // !IMPORTANT
+                    {
+                        // upload file vao fileStream
+                        item.CopyTo(fileStream);
+                    }
+
+                    var img = new Image();
+                    img.Id = "IM" + PrimarykeyHelper.RandomString(6);
+                    img.NameImages = newFileName;
+                    img.ProductId = product.Id;
+                    _db.Images.Add(img);
+                }
+                _db.SaveChanges();
+            }
             return RedirectToAction("index");
         }
 

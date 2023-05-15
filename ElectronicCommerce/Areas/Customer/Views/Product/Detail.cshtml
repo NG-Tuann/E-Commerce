@@ -448,18 +448,21 @@
                             {
                                 @foreach (var item in ViewBag.customerReviews)
                                 {
-                                    <div class="review__wrapper-discussion">
-                                        <div class="review__wrapper-customer">
-                                            <div class="review__wrapper-rate">
-                                                <span>@item.CUSTOMER_NAME: </span>
-                                                @for (int i = 1; i <= item.RATE; i++)
-                                                {
-                                                    <span style="color:#FFC108" class="fa fa-star checked"></span>
-                                                }
+                                    @if (item.IS_UPDATE)
+                                    {
+                                        <div class="review__wrapper-discussion">
+                                            <div class="review__wrapper-customer">
+                                                <div class="review__wrapper-rate">
+                                                    <span>@item.CUSTOMER_NAME: </span>
+                                                    @for (int i = 1; i <= item.RATE; i++)
+                                                    {
+                                                        <span style="color:#FFC108" class="fa fa-star checked"></span>
+                                                    }
+                                                </div>
+                                                <p>@item.CONTENT</p>
                                             </div>
-                                            <p>@item.CONTENT</p>
                                         </div>
-                                    </div>
+                                    }
                                 }
                             }
                         </div>
@@ -518,50 +521,7 @@
                 </div>
             </div>
         </div>
-        <div class="related_product_grp ">
-            <div class="vnt-title wow fadeInUp" data-wow-delay="0.5s">
-                @if (ViewBag.relateProducts != null && ViewBag.relateProducts.Count >0)
-                {
-                    <h2>@ViewBag.relateProducts[0].CATE_NAME khác</h2>
-                }
-            </div>
-            <div class="product_wrapper related_slider wow fadeInUp vhbtnslick" data-wow-delay="0.5s">
-
-                <!-- Load other product from same category here -->
-                @foreach (var item in ViewBag.relateProducts)
-                {
-                    <div class="item_box">
-                        <div class="itemproductall">
-                            <div class="thumb">
-                                <a class="vhthumbzoom vhthumb-100 vhthumb-center" asp-area="customer" asp-controller="product" asp-action="detail" asp-route-id="@item.CODE">
-                                    <img src="~/admin/images/products/@item.THUMB_NAIL" alt="Dây liền mặt đá Topaz 21M.082NMBL" />
-                                </a>
-                            </div>
-                            <div class="decs">
-                                <div class="dstile">
-                                    <h3><a href="~/admin/images/products/@item.THUMB_NAIL">@item.NAME</a></h3>
-                                </div>
-                                <div class="dsprive">
-                                    @if (@item.PRICE_AFTER_DISCOUNT == 0)
-                                    {
-                                        <span class="sale_price">@item.PRICE.ToString("#,###")đ</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="sale_price">@item.PRICE_AFTER_DISCOUNT.ToString("#,###")đ   <del style="color:#999;font-size:12px; font-weight:lighter;">@item.PRICE.ToString("#,###")đ</del></span>
-                                    }
-                                </div>
-
-                                <div class="dsview">
-                                    <input type="button" data-id="@item.CODE" class="btn btn-add-to-cart" style="background-color:#8f7d59; width:180px;height:43px;border-radius:0;color:#FFFFFF;" value="Thêm vào giỏ hàng" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-            </div>
-        </div>
+        
     </div>
     <div class="clear"></div>
     </div>

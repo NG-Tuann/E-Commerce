@@ -251,7 +251,11 @@ namespace ElectronicCommerce.Models
 
             modelBuilder.Entity<Image>(entity =>
             {
-                entity.ToTable("IMAGES");
+                entity.Property(e => e.Id)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ID")
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
@@ -296,6 +300,8 @@ namespace ElectronicCommerce.Models
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
+
+                entity.Property(e => e.SalePrice).HasColumnName("SALE_PRICE");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
@@ -369,6 +375,12 @@ namespace ElectronicCommerce.Models
                 entity.Property(e => e.ShipFee).HasColumnName("SHIP_FEE");
 
                 entity.Property(e => e.TotalPay).HasColumnName("TOTAL_PAY");
+
+                entity.Property(e => e.CustomerTypeId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CUSTOMER_TYPE_ID")
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.PromotionId)
                     .HasMaxLength(10)
@@ -554,10 +566,32 @@ namespace ElectronicCommerce.Models
                     .HasMaxLength(255)
                     .HasColumnName("NAME");
 
+                entity.Property(e => e.GemId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("GEM_ID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.StoneId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("STONE_ID")
+                    .IsFixedLength(true);
+
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ProductDiscounts)
                     .HasForeignKey(d => d.ProductId)
                     .HasConstraintName("FK_PRODUCT_DISCOUNTS_PRODUCTS");
+
+                entity.HasOne(d => d.Geomancy)
+                    .WithMany(p => p.ProductDiscounts)
+                    .HasForeignKey(d => d.GemId)
+                    .HasConstraintName("FK_pdc_gem");
+
+                entity.HasOne(d => d.StoneType)
+                    .WithMany(p => p.ProductDiscounts)
+                    .HasForeignKey(d => d.StoneId)
+                    .HasConstraintName("FK_pdc_stone");
             });
 
             modelBuilder.Entity<ProductPrice>(entity =>

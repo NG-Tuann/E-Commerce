@@ -18,5 +18,6 @@ namespace ElectronicCommerce.Models
 
         public virtual ICollection<Product> ProductMainStones { get; set; }
         public virtual ICollection<Product> ProductSubStones { get; set; }
+        public virtual ICollection<ProductDiscount> ProductDiscounts { get; set; }
     }
 }

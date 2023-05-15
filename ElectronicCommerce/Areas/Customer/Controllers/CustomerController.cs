@@ -33,12 +33,17 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         private ICustomerService _customerService;
         private INotyfService _notyfService;
         private IConfiguration _configuration;
+        private IBaseRepository<OrderProduct> _baseOrderProduct;
+        private IBaseRepository<Review> _baseReview;
+        private IOrderProductService _orderProductService;
 
         private IWebHostEnvironment _webHostEnvironment; // !IMPORTANT
 
         public CustomerController(IBaseRepository<CategoryProduct> baseRepoCate, IBaseRepository<Geomancy> baseRepoGeomancy
             , ICustomerService customerService, IBaseRepository<ElectronicCommerce.Models.Customer> baseRepoCustomer
-            ,INotyfService notyfService,IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+            ,INotyfService notyfService,IConfiguration configuration, IWebHostEnvironment webHostEnvironment
+            , IBaseRepository<OrderProduct> baseOrderProduct, IBaseRepository<Review> baseReview
+            ,IOrderProductService orderProductService)
         {
             _baseRepoCate = baseRepoCate;
             _baseRepoGeomancy = baseRepoGeomancy;
@@ -47,6 +52,9 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             _notyfService = notyfService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+            _baseOrderProduct = baseOrderProduct;
+            _baseReview = baseReview;
+            _orderProductService = orderProductService;
         }
         // GET: /<controller>/
         [Route("")]
@@ -60,6 +68,8 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             return View();
         }
 
+        
+
         [Route("order")]
         public IActionResult Order()
         {
@@ -71,6 +81,62 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             }
             return View("order");
         }
+
+        // Cancel order
+        [HttpPost]
+        [Route("Cancel")]
+        public IActionResult Cancel(string id)
+        {
+            ViewBag.cates = _baseRepoCate.GetAll().ToList();
+            ViewBag.geos = _baseRepoGeomancy.GetAll().ToList();
+
+            var order = _baseOrderProduct.GetAll().ToList().SingleOrDefault(p=> p.Id.Equals(id));
+
+            if(order.OrderState.Equals("Chờ xác nhận"))
+            {
+                // Huy don hang
+                CancelOrder(order);
+                // Cap nhat lai quantity cho cac san pham trong don hang
+
+
+                // Thong bao huy don thanh cong
+                return new JsonResult(new { message = "ok" });
+            }
+            else if(order.OrderState.Equals("Đã xác nhận"))
+            {
+                // Gui yeu cau huy don
+                RequestCancelOrder(order);
+                return new JsonResult(new { message = "sent" });
+
+            }
+            else if (order.OrderState.Equals("Đang giao hàng"))
+            {
+                // Thong bao khong the huy don
+                return new JsonResult(new { message = "unable" });
+            }
+            else
+            {
+                return new JsonResult(new { message = "error" });
+            }
+        }
+
+        // Method cancel order
+        private void CancelOrder(OrderProduct order)
+        {
+            order.OrderState = "Đã huỷ đơn";
+            _baseOrderProduct.Update(order);
+            _baseOrderProduct.Save();
+            _orderProductService.UpdateQuantityCancelOrder(order);
+        }
+
+        // Method request cancel order
+        private void RequestCancelOrder(OrderProduct order)
+        {
+            order.OrderState = "Đã yêu cầu huỷ đơn";
+            _baseOrderProduct.Update(order);
+            _baseOrderProduct.Save();
+        }
+
 
         // Login page
         [HttpGet]
@@ -96,14 +162,41 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         }
 
         [HttpGet]
-        [Route("Review")]
-        public IActionResult Review()
+        [Route("Review/{id}")]
+        public IActionResult Review(string id)
         {
-            var member = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
+            var order = _baseOrderProduct.GetById(id);
 
-            var customer = _customerService.findCustomerById(member.Id);
+            ViewBag.order = order;
 
-            return View("Info", customer);
+            return View("AddReview", new Review());
+        }
+
+        [HttpPost]
+        [Route("AddReview")]
+        public IActionResult AddReview(Review review, string order_id)
+        {
+            var order = _baseOrderProduct.GetById(order_id);
+
+            ViewBag.order = order;
+
+            var cus = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
+            if (review !=null)
+            {
+                review.Id = "RV" + PrimarykeyHelper.RandomString(6);
+                review.Created_Date = DateTime.Today;
+                review.Is_Update = false;
+                review.CustomerId = cus.Id;
+                _baseReview.Insert(review);
+                _baseReview.Save();
+                TempData["msg"] = "Gửi đánh giá thành công";
+                return View("AddReview", new Review());
+            }
+            else
+            {
+                TempData["msg"] = "Thêm đánh giá không thành công";
+                return View("AddReview", new Review());
+            }
         }
 
         [HttpPost]
@@ -494,6 +587,8 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 return View("update_password",cus);
             }
         }
+
+
 
         [HttpPost]
         [Route("forgot")]

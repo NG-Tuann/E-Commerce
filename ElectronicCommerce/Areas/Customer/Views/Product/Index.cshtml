@@ -681,6 +681,10 @@
                                     <div class="item_box">
                                         <div class="itemproductall">
                                             <div class="thumb">
+                                                @if (item.DISCOUNT_VALUE != null)
+                                                {
+                                                    <div class="discount-banner">-@item.DISCOUNT_VALUE%</div>
+                                                }
                                                 <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-da-citrine-22n-049nmbl.html">
                                                     <img src="/admin/images/products/@item.IMAGE" alt="@item.NAME" />
                                                 </a>
