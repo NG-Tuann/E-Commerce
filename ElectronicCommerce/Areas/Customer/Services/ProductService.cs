@@ -20,18 +20,58 @@ namespace ElectronicCommerce.Areas.Customer.Services
         public List<OverViewProductHomeFlag> findAllHomeFlagProducts()
         {
             var result = _db.OverViewProductHomeFlags.FromSqlRaw("[dbo].[sp_findall_home_flag_product_with_min_price]").ToList();
+
+            var pds = _db.ProductDetails.ToList();
+
+            // Kiem tra san pham het hang neu so luong = 0 thi khong hien thi
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if(totalQuantityOfProduct(result[i].PRODUCT_ID) ==0)
+                {
+                    result.Remove(result[i]);
+                }
+            }
+
             return result;
+        }
+
+        // Kiem tra so luong ton cua san pham trong kho
+        private int totalQuantityOfProduct(string product_id)
+        {
+            var pds = _db.ProductDetails.ToList();
+            return (int)pds.Where(i => i.ProductId.Equals(product_id)).ToList().Sum(i => i.Quantity);
         }
 
         public List<int> findAllSizeOfProducts(string id)
         {
             var result =_db.ProductDetails.ToList().Where(i => i.ProductId == id).Select(i => i.Size).ToList();
+
+            // Kiem tra neu so luong ton cua san pham cung size = 0 thi khong hien thi
+            for (int i = 0; i < result.Count; i++)
+            {
+               if(!checkQuantityProductWithSize(id, result[i]))
+                {
+                    result.Remove(result[i]);
+                }
+            }
+
             return result;
+        }
+
+        private bool checkQuantityProductWithSize(string product_id, int size)
+        {
+            var pds = _db.ProductDetails.ToList().SingleOrDefault(p=> p.ProductId.Equals(product_id) && p.Size == size);
+            if(pds.Quantity == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         public OverViewProductHomeFlag findProductById(string id)
         {
-            var result = findAllHomeFlagProducts().SingleOrDefault(p => p.PRODUCT_ID == id);
+            var result = findAllActiveProducts().SingleOrDefault(p => p.PRODUCT_ID == id);
             return result;
         }
 
@@ -69,6 +109,8 @@ namespace ElectronicCommerce.Areas.Customer.Services
             result.ProductPrice.SalePrice = product_detail.ProductPrice.SalePrice;
             result.Product.Image = product_detail.Product.Image;
             result.Product.Name = product_detail.Product.Name;
+            result.Product.GeomancyId = product_detail.Product.GeomancyId;
+            result.Product.MainStoneId = product_detail.Product.MainStoneId;
 
             return result;
         }
@@ -104,9 +146,37 @@ namespace ElectronicCommerce.Areas.Customer.Services
 
             // Kiem tra san pham co duoc giam gia
 
-            var isDiscount = _db.ProductDiscounts.ToList().SingleOrDefault(p => p.ValidUntil >= DateTime.Today && p.ProductId.Equals(id));
+            var isDiscount = new ProductDiscount();
 
-            if(isDiscount !=null)
+            foreach (var item in _db.ProductDiscounts.ToList())
+            {
+                if (item.ProductId != null)
+                {
+                    if (item.ProductId.Equals(product_detail_display.CODE))
+                    {
+                        isDiscount.DiscountValue = (int)item.DiscountValue;
+                        isDiscount.DiscountUnit = item.DiscountUnit;
+                    }
+                }
+                else if (item.GemId != null)
+                {
+                    if (item.GemId.Equals(product.GeomancyId))
+                    {
+                        isDiscount.DiscountValue = (int)item.DiscountValue;
+                        isDiscount.DiscountUnit = item.DiscountUnit;
+                    }
+                }
+                else if (item.StoneId != null)
+                {
+                    if (item.GemId.Equals(product.MainStoneId))
+                    {
+                        isDiscount.DiscountValue = (int)item.DiscountValue;
+                        isDiscount.DiscountUnit = item.DiscountUnit;
+                    }
+                }
+            }
+
+            if (isDiscount !=null && isDiscount.DiscountValue != 0)
             {
                 product_detail_display.DISCOUNT_VALUE = (int)isDiscount.DiscountValue;
                 product_detail_display.UNIT = isDiscount.DiscountUnit;
@@ -115,45 +185,6 @@ namespace ElectronicCommerce.Areas.Customer.Services
 
             product_detail_display.PRICE = (int)price;
             return product_detail_display;
-        }
-
-        public List<OverViewProduct> findProductWithSameCategoryById(string id)
-        {
-            var relateProducts = new List<OverViewProduct>();
-            var product = _db.Products.ToList().SingleOrDefault(i => i.Id.Equals(id));
-
-            var relatedProducts = _db.Products.ToList().Where(i => i.CatId.Equals(product.CatId) && !(i.Id.Equals(product.Id))).ToList();
-
-            foreach (var item in relatedProducts)
-            {
-                var productDetail = _db.ProductDetails.ToList().Where(i => i.ProductId.Equals(item.Id)).OrderBy(s => s.Size).FirstOrDefault();
-
-                // Kiem tra san pham co duoc giam gia
-
-                var isDiscount = _db.ProductDiscounts.ToList().SingleOrDefault(p => p.ValidUntil >= DateTime.Today && p.ProductId.Equals(item.Id));
-                
-                var relateProduct = new OverViewProduct();
-
-                relateProduct.THUMB_NAIL = item.Image;
-                relateProduct.NAME = item.Name;
-                relateProduct.PRICE = productDetail.ProductPrice.SalePrice;
-                relateProduct.CODE = item.Id;
-                relateProduct.CATE_NAME = item.Cat.Name;
-
-                if(isDiscount !=null)
-                {
-                    relateProduct.PRICE_AFTER_DISCOUNT = (double)productDetail.ProductPrice.SalePrice * (double)(100 - isDiscount.DiscountValue) / (double)100;
-                }
-                else
-                {
-                    relateProduct.PRICE_AFTER_DISCOUNT = 0;
-                }
-
-                relateProducts.Add(relateProduct);
-
-            }
-
-            return relateProducts;
         }
 
         public List<CustomerReview> findAllReviewById(string id)
@@ -190,6 +221,71 @@ namespace ElectronicCommerce.Areas.Customer.Services
                             Value = id
                         }};
             var result = _db.OverViewProductHomeFlags.FromSqlRaw("[dbo].[sp_findall_product_by_cat_id_with_min_price] @cat_id", param).ToList();
+
+            // Kiem tra san pham het hang neu so luong = 0 thi khong hien thi
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (totalQuantityOfProduct(result[i].PRODUCT_ID) == 0)
+                {
+                    result.Remove(result[i]);
+                }
+            }
+
+            return result;
+        }
+
+        public List<OverViewProductHomeFlag> findAllActiveProducts()
+        {
+            var result = _db.OverViewProductHomeFlags.FromSqlRaw("[dbo].[sp_findall_active_product_with_min_price]").ToList();
+
+            var pds = _db.ProductDetails.ToList();
+
+            // Kiem tra san pham het hang neu so luong = 0 thi khong hien thi
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (totalQuantityOfProduct(result[i].PRODUCT_ID) == 0)
+                {
+                    result.Remove(result[i]);
+                }
+            }
+
+            return result;
+        }
+
+        public List<OverViewProductBestSeller> findAllBestSellerProducts()
+        {
+            var bestSellerProducts = _db.OverViewProductHomeFlags.FromSqlRaw("[dbo].[sp_findall_best_seller_product_with_min_price]").ToList();
+
+            var result = new List<OverViewProductBestSeller>();
+
+            foreach (var item in bestSellerProducts)
+            {
+                var product = new OverViewProductBestSeller();
+                product.ACTIVE = item.ACTIVE;
+                product.DISCOUNT_VALUE = item.DISCOUNT_VALUE;
+                product.DIS_NAME = item.DIS_NAME;
+                product.IMAGE = item.IMAGE;
+                product.IS_SOLDOUT = false;
+                product.NAME = item.NAME;
+                product.PRICE = item.PRICE;
+                product.PRODUCT_ID = item.PRODUCT_ID;
+                result.Add(product);
+            }
+
+            var pds = _db.ProductDetails.ToList();
+
+            //Kiem tra san pham het hang neu so luong = 0 thi hien thi chay hang
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                if (totalQuantityOfProduct(result[i].PRODUCT_ID) == 0)
+                {
+                    result[i].IS_SOLDOUT = true;
+                }
+            }
+
             return result;
         }
     }

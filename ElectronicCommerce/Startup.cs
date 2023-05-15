@@ -2,6 +2,7 @@
 using AspNetCoreHero.ToastNotification;
 using ElectronicCommerce.Areas.Admin.Services;
 using ElectronicCommerce.Areas.Customer.Services;
+using ElectronicCommerce.MiddleWares;
 using ElectronicCommerce.Models;
 using ElectronicCommerce.Repositories;
 using Microsoft.AspNetCore.Authentication;
@@ -50,7 +51,7 @@ namespace ElectronicCommerce
             // INJECT PRODUCT SERVICE
             services.AddScoped<IProductService, ProductService>();
 
-            // Them xac thuc google
+            // Them xac thuc google va facebook
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -62,7 +63,12 @@ namespace ElectronicCommerce
                     options.ClientId = _configuration["Authentication:Google:ClientId"];
                     options.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
                     options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
-                });
+                })
+                .AddFacebook(facebookOptions =>
+                 {
+                     facebookOptions.ClientId = _configuration["Authentication:Facebook:ClientId"];
+                     facebookOptions.ClientSecret = _configuration["Authentication:Facebook:ClientSecret"];
+                 });
 
             // INJECT SERVICE CUSTOMER
 
@@ -88,6 +94,9 @@ namespace ElectronicCommerce
             }
 
             app.UseSession();
+
+            app.UseMiddleware<AdminMiddleware>();
+            //app.UseMiddleware<CustomerMiddleware>();
 
             app.UseRouting();
 

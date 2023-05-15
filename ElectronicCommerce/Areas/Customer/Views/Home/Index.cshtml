@@ -105,7 +105,7 @@
                     </div>
                     <div class="vhcontnn">
                         <div class="grproductnn vhflex vhflex-scroll-block">
-                            @foreach (var item in ViewBag.homePros)
+                            @foreach (var item in ViewBag.actiPros)
                             {
                                 <div class="colsl">
                                     <div class="itemproductall">
@@ -128,12 +128,12 @@
                                                 @if (item.DISCOUNT_VALUE != null)
                                                 {
                                                     var discountedPrice = item.PRICE * (100 - item.DISCOUNT_VALUE) / 100;
-                                                    <span class="dsnews" style="margin-left:10px;margin-right:10px;">@discountedPrice.ToString("#,###") đ</span>
-                                                    <span class="dsnews" style="font-size:14px;color:#999"><del><small>@item.PRICE.ToString("#,###") đ</small></del></span>
+                                                    <span class="dsnews" style="margin-left:10px;margin-right:10px;">@discountedPrice.ToString("#,###") $</span>
+                                                    <span class="dsnews" style="font-size:14px;color:#999"><del><small>@item.PRICE.ToString("#,###") $</small></del></span>
                                                 }
                                                 else
                                                 {
-                                                    <span class="dsnews">@item.PRICE.ToString("#,###") đ</span>
+                                                    <span class="dsnews">@item.PRICE.ToString("#,###") $</span>
                                                 }
                                             </div>
                                             <div class="dsview">
@@ -157,387 +157,63 @@
                 <div class="vhproductnn">
                     <div class="vhtitlenn">
                         <div class="title">
+                            <h2>SẢN PHẨM NỔI BẬT</h2>
                         </div>
                         <div class="grtabview">
                             <div class="tab hidden-xs hidden-sm hidden-md">
-                                <ul>
-                                    @foreach (var geo in ViewBag.geos)
-                                    {
-                                        <li>Trang sức @geo.Name</li>
-                                    }
-                                </ul>
+                                
                             </div>
                             <div class="view">
-                                <a href="https://ijc.vn/vn/trang-suc-kim-cuong.html">
-                                    <span class="fa-angle-right">Xem tất cả</span>
-                                </a>
+                                
                             </div>
                         </div>
                     </div>
                     <div class="vhtabpro hidden-lg">
                         <ul class="vhflex vhflex-scroll-text">
-                            <li>
-                                <a href="https://ijc.vn/vn/mat-day-kim-cuong.html">MẶT DÂY KIM CƯƠNG
-                            </li>
-                            <li>
-                                <a href="https://ijc.vn/vn/bong-tai-kim-cuong.html">BÔNG TAI KIM CƯƠNG
-                            </li>
-                            <li>
-                                <a href="https://ijc.vn/vn/nhan-kim-cuong.html">NHẪN KIM CƯƠNG
-                            </li>
+                            
                         </ul>
                     </div>
                     <div class="vhcontnn">
                         <div class="grproductnn vhflex vhflex-scroll-block">
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/vo-nhan-kim-cuong-21n071-1668073602.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/08_2022/thumbs/1600_crop_Vo_nhan_Kim_cuong_21N071.jpg" alt="Vỏ nhẫn Kim cương 21N071">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/vo-nhan-kim-cuong-21n071-1668073602.html">Vỏ nhẫn Kim cương 21N071</a>
-                                            </h3>
+                            @foreach (var item in ViewBag.homePros)
+                            {
+                                <div class="colsl">
+                                    <div class="itemproductall">
+                                        <div class="thumb">
+                                            @if (item.DISCOUNT_VALUE != null)
+                                            {
+                                                <div class="discount-banner">-@item.DISCOUNT_VALUE%</div>
+                                            }
+                                            <a class="vhthumbzoom vhthumb-100 vhthumb-center" asp-area="customer" asp-controller="product" asp-action="detail" asp-route-id="@item.PRODUCT_ID">
+                                                <img src="~/admin/images/products/@item.IMAGE" alt="@item.NAME">
+                                            </a>
                                         </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">65,799,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/vo-nhan-kim-cuong-21n071-1668073602.html/?popup=1" data_id="1727">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
+                                        <div class="decs">
+                                            <div class="dstile">
+                                                <h3>
+                                                    <a href="#">@item.NAME</a>
+                                                </h3>
                                             </div>
+                                            <div class="dsprive">
+                                                @if (item.DISCOUNT_VALUE != null)
+                                                {
+                                                    var discountedPrice = item.PRICE * (100 - item.DISCOUNT_VALUE) / 100;
+                                                    <span class="dsnews" style="margin-left:10px;margin-right:10px;">@discountedPrice.ToString("#,###") $</span>
+                                                    <span class="dsnews" style="font-size:14px;color:#999"><del><small>@item.PRICE.ToString("#,###") $</small></del></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="dsnews">@item.PRICE.ToString("#,###") $</span>
+                                                }
+                                            </div>
+                                            <div class="dsview">
+                                                <input type="button" data-id="@item.PRODUCT_ID" class="btn btn-add-to-cart" value="Thêm vào giỏ hàng">
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/vo-nhan-kim-cuong-20n292-6ty.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/08_2022/thumbs/1600_crop_Vo_nhan_Kim_Cuong_20N2926TY.jpg" alt="Vỏ nhẫn Kim cương 20N292.6TY">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/vo-nhan-kim-cuong-20n292-6ty.html">Vỏ nhẫn Kim cương 20N292.6TY</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">55,938,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/vo-nhan-kim-cuong-20n292-6ty.html/?popup=1" data_id="1726">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/vo-nhan-kim-cuong-21n071.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/04_2021/thumbs/1600_crop_O_nhan_da_Kim_cuong_21N071.jpg" alt="Vỏ nhẫn Kim cương 21N071">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/vo-nhan-kim-cuong-21n071.html">Vỏ nhẫn Kim cương 21N071</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">65,799,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/vo-nhan-kim-cuong-21n071.html/?popup=1" data_id="988">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/vo-nhan-kim-cuong-20n289-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/04_2021/thumbs/1600_crop_O_nhan_da_Kim_cuong_20N2892TI.jpg" alt="Vỏ nhẫn Kim cương 20N289.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/vo-nhan-kim-cuong-20n289-2ti.html">Vỏ nhẫn Kim cương 20N289.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">66,920,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/vo-nhan-kim-cuong-20n289-2ti.html/?popup=1" data_id="987">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/bong-tai-kim-cuong-21b058.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/05_2021/thumbs/1600_crop_Bong_tai_da_Kim_cuong_21B058.jpg" alt="Bông tai Kim cương 21B058">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/bong-tai-kim-cuong-21b058.html">Bông tai Kim cương 21B058</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">59,570,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/bong-tai-kim-cuong-21b058.html/?popup=1" data_id="996">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/bong-tai-kim-cuong-21b063.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/05_2021/thumbs/1600_crop_Bong_tai_da_Kim_cuong_21B063.jpg" alt="Bông tai Kim cương 21B063">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/bong-tai-kim-cuong-21b063.html">Bông tai Kim cương 21B063</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">58,501,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/bong-tai-kim-cuong-21b063.html/?popup=1" data_id="995">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/bong-tai-kim-cuong-20b176-1th.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/03_2021/thumbs/1600_crop_Bong_tai_da_Kim_cuong_20B1761TH.jpg" alt="Bông tai Kim cương 20B176.1TH">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/bong-tai-kim-cuong-20b176-1th.html">Bông tai Kim cương 20B176.1TH</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">Liên Hệ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/bong-tai-kim-cuong-20b176-1th.html/?popup=1" data_id="875">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/bong-tai-kim-cuong-20b183-1th.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/03_2021/thumbs/1600_crop_Bong_tai_da_Kim_cuong_20B1831TH.jpg" alt="Bông tai Kim cương 20B183.1TH">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/bong-tai-kim-cuong-20b183-1th.html">Bông tai Kim cương 20B183.1TH</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">Liên Hệ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/bong-tai-kim-cuong-20b183-1th.html/?popup=1" data_id="877">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/mat-day-kim-cuong-21m045.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/05_2021/thumbs/1600_crop_Mat_day_da_Kim_cuong_21M045.jpg" alt="Mặt dây Kim cương 21M045">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/mat-day-kim-cuong-21m045.html">Mặt dây Kim cương 21M045</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">24,393,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/mat-day-kim-cuong-21m045.html/?popup=1" data_id="999">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/mat-day-kim-cuong-21m046.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/05_2021/thumbs/1600_crop_Mat_day_da_Kim_cuong_21M046.jpg" alt="Mặt dây Kim cương 21M046">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/mat-day-kim-cuong-21m046.html">Mặt dây Kim cương 21M046</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">33,966,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/mat-day-kim-cuong-21m046.html/?popup=1" data_id="998">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/mat-day-kim-cuong-20m150-1th.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/03_2021/thumbs/1600_crop_Mat_day_da_Kim_cuong_20M1501TH.jpg" alt="Mặt dây Kim cương 20M150.1TH">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/mat-day-kim-cuong-20m150-1th.html">Mặt dây Kim cương 20M150.1TH</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">Liên Hệ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/mat-day-kim-cuong-20m150-1th.html/?popup=1" data_id="881">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/mat-day-kim-cuong-20m173-1th.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/03_2021/thumbs/1600_crop_Mat_day_da_Kim_cuong_20M1731TH.jpg" alt="Mặt dây Kim cương 20M173.1TH">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/mat-day-kim-cuong-20m173-1th.html">Mặt dây Kim cương 20M173.1TH</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">Liên Hệ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/mat-day-kim-cuong-20m173-1th.html/?popup=1" data_id="880">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            }
                         </div>
                     </div>
                 </div>
@@ -551,392 +227,64 @@
                 <div class="vhproductnn">
                     <div class="vhtitlenn">
                         <div class="title">
-                            <h2>TRANG SỨC CƯỚI</h2>
-                        </div>
-                        <div class="grtabview">
-                            <div class="tab hidden-xs hidden-sm hidden-md">
-                                <ul>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/trang-suc-cuoi-kim-cuong.html">Trang sức cưới kim cương
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/trang-suc-cuoi-da-cz.html">Trang sức cưới đá CZ
-                                    </li>
-                                    <li>
-                                        <a href="https://ijc.vn/vn/trang-suc-cuoi-da-quy.html">Trang sức cưới đá quý
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="view">
-                                <a href="https://ijc.vn/vn/trang-suc-cuoi.html">
-                                    <span class="fa-angle-right">Xem tất cả</span>
-                                </a>
-                            </div>
+                            <h2>BÁN CHẠY NHẤT</h2>
                         </div>
                     </div>
                     <div class="vhtabpro hidden-lg">
-                        <ul class="vhflex vhflex-scroll-text">
-                            <li>
-                                <a href="https://ijc.vn/vn/trang-suc-cuoi-kim-cuong.html">Trang sức cưới kim cương
-                            </li>
-                            <li>
-                                <a href="https://ijc.vn/vn/trang-suc-cuoi-da-cz.html">Trang sức cưới đá CZ
-                            </li>
-                            <li>
-                                <a href="https://ijc.vn/vn/trang-suc-cuoi-da-quy.html">Trang sức cưới đá quý
-                            </li>
-                        </ul>
+                        
                     </div>
                     <div class="vhcontnn">
                         <div class="grproductnn vhflex vhflex-scroll-block">
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20qr012-4na.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_nu_20QR0124NA.jpg" alt="Nhẫn cưới Kim cương nữ 20QR012.4NA">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20qr012-4na.html">Nhẫn cưới Kim cương nữ 20QR012.4NA</a>
-                                            </h3>
+                            @foreach (var item in ViewBag.bestPros)
+                            {
+                                <div class="colsl">
+                                    <div class="itemproductall">
+                                        <div class="thumb">
+                                            @if(item.IS_SOLDOUT)
+                                            {
+                                            <div class="sold-out-banner"></div>
+                                            }
+                                            @if (item.DISCOUNT_VALUE != null)
+                                            {
+                                                <div class="discount-banner">-@item.DISCOUNT_VALUE%</div>
+                                            }
+                                            <a class="vhthumbzoom vhthumb-100 vhthumb-center" asp-area="customer" asp-controller="product" asp-action="detail" asp-route-id="@item.PRODUCT_ID">
+                                                <img src="~/admin/images/products/@item.IMAGE" alt="@item.NAME">
+                                            </a>
                                         </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">6,343,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20qr012-4na.html/?popup=1" data_id="1289">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
+                                        <div class="decs">
+                                            <div class="dstile">
+                                                <h3>
+                                                    <a href="#">@item.NAME</a>
+                                                </h3>
                                             </div>
+                                            <div class="dsprive">
+                                                @if (item.DISCOUNT_VALUE != null)
+                                                {
+                                                    var discountedPrice = item.PRICE * (100 - item.DISCOUNT_VALUE) / 100;
+                                                    <span class="dsnews" style="margin-left:10px;margin-right:10px;">@discountedPrice.ToString("#,###") $</span>
+                                                    <span class="dsnews" style="font-size:14px;color:#999"><del><small>@item.PRICE.ToString("#,###") $</small></del></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="dsnews">@item.PRICE.ToString("#,###") $</span>
+                                                }
+                                            </div>
+                                            <div class="dsview">
+                                                @if (item.IS_SOLDOUT)
+                                                {
+                                                    <input type="button" class="btn btn-add-to-cart-disable" value="Thêm vào giỏ hàng">
+                                                }
+                                                else
+                                                {
+                                                    <input type="button" data-id="@item.PRODUCT_ID" class="btn btn-add-to-cart" value="Thêm vào giỏ hàng">
+                                                }
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-nam-20kr012-4na.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_nam_20KR0124NA.jpg" alt="Nhẫn cưới nam 20KR012.4NA">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-nam-20kr012-4na.html">Nhẫn cưới nam 20KR012.4NA</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">7,247,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-nam-20kr012-4na.html/?popup=1" data_id="1288">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q022-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_0222TI.jpg" alt="Nhẫn cưới Kim cương nữ 20Q022.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q022-2ti.html">Nhẫn cưới Kim cương nữ 20Q022.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">7,336,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q022-2ti.html/?popup=1" data_id="1287">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k022-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_0222TI.jpg" alt="Nhẫn cưới Kim cương nam 20K022.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k022-2ti.html">Nhẫn cưới Kim cương nam 20K022.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">8,463,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k022-2ti.html/?popup=1" data_id="1286">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q018-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_0182TI.jpg" alt="Nhẫn cưới Kim cương nữ 20Q018.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q018-2ti.html">Nhẫn cưới Kim cương nữ 20Q018.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">7,649,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q018-2ti.html/?popup=1" data_id="1285">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k018-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_0182TI.jpg" alt="Nhẫn cưới Kim cương nam 20K018.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k018-2ti.html">Nhẫn cưới Kim cương nam 20K018.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">9,170,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k018-2ti.html/?popup=1" data_id="1284">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q012-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_nu_20Q0212TI.jpg" alt="Nhẫn cưới Kim cương nữ 20Q012.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q012-2ti.html">Nhẫn cưới Kim cương nữ 20Q012.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">7,481,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q012-2ti.html/?popup=1" data_id="1283">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k012-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_nam_20K0122TI.jpg" alt="Nhẫn cưới Kim cương nam 20K012.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k012-2ti.html">Nhẫn cưới Kim cương nam 20K012.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">9,090,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k012-2ti.html/?popup=1" data_id="1282">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q024-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_0242TI.jpg" alt="Nhẫn cưới Kim cương nữ 20Q024.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q024-2ti.html">Nhẫn cưới Kim cương nữ 20Q024.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">7,858,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-20q024-2ti.html/?popup=1" data_id="1281">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k024-2ti.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_0242TI.jpg" alt="Nhẫn cưới Kim cương nam 20K024.2TI">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k024-2ti.html">Nhẫn cưới Kim cương nam 20K024.2TI</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">9,914,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-20k024-2ti.html/?popup=1" data_id="1280">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-21q-013nc.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_013NC.jpg" alt="Nhẫn cưới Kim cương nữ 21Q.013NC">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-21q-013nc.html">Nhẫn cưới Kim cương nữ 21Q.013NC</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">13,002,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nu-21q-013nc.html/?popup=1" data_id="1267">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="colsl">
-                                <div class="itemproductall">
-                                    <div class="thumb">
-                                        <a class="vhthumbzoom vhthumb-100 vhthumb-center" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-21k-013nc.html">
-                                            <img src="https://ijc.vn/vnt_upload/product/10_2021/thumbs/1600_crop_Nhan_cuoi_Kim_cuong_013NC.jpg" alt="Nhẫn cưới Kim cương nam 21K.013NC">
-                                        </a>
-                                    </div>
-                                    <div class="decs">
-                                        <div class="dstile">
-                                            <h3>
-                                                <a href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-21k-013nc.html">Nhẫn cưới Kim cương nam 21K.013NC</a>
-                                            </h3>
-                                        </div>
-                                        <div class="dsprive">
-                                            <span class="dsnews">14,048,000 đ</span>
-                                        </div>
-
-                                        <div class="dsview">
-                                            <div class="viewall">
-                                                <a class="addCart addCartpop" href="https://ijc.vn/vn/nhan-cuoi-kim-cuong-nam-21k-013nc.html/?popup=1" data_id="1266">
-                                                    <i class="icon-cart1"></i>
-                                                    <span>Thêm vào giỏ hàng</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            }
 
                         </div>
                     </div>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using ElectronicCommerce.Areas.Customer.Services;
 using ElectronicCommerce.Models;
 using ElectronicCommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,14 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
     {
         private IBaseRepository<OrderProduct> _baseOrderProduct;
         private INotyfService _notyfService;
+        private IOrderProductService _orderProductService;
 
-        public AdminOrderController(INotyfService notyfService, IBaseRepository<OrderProduct> baseOrderProduct)
+        public AdminOrderController(INotyfService notyfService, IBaseRepository<OrderProduct> baseOrderProduct
+            ,IOrderProductService orderProductService)
         {
             _notyfService = notyfService;
             _baseOrderProduct = baseOrderProduct;
+            _orderProductService = orderProductService;
         }
 
         // GET: /<controller>/
@@ -31,6 +35,51 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         {
             ViewBag.orders = _baseOrderProduct.GetAll().ToList();
             return View();
+        }
+
+        [Route("findCancelOrder")]
+        public IActionResult findCancelOrder()
+        {
+            ViewBag.orders = _baseOrderProduct.GetAll().ToList().Where(i => i.OrderState.Equals("Đã yêu cầu huỷ đơn")).OrderByDescending(i => i.DateCreated).ToList();
+            return View("index");
+        }
+
+        [HttpGet]
+        [Route("confirmCancel/{id}")]
+        public IActionResult confirmCancel(string id)
+        {
+            ConfirmCancel(id);
+            return RedirectToAction("index");
+        }
+
+        [HttpGet]
+        [Route("confirmOrder/{id}")]
+        public IActionResult confirmOrder(string id)
+        {
+            ConfirmOrder(id);
+            return RedirectToAction("index");
+        }
+
+        private void ConfirmCancel(string order_id)
+        {
+            var order = _baseOrderProduct.GetById(order_id);
+            order.OrderState = "Đã huỷ đơn";
+            _baseOrderProduct.Update(order);
+            _baseOrderProduct.Save();
+
+            // Cap nhat so luong cho san pham khi xac nhan huy don
+            _orderProductService.UpdateQuantityCancelOrder(order);
+        }
+
+        private void ConfirmOrder(string order_id)
+        {
+            var order = _baseOrderProduct.GetById(order_id);
+            order.OrderState = "Đã xác nhận";
+            _baseOrderProduct.Update(order);
+            _baseOrderProduct.Save();
+
+            // Cap nhat so luong cho san pham khi xac nhan huy don
+            _orderProductService.UpdateQuantityCancelOrder(order);
         }
 
         [HttpPost]

@@ -149,3 +149,18 @@ tfoot td {
     background-color: #FFFFFF;
     border: 1px solid #000000;
 }
+
+.btn-cancel {
+    border: 1px solid #000000;
+    padding:10px 20px;
+    background-color:#000000;
+    color:#fff;
+    cursor:pointer;
+}
+
+.disable {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: default;
+}

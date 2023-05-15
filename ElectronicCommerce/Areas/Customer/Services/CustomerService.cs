@@ -27,6 +27,7 @@ namespace ElectronicCommerce.Areas.Customer.Services
             cartItem.Quantity = quantity;
             cartItem.Is_Check = isCheck;
             cartItem.SavePrice = savePrice;
+            cartItem.OrderId = null;
 
             _db.Carts.Add(cartItem);
             _db.SaveChanges();

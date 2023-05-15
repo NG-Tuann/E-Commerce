@@ -258,7 +258,7 @@
 							<td>
 								@item.CreatedDate
 							</td>
-							<td><a asp-area="admin" asp-controller="product" asp-action="deleteProductDetail" asp-route-id="@item.ProductDetailId"><i class="mdi mdi-delete" onclick="alert('Xóa sản phẩm này?')"></i></a></td>
+							<td><a asp-area="admin" asp-controller="product" asp-action="deleteProductDetail" asp-route-id="@item.ProductDetailId"><i class="mdi mdi-delete" onclick="return confirm('Xóa sản phẩm này?')"></i></a></td>
 							
 						</tr>
 					}
