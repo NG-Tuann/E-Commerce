@@ -23,7 +23,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [Route("index")]
         [Route("")]
-        [Route("~/")]
+        //[Route("~/")]
         public IActionResult Index()
         {
             // lấy danh sách các trạng thái đơn hàng và httt đến view

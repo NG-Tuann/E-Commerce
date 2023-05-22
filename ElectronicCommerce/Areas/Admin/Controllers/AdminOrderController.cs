@@ -19,6 +19,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         private IBaseRepository<OrderProduct> _baseOrderProduct;
         private INotyfService _notyfService;
         private IOrderProductService _orderProductService;
+        private static string orderStatus = null;
 
         public AdminOrderController(INotyfService notyfService, IBaseRepository<OrderProduct> baseOrderProduct
             ,IOrderProductService orderProductService)
@@ -34,6 +35,7 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         public IActionResult Index()
         {
             ViewBag.orders = _baseOrderProduct.GetAll().ToList();
+            orderStatus = null;
             return View();
         }
 
@@ -50,6 +52,31 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         {
             ConfirmCancel(id);
             return RedirectToAction("index");
+        }
+
+        [HttpGet]
+        [Route("confirmDeli/{id}")]
+        public IActionResult confirmDeli(string id)
+        {
+            ConfirmDeli(id);
+            return RedirectToAction("index");
+        }
+
+        [HttpGet]
+        [Route("confirmDone/{id}")]
+        public IActionResult confirmDone(string id)
+        {
+            ConfirmDone(id);
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        [Route("filterByOrderStatus")]
+        public IActionResult filterByOrderStatus(string order_status)
+        {
+            orderStatus = order_status;
+            ViewBag.orders = _baseOrderProduct.GetAll().ToList().Where(i => i.OrderState.Equals(order_status)).ToList();
+            return View("index");
         }
 
         [HttpGet]
@@ -70,6 +97,23 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             // Cap nhat so luong cho san pham khi xac nhan huy don
             _orderProductService.UpdateQuantityCancelOrder(order);
         }
+
+        private void ConfirmDeli(string order_id)
+        {
+            var order = _baseOrderProduct.GetById(order_id);
+            order.OrderState = "Đang giao hàng";
+            _baseOrderProduct.Update(order);
+            _baseOrderProduct.Save();
+        }
+
+        private void ConfirmDone(string order_id)
+        {
+            var order = _baseOrderProduct.GetById(order_id);
+            order.OrderState = "Đã giao hàng";
+            _baseOrderProduct.Update(order);
+            _baseOrderProduct.Save();
+        }
+
 
         private void ConfirmOrder(string order_id)
         {
@@ -92,35 +136,19 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             DateTime eDate = DateTime.ParseExact(end_date, "dd/MM/yyyy",
                                       System.Globalization.CultureInfo.InvariantCulture);
 
-            var orders = _baseOrderProduct.GetAll().ToList().Where(i => i.DateCreated >= sDate && i.DateCreated <= eDate).ToList();
-            ViewBag.orders = orders;
-            return View("index");
-        }
 
-
-        [HttpPost]
-        [Route("checkOrderStatus")]
-        public IActionResult checkOrderStatus(string start_date, string end_date, string status)
-        {
-            DateTime sDate = DateTime.ParseExact(start_date, "dd/MM/yyyy",
-                                         System.Globalization.CultureInfo.InvariantCulture);
-
-            DateTime eDate = DateTime.ParseExact(end_date, "dd/MM/yyyy",
-                                      System.Globalization.CultureInfo.InvariantCulture);
-
-            var orders = _baseOrderProduct.GetAll().ToList().Where(i => i.DateCreated >= sDate && i.DateCreated <= eDate).ToList();
-
-            orders.ForEach(i =>
+            if (orderStatus !=null)
             {
-                i.OrderState = status;
-                _baseOrderProduct.Update(i);
-            });
+                var orders = _baseOrderProduct.GetAll().ToList().Where(i => i.DateCreated >= sDate && i.DateCreated <= eDate && i.OrderState.Equals(orderStatus)).ToList();
+                ViewBag.orders = orders;
+            }
+            else
+            {
+                var orders = _baseOrderProduct.GetAll().ToList().Where(i => i.DateCreated >= sDate && i.DateCreated <= eDate).ToList();
+                ViewBag.orders = orders;
+            }
 
-            _baseOrderProduct.Save();
-
-            ViewBag.orders = orders;
             return View("index");
         }
-
     }
 }

@@ -599,28 +599,34 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
 
             if (mail !=null && mail.Length >0)
             {
-                // Gui mat khau da duoc reset va tao moi qua mail
-
-                var password = PrimarykeyHelper.RandomString(6);
-
-                var mailHelper = new MailHelper(_configuration);
-                string to = mail;
-                string subject = "Xác thực tài khoản tại PTJ";
-                string content = "<table style='margin-bottom:20px;' width='100%' border='0' cellspacing='0' cellpadding='0'> <tr> <td align='center' style='text-align: center;'> <img src='https://ijc.vn/vnt_upload/weblink/Logo_IJC__Slogan_1.png' width='220' height='100'> <h1 style='color:#DCB15B;font-size: 40px;margin: 0;'>Yêu cầu xác thực thành công</h1> <h3>IJC cám ơn bạn đã tin tưởng chọn và chọn chúng tôi</h3> <p>Bạn đã đặt lại mật khẩu thành công, mật khẩu hệ thống đã đặt lại cho bạn là:</p> <p style='font-weight: bolder;'>Mật khẩu của bạn là, vui lòng không chia sẽ mật khẩu này:</p> <span style='color:#DCB15B; border:1px solid #E5E5E5; font-size: 40px; padding: 10px;'>" + password + "</span> </td> </tr> </table>";
-                string from = "tuan.ng400@aptechlearning.edu.vn";
-
-
-                if (mailHelper.Send(from, to, subject, content))
+                if(_customerService.isExistMail(mail)!=null)
                 {
-                    // Gui thanh cong luu lai mat khau moi cho customer
-                    var customer = _customerService.findCustomerByMail(mail);
+                    // Gui mat khau da duoc reset va tao moi qua mail
 
-                    customer.Password = BCrypt.Net.BCrypt.HashPassword(password);
+                    var password = PrimarykeyHelper.RandomString(6);
 
-                    _baseRepoCustomer.Update(customer);
-                    _baseRepoCustomer.Save();
+                    var mailHelper = new MailHelper(_configuration);
+                    string to = mail;
+                    string subject = "Xác thực tài khoản tại PTJ";
+                    string content = "<table style='margin-bottom:20px;' width='100%' border='0' cellspacing='0' cellpadding='0'> <tr> <td align='center' style='text-align: center;'> <img src='https://ijc.vn/vnt_upload/weblink/Logo_IJC__Slogan_1.png' width='220' height='100'> <h1 style='color:#DCB15B;font-size: 40px;margin: 0;'>Yêu cầu xác thực thành công</h1> <h3>IJC cám ơn bạn đã tin tưởng chọn và chọn chúng tôi</h3> <p>Bạn đã đặt lại mật khẩu thành công, mật khẩu hệ thống đã đặt lại cho bạn là:</p> <p style='font-weight: bolder;'>Mật khẩu của bạn là, vui lòng không chia sẽ mật khẩu này:</p> <span style='color:#DCB15B; border:1px solid #E5E5E5; font-size: 40px; padding: 10px;'>" + password + "</span> </td> </tr> </table>";
+                    string from = "tuan.ng400@aptechlearning.edu.vn";
 
-                    _notyfService.Success("Yêu cầu xác thực thành công. Mật khẩu đã được gửi đến mail của bạn. Vui lòng thay đổi mật khẩu sau khi đăng nhập.", 3);
+                    if (mailHelper.Send(from, to, subject, content))
+                    {
+                        // Gui thanh cong luu lai mat khau moi cho customer
+                        var customer = _customerService.findCustomerByMail(mail);
+
+                        customer.Password = BCrypt.Net.BCrypt.HashPassword(password);
+
+                        _baseRepoCustomer.Update(customer);
+                        _baseRepoCustomer.Save();
+
+                        _notyfService.Success("Yêu cầu xác thực thành công. Mật khẩu đã được gửi đến mail của bạn. Vui lòng thay đổi mật khẩu sau khi đăng nhập.", 3);
+                    }
+                    else
+                    {
+                        _notyfService.Error("Không tìm thấy địa chỉ mail của bạn, vui lòng kiểm tra lại", 3);
+                    }
                 }
                 else
                 {
