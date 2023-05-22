@@ -103,7 +103,7 @@ namespace ElectronicCommerce.Areas.Customer.Services
                 // Cong scorepay cho khach hang
                 var member = _db.Customers.ToList().SingleOrDefault(i => i.Id.Equals(customer.Id));
 
-                member.ScorePay += orderProduct.TotalPay;
+                //member.ScorePay += orderProduct.TotalPay;
 
                 // Kiem tra score pay dat yeu cau thi cap nhat loai khach hang
 

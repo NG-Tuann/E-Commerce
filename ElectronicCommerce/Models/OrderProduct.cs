@@ -20,7 +20,7 @@ namespace ElectronicCommerce.Models
         public int? Pay { get; set; }
         public DateTime? DatePay { get; set; }
         public string PayType { get; set; }
-        public int? TotalPay { get; set; }
+        public decimal? TotalPay { get; set; }
         public string OrderState { get; set; }
         public string PhoneNonAccount { get; set; }
         public string NameCusNonAccount { get; set; }
