@@ -6,7 +6,7 @@ namespace ElectronicCommerce.Areas.Admin.ViewModels
     {
       
         public int Time { get; set; }
-        public int TongTien { get; set; }
+        public decimal TongTien { get; set; }
 
     }
 }

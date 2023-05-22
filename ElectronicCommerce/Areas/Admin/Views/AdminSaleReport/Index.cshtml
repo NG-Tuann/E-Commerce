@@ -43,16 +43,7 @@
 					<input type="date" id="batdau" class="form-control">
 					<label for="ketthuc">Thời gian kết thúc:</label>
 					<input type="date" id="ketthuc" class="form-control">
-					<label>Lọc theo trạng thái:</label>
-					<select id="trangthai" class="js-example-basic-single form-control select2-single">
-						<option selected value="">Chọn</option>
-						@{
-							foreach(var item in ViewBag.lstStatus)
-							{
-								<option value="@item">@item</option>
-							}
-						}
-					</select>
+					
 					<label>Lọc theo hình thức thanh toán:</label>
 					<select id="httt" class="js-example-basic-single form-control select2-single">
 						<option selected value="">Chọn</option>
@@ -101,9 +92,8 @@
 		  function handleConfirmation() {
 			 var batdau = document.getElementById("batdau").value;
 			 var ketthuc = document.getElementById("ketthuc").value;
-			 var trangthai = document.getElementById("trangthai").value;
 			 var httt = document.getElementById("httt").value;
-			 GetReportByOption(batdau, ketthuc, trangthai, httt);
+			 GetReportByOption(batdau, ketthuc, httt);
 		  }
 
 		  function GetReportList(){
@@ -116,14 +106,14 @@
 				  }
 			  });
 		  }
-		  function GetReportByOption(batdau, ketthuc, trangthai, httt) {
 
-			   console.log(batdau);
+		  function GetReportByOption(batdau, ketthuc, httt) {
+
 				$.ajax({
 				  type: 'GET',
 
 				  url: '/admin/salereport/GetReportByOption',
-				  data: { batdau: batdau, ketthuc: ketthuc , trangthai: trangthai, httt: httt},
+				  data: { batdau: batdau, ketthuc: ketthuc , httt: httt},
 				  success: function (result) {
 					  RegisterChart(result)
 				  }
