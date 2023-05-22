@@ -24,7 +24,7 @@
                 // Lay ve tong tien thuc apply promo
 
                 let temp_total = $('#total-cart').val();
-                var total_before_promo = parseInt(temp_total);
+                var total_before_promo = parseFloat(temp_total);
                 console.log("Total before promo: " + total_before_promo);
                 var total_after_promo = 0;
 
@@ -37,7 +37,7 @@
                     if (actual_discount > result.maxDiscount) {
                         actual_discount = result.maxDiscount;
                     }
-                    total_after_promo = total_before_promo - actual_discount;
+                    total_after_promo = parseFloat(total_before_promo - actual_discount).toFixed(2);
                     console.log(total_after_promo);
                 }
                 else if (result.discountUnit == '$') {
@@ -52,10 +52,11 @@
 
                 $('#total-before-promo').text(total_before_promo + " $");
 
-                // Chinh sua total khi thanh toan paypal
+                // Chinh sua total khi thanh toan paypal hoac cod
 
-                $('#total-cart-paid').val(total_after_promo);
+                $('.total-cart-paid').val(total_after_promo);
 
+                console.log("Gia da giam sau promo: "+total_after_promo);
 
                 console.log(result);
             }

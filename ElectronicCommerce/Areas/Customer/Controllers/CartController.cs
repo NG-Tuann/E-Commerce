@@ -75,12 +75,19 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             var cart = JsonConvert.DeserializeObject<List<Item>>(HttpContext.Session.GetString("cart"));
 
             ViewBag.products = cart.ToList().Where(i => i.isCheck).ToList();
-            ViewBag.total = cart.ToList().Where(i => i.isCheck).Sum(p => p.price * p.quantity);
 
-            if(HttpContext.Session.GetString("customer")!=null)
+            double total = cart.ToList().Where(i => i.isCheck).Sum(p => p.price * p.quantity);
+
+            if (HttpContext.Session.GetString("customer")!=null)
             {
                 var customer = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
+
                 ViewBag.customerId = customer.Id;
+
+                // Giam gia dua tren member type
+
+                var customerInfo = _customerService.findCustomerById(customer.Id);
+                total = total * ((double)(100 - customerInfo.CustomerType.DiscountValue)/ (double)100);
 
                 // Load promotion cua khach hang thanh vien
 
@@ -89,7 +96,13 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 {
                     ViewBag.promos = result;
                 }
+
+                
             }
+
+            ViewBag.pointCount = (int)total;
+
+            ViewBag.total = total;
             return View("bookingpage");
         }
 
@@ -242,7 +255,7 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 if(HttpContext.Session.GetString("customer") == null)
                 {
                     // Goi dich vu thanh toan thanh cong de tao hoa don hoan thanh don hang cho khach vang lai
-                    _orderProductService.NonCustomerPayPalSuccess(cart, shipInfo);
+                    _orderProductService.NonCustomerPayPalSuccess(cart, shipInfo,result.GrossTotal);
 
                     //return View("success");
                     return RedirectToAction("noncustomerpaysuccess", new { message = tx });
@@ -251,7 +264,7 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 else
                 {
                     var customer = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
-                    _orderProductService.CustomerPayPalSuccess(cart, shipInfo, customer,promotionCode);
+                    _orderProductService.CustomerPayPalSuccess(cart, shipInfo, customer,promotionCode, result.GrossTotal);
                     return RedirectToAction("customerpaysuccess", new { message = tx });
                 }
 
@@ -292,7 +305,7 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
 
 
-                return View("success");
+                return View("paypalsuccess");
             }
             else
             {
@@ -302,10 +315,10 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
 
         [HttpPost]
         [Route("ApplyPromotion")]
-        public IActionResult ApplyPromotion(string promoCode, string cartTotal)
+        public IActionResult ApplyPromotion(string promoCode, double cartTotal)
         {
             // Doc gia tri tu session customer_test
-            int total = int.Parse(cartTotal);
+            int total = (int) cartTotal;
             var customer = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
 
             var result = _customerService.checkValidPromo(customer.Id, promoCode, total);
@@ -355,7 +368,7 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
 
 
-                return View("success");
+                return View("paypalsuccess");
             }
             else
             {
@@ -365,6 +378,80 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
         private int ExistsInCartDb(string id, string customerId)
         {
             return _customerService.checkExistsInDb(id, customerId);
+        }
+
+        [HttpGet]
+        [Route("noncustomercodsuccess")]
+        public IActionResult NonCustomerCodSuccess(double total)
+        {
+            Debug.WriteLine(total);
+            var shipInfo = JsonConvert.DeserializeObject<ShippingInformation>(HttpContext.Session.GetString("shipping_info"));
+            var cartSession = JsonConvert.DeserializeObject<List<Item>>(HttpContext.Session.GetString("cart"));
+
+            var sInfo = new ShippingInformation();
+
+            sInfo.FULLNAME = shipInfo.FULLNAME;
+            sInfo.MAIL = shipInfo.MAIL;
+            sInfo.ADDRESS = shipInfo.ADDRESS;
+            sInfo.PHONE = shipInfo.PHONE;
+
+            ViewBag.ship = sInfo;
+
+            // Luu don hang vao db
+            
+            _orderProductService.NonCustomerCodSuccess(cartSession, shipInfo,total);
+
+            // Xoa nhung san pham da thanh toan trong cart
+            cartSession = cartSession.ToList().Where(i => i.isCheck == false).ToList();
+
+            HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cartSession));
+
+            return View("codsuccess");
+        }
+
+        [HttpGet]
+        [Route("customercodsuccess")]
+        public IActionResult CustomerCodSuccess(double total)
+        {
+            Debug.WriteLine(total);
+            // TAO HOA DON LUU VAO DB
+            var shipInfo = JsonConvert.DeserializeObject<ShippingInformation>(HttpContext.Session.GetString("shipping_info"));
+            var cart = JsonConvert.DeserializeObject<List<Item>>(HttpContext.Session.GetString("cart"));
+
+            var sInfo = new ShippingInformation();
+
+            sInfo.FULLNAME = shipInfo.FULLNAME;
+            sInfo.MAIL = shipInfo.MAIL;
+            sInfo.ADDRESS = shipInfo.ADDRESS;
+            sInfo.PHONE = shipInfo.PHONE;
+
+            ViewBag.ship = sInfo;
+
+            // Luu don hang vao db
+            var customer = ElectronicCommerce.Models.Customer.JsonDeserializeToCustomer(HttpContext.Session.GetString("customer"));
+            _orderProductService.CustomerCodSuccess(cart, shipInfo,customer,promotionCode, total);
+
+            // Xoa nhung san pham da thanh toan trong cart
+            cart = cart.ToList().Where(i => i.isCheck == false).ToList();
+
+            HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
+
+            return View("codsuccess");
+        }
+
+        [HttpPost]
+        [Route("cod")]
+        public IActionResult Cod(string total)
+        {
+            double totalPay = double.Parse(total);
+            if (HttpContext.Session.GetString("customer") !=null)
+            {
+                return RedirectToAction("customercodsuccess", new {total = totalPay });
+            }
+            else
+            {
+                return RedirectToAction("noncustomercodsuccess", new { total = totalPay });
+            }
         }
     }
 }

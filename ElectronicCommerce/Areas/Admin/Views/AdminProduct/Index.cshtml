@@ -79,7 +79,7 @@ input:checked + .slider:before {
                         <a class="btn btn-primary" data-toggle="modal" data-target="#addProduct" asp-area="admin" asp-controller="product" asp-action="add">Tạo sản phẩm mới</a>
                     </div>
                                      <!-- The Modal them san pham-->
-	<form method="post" asp-area="admin" asp-controller="product" asp-action="add">
+	<form method="post" enctype="multipart/form-data" asp-area="admin" asp-controller="product" asp-action="add">
 	<div class="modal" id="addProduct">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -91,49 +91,55 @@ input:checked + .slider:before {
 				</div>
 
 				<!-- Modal body -->
-				<div class="modal-body">
+                <div class="modal-body">
 
-					<label for="product_name">Tên sản phẩm</label>
-					<input type="text" class="form-control" asp-for=Name placeholder="Nhập tên sản phẩm">
-					<label for="product_category">Danh mục sản phẩm</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=CatId>
-						<option selected value="">Chọn danh mục</option>
-						@foreach (var category in ViewBag.categories)
-						{
-							<option value="@category.Id">@category.Name</option>
-						}
-					</select>
-					<label for="product_main_stone">Loại đá chính</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=MainStoneId>
-						<option selected value="">Chọn loại đá chính</option>
-						@foreach (var stoneType in ViewBag.stoneTypes)
-						{
-							<option value="@stoneType.Id">@stoneType.Name</option>
-						}
-					</select>
-					<label for="product_main_stone">Loại đá phụ</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=SubStoneId>
-						<option selected value="">Chọn loại đá phụ</option>
-						@foreach (var stoneType in ViewBag.stoneTypes)
-						{
-							<option value="@stoneType.Id">@stoneType.Name</option>
-						}
-					</select>
-					<label for="product_main_stone">Loại mệnh</label>
-					<select class="js-example-basic-single form-control select2-single" asp-for=GeomancyId>
-						<option selected value="">Chọn loại đá chính</option>
-						@foreach (var geomancy in ViewBag.geomancies)
-						{
-							<option value="@geomancy.Id">@geomancy.Name</option>
-						}
-					</select>
-					<label for="product_name">Màu sắc</label>
-					<input type="text" class="form-control" asp-for=Color placeholder="Nhập màu sản phẩm">
-					<label for="product_name">Note</label>
-					<input type="text" class="form-control" asp-for=Note placeholder="Ghi chú">
+                    <label for="product_name">Tên sản phẩm</label>
+                    <input type="text" class="form-control" asp-for=Name placeholder="Nhập tên sản phẩm">
+                    <label for="product_category">Danh mục sản phẩm</label>
+                    <select class="js-example-basic-single form-control select2-single" asp-for=CatId>
+                        <option selected value="">Chọn danh mục</option>
+                        @foreach (var category in ViewBag.categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                    <label for="product_main_stone">Loại đá chính</label>
+                    <select class="js-example-basic-single form-control select2-single" asp-for=MainStoneId>
+                        <option selected value="">Chọn loại đá chính</option>
+                        @foreach (var stoneType in ViewBag.stoneTypes)
+                        {
+                            <option value="@stoneType.Id">@stoneType.Name</option>
+                        }
+                    </select>
+                    <label for="product_main_stone">Loại đá phụ</label>
+                    <select class="js-example-basic-single form-control select2-single" asp-for=SubStoneId>
+                        <option selected value="">Chọn loại đá phụ</option>
+                        @foreach (var stoneType in ViewBag.stoneTypes)
+                        {
+                            <option value="@stoneType.Id">@stoneType.Name</option>
+                        }
+                    </select>
+                    <label for="product_main_stone">Loại mệnh</label>
+                    <select class="js-example-basic-single form-control select2-single" asp-for=GeomancyId>
+                        <option selected value="">Chọn loại đá chính</option>
+                        @foreach (var geomancy in ViewBag.geomancies)
+                        {
+                            <option value="@geomancy.Id">@geomancy.Name</option>
+                        }
+                    </select>
+                    <label for="product_name">Màu sắc</label>
+                    <input type="text" class="form-control" asp-for=Color placeholder="Nhập màu sản phẩm">
+                    <label for="product_name">Ảnh đại diện sản phẩm</label>
+                    <input type="file" name="photo" />
+                    <br /><br />
+                    <label for="product_name">Ảnh mô tả sản phẩm</label>
+                    <input type="file" name="photos" multiple="multiple" />
+                    <br /><br />
+                    <label for="product_name">Note</label>
+                    <input type="text" class="form-control" asp-for=Note placeholder="Ghi chú">
 
-					 
-			</div>
+
+                </div>
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
@@ -217,7 +223,10 @@ input:checked + .slider:before {
                                                 }
                                     </td>
                                     <td>@product.Note</td>
-                                    <td> <a asp-area="admin" asp-controller="product" asp-action="detail" asp-route-id="@product.Id">Chi tiết</a></td>
+                                    <td>
+                                        <a asp-area="admin" asp-controller="product" asp-action="detail" asp-route-id="@product.Id">Chi tiết</a> | 
+                                        <a asp-area="admin" asp-controller="review" asp-action="index" asp-route-id="@product.Id">Duyệt bình luận</a>
+                                    </td>
                                 </tr>
                                 }
                             </tbody>

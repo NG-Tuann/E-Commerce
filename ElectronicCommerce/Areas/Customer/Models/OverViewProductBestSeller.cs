@@ -1,9 +1,7 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-
 namespace ElectronicCommerce.Areas.Customer.Models
 {
-    public class OverViewProductHomeFlag
+    public class OverViewProductBestSeller
     {
         public string PRODUCT_ID { get; set; }
         public string IMAGE { get; set; }
@@ -13,6 +11,6 @@ namespace ElectronicCommerce.Areas.Customer.Models
         public string? UNIT { get; set; }
         public bool? ACTIVE { get; set; }
         public string? DIS_NAME { get; set; }
-
+        public bool IS_SOLDOUT { get; set; }
     }
 }

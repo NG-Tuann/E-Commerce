@@ -29,6 +29,7 @@ namespace ElectronicCommerce.Models
         public string IdUser { get; set; }
         public string MailNonCus { get; set; }
         public string PromotionId { get; set; }
+        public string CustomerTypeId { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Promotion PromotionIdNavigation { get; set; }

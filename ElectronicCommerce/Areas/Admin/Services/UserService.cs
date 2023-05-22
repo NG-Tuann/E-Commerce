@@ -9,9 +9,32 @@ namespace ElectronicCommerce.Areas.Admin.Services
     public class UserService:IUserService
     {
         private IBaseRepository<User> _baseRepo;
+        private DatabaseContext _db;
+
         public UserService(IBaseRepository<User> baseRepo)
         {
             _baseRepo = baseRepo;
+        }
+
+        public bool checkUsernameExists(string username)
+        {
+            var isExists = _baseRepo.GetAll().ToList().SingleOrDefault(i => i.Username.Equals(username));
+            if(isExists != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool checkValidUser(string username, string password)
+        {
+            var account = _baseRepo.GetAll().ToList().SingleOrDefault(i => i.Username.Equals(username));
+            var isValid = BCrypt.Net.BCrypt.Verify(password, account.Password);
+            if (isValid)
+            {
+                return true;
+            }
+            return false;
         }
 
         public List<User> findAllUserByRole(string role_id)

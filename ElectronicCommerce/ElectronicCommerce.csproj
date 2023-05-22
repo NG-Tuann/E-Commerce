@@ -47,6 +47,12 @@
     <None Remove="Microsoft.AspNetCore.CookiePolicy" />
     <None Remove="Microsoft.AspNetCore.Http" />
     <None Remove="Areas\Admin\Views\AdminOrder\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.Facebook" />
+    <None Remove="Areas\Admin\Views\AdminReview\" />
+    <None Remove="MiddleWares\" />
+    <None Remove="Controllers\" />
+    <None Remove="Views\" />
+    <None Remove="Views\AdminLogin\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Customer\" />
@@ -74,6 +80,11 @@
     <Folder Include="Areas\Customer\Views\Cart\" />
     <Folder Include="Areas\Customer\Views\Customer\" />
     <Folder Include="Areas\Admin\Views\AdminOrder\" />
+    <Folder Include="Areas\Admin\Views\AdminReview\" />
+    <Folder Include="MiddleWares\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\AdminLogin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\AdminProduct\ProductDetailModalPopUp.cshtml" />
@@ -110,5 +121,6 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.17" />
   </ItemGroup>
 </Project>

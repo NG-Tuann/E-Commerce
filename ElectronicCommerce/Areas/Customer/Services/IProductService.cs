@@ -7,8 +7,14 @@ namespace ElectronicCommerce.Areas.Customer.Services
 {
     public interface IProductService
     {
-        // Tim cac san pham hien o trang home
+        // Tim cac san pham hien o muc home-flag
         public List<OverViewProductHomeFlag> findAllHomeFlagProducts();
+
+        // Tim cac san pham hien o muc active-product
+        public List<OverViewProductHomeFlag> findAllActiveProducts();
+
+        // Tim cac san pham hien o muc best-seller-product
+        public List<OverViewProductBestSeller> findAllBestSellerProducts();
 
         // Tim san pham theo id
         public OverViewProductHomeFlag findProductById(string id);
@@ -27,10 +33,7 @@ namespace ElectronicCommerce.Areas.Customer.Services
 
         // Tim ve chi tiet san pham theo product_id
         public ProductDetailDisplay findProductDetailDisplayByProductId(string id);
-
-        // Tim cac san pham cung dong
-        public List<OverViewProduct> findProductWithSameCategoryById(string id);
-
+        
         // Tim cac review ve san pham theo product_id
         public List<CustomerReview> findAllReviewById(string id);
 

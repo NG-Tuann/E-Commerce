@@ -11,6 +11,14 @@
 <link rel="stylesheet" href="~/admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
 <script src="~/admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js" defer></script>
 
+@*
+    Select 2
+*@
+
+<link rel="stylesheet" href="~/admin/vendors/select2/select2.min.css" />
+<script src="~/admin/vendors/select2/select2.min.js" defer></script>
+
+
 <style>
     #date_filter {
         padding: 30px 20px;
@@ -27,6 +35,45 @@
         color: #000000;
         cursor: pointer;
     }
+
+    #wait_for_admin_cancel_confirm {
+        padding: 30px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .confirm_cancel {
+        border: 1px solid #000000;
+        font-size: 0.875rem;
+        color: #FFFFFF;
+        padding: 5px 5px;
+        background-color: #000000;
+        text-decoration: none;
+    }
+
+        .confirm_cancel:hover {
+            opacity: 0.8;
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+    .confirm_order {
+        border: 1px solid #28A745;
+        font-size: 0.875rem;
+        color: #FFFFFF;
+        padding: 5px 5px;
+        background-color: #28A745;
+        text-decoration: none;
+    }
+
+        .confirm_order:hover {
+            opacity: 0.8;
+            text-decoration: none;
+            color: #FFFFFF;
+        }
 </style>
 
 <script>$(document).ready(function () {
@@ -56,19 +103,28 @@
 
         // Click open check_order_status modal
 
-    $('#check_order').click(function () {
+        $('#check_order').click(function () {
             $('#check_order_status').modal('show');
         });
+    });
+
+    // Hien thi danh sach cac don cho duoc huy
+
+    $('#wait_for_admin_cancel_confirm').click(function () {
+
     });</script>
 <div class="content-wrapper">
     <div class="row">
         <div class="col-md-12 grid-margin">
             <div class="row">
-                <div class="col-md-5" style="border:1.5px solid #E5E5E5;padding:30px;border-radius:10px;">
-                    <span id="date_filter"><i class="fa fa-filter"></i> Bộ lọc thời gian</span>
+                <div class="col-md-12" style="padding:30px;">
                     <a asp-area="admin" asp-controller="order" asp-action="index">Xem tất cả</a>
 
+                    <span id="date_filter"><i class="fa fa-filter"></i> Bộ lọc thời gian</span>
+
                     <span id="check_order"><i class="fa fa-check"></i> Duyệt đơn hàng</span>
+
+                    <a id="wait_for_admin_cancel_confirm" asp-area="admin" asp-controller="order" asp-action="findCancelOrder"><i class="fa fa-trash"></i> Đơn chờ huỷ</a>
                 </div>
                 <div class="col-md-6">
 
@@ -93,14 +149,25 @@
                             <tbody>
                                 @foreach (var item in ViewBag.orders)
                                 {
-                                    <tr>
-                                        <td>@item.DateCreated.ToString("dd/MM/yyyy")</td>
-                                        <td>@item.AddressDelivery</td>
-                                        <td>@item.PayType</td>
+                                <tr>
+                                    <td>@item.DateCreated.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.AddressDelivery</td>
+                                    <td>@item.PayType</td>
+                                    @if (item.OrderState == "Đã yêu cầu huỷ đơn")
+                                    {
+                                        <td>@item.OrderState <a class="confirm_cancel" asp-area="admin" asp-controller="order" asp-action="confirmCancel" asp-route-id="@item.Id">Duyệt <i class="fa fa-trash"></i></a></td>
+                                    }
+                                    else if (item.OrderState == "Chờ xác nhận")
+                                    {
+                                        <td>@item.OrderState <a class="confirm_order" asp-area="admin" asp-controller="order" asp-action="confirmOrder" asp-route-id="@item.Id">Duyệt <i class="fa fa-check"></i></a></td>
+                                    }
+                                    else
+                                    {
                                         <td>@item.OrderState</td>
-                                        <td>@item.PromotionId</td>
-                                        <td><a class="btn btn-info">Xem chi tiết</a></td>
-                                    </tr>
+                                    }
+                                    <td>@item.PromotionId</td>
+                                    <td><a class="btn btn-info">Xem chi tiết</a></td>
+                                </tr>
                                 }
                             </tbody>
                         </table>

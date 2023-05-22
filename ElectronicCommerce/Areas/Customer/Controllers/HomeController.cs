@@ -80,6 +80,9 @@ namespace ElectronicCommerce.Areas.Customer.Controllers
             ViewBag.quantity = cartQuantity;
 
             ViewBag.homePros = _productService.findAllHomeFlagProducts();
+            ViewBag.actiPros = _productService.findAllActiveProducts();
+            ViewBag.bestPros = _productService.findAllBestSellerProducts();
+
             return View();
         }
 

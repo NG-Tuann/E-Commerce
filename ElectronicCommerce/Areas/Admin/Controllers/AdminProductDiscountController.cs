@@ -1,4 +1,5 @@
-﻿using ElectronicCommerce.Areas.Admin.Helpers;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using ElectronicCommerce.Areas.Admin.Helpers;
 using ElectronicCommerce.Areas.Admin.Services;
 using ElectronicCommerce.Models;
 using ElectronicCommerce.Repositories;
@@ -16,16 +17,24 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
         IBaseRepository<ProductDiscount> _baseRepoProductDiscount;
         IBaseRepository<Geomancy> _baseRepoGeomancy;
         IBaseRepository<StoneType> _baseRepoStoneType;
+        IBaseRepository<Product> _baseProduct;
+        INotyfService _notyfService;
+        //IProductDiscountService _productDiscountService;
 
         public AdminProductDiscountController(IBaseRepository<ProductDiscount> baseRepoProductDiscount, IBaseRepository<Geomancy> baseRepoGeomancy,
-            IBaseRepository<StoneType> baseRepoStoneType)
+            IBaseRepository<StoneType> baseRepoStoneType, IBaseRepository<Product> baseProduct, INotyfService notyfService)
         {
             _baseRepoProductDiscount = baseRepoProductDiscount;
             _baseRepoGeomancy = baseRepoGeomancy;
-            _baseRepoStoneType = baseRepoStoneType; 
+            _baseRepoStoneType = baseRepoStoneType;
+            _baseProduct = baseProduct;
+            _notyfService = notyfService;
+            //_productDiscountService = productDiscountService;
         }
+
         [Route("index")]
         [Route("")]
+        //[Route("~/")]
         public IActionResult Index()
         {
             // hien thi danh sach khuyen mai
@@ -45,8 +54,12 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             //hiển thị danh sách đá và mệnh
             List<Geomancy> geomancy = _baseRepoGeomancy.GetAll().ToList();
             List<StoneType> stoneType = _baseRepoStoneType.GetAll().ToList();
+            var products = _baseProduct.GetAll().ToList();
+
+            ViewBag.products = products;
             ViewBag.stoneTypes = stoneType;
             ViewBag.geomancies = geomancy;
+
             return View("index", new ProductDiscount());
         }
 
@@ -64,8 +77,17 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("add")]
-        public IActionResult Add()
+        public IActionResult Add(ProductDiscount productDiscount)
         {
+            productDiscount.Id = "DC" + PrimarykeyHelper.RandomString(6);
+            productDiscount.Active = true;
+            productDiscount.DiscountUnit = "%";
+            productDiscount.DateCreated = DateTime.Now;
+
+            _baseRepoProductDiscount.Insert(productDiscount);
+            _baseRepoProductDiscount.Save();
+
+            _notyfService.Success("Thêm giảm giá thành công",3);
             return RedirectToAction("index");
 
         }

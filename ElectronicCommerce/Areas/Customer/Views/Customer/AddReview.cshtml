@@ -1,6 +1,7 @@
 ﻿@{
     Layout = null;
 }
+@model ElectronicCommerce.Models.Review;
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="~/customer/style/customer_order_info.css" rel="stylesheet" />
+    <link href="~/customer/style/customer_add_review.css" rel="stylesheet" />
 
     <title>PTJ</title>
 </head>
@@ -194,171 +195,94 @@
         @await Html.PartialAsync("_SideNavPartialView.cshtml")
 
         <div class="flex flex-1 flex-col lg:pl-64">
-            <div class="order-wrapper" style="margin:0 30px;">
+            <div class="add-review-wrapper" style="margin:0 30px;">
                 <div class="title-header" style="font-size:28px; text-align:center;padding-top:40px;font-weight:bolder;">
-                    ĐƠN HÀNG CỦA TÔI
+                    Đánh giá từng sản phẩm
                 </div>
-
-                <div style="display:flex;justify-content:space-between;">
-                    <ul id="hori-nav" style="margin-top:20px;font-weight:500;">
-                        <li><span onclick="filterOrder('all');">Tất cả đơn hàng</span></li>
-                        <li><span onclick="filterOrder('unpaid');">Chưa thanh toán</span></li>
-                        <li><span onclick="filterOrder('process');">Xử lý</span></li>
-                        <li><span onclick="filterOrder('shipped');">Đã vận chuyển</span></li>
-                        <li><span>Đánh giá</span></li>
-                        <li><span onclick="filterOrder('returned');">Trả lại</span></li>
-                    </ul>
-                    <a style="margin-top:40px;" asp-area="customer" asp-controller="customer" asp-action="order"><i class="fa fa-refresh"></i> Làm mới</a>
-                </div>
-                <script>
-                    function filterOrder(action) {
-                        if (action == 'all') {
-                            findAllOrder();
-                        } else if (action == 'unpaid') {
-                            $(".order-record").each(function () {
-                                console.log($(this).attr('data-payment'));
-                                if ($(this).attr('data-payment') == 'Chưa thanh toán') {
-                                    $(this).attr("style", "display:table-row !important;");
-                                }
-                                else
-                                {
-                                    $(this).attr("style", "display:none !important;");
-                                }
-                            });
-                        } else if (action == 'process') {
-                            $(".order-record").each(function () {
-                                if ($(this).attr('data-status') == 'Đang xử lý') {
-                                    $(this).attr("style", "display:table-row !important;");
-                                }
-                                else
-                                {
-                                    $(this).attr("style", "display:none !important;");
-                                }
-                            });
-                        } else if (action == 'shipped') {
-                            $(".order-record").each(function () {
-                                if ($(this).attr('data-status') == 'Đã vận chuyển') {
-                                    $(this).attr("style", "display:table-row !important;");
-                                }
-                                else {
-                                    $(this).attr("style", "display:none !important;");
-                                }
-                            });
-                        } else if (action == 'returned') {
-
-                        } else {
-
-                        }
+            </div>
+            <div class="add-review__wrapper">
+                @if (TempData["msg"] != null)
+                {
+                    if (TempData["msg"].Equals("Gửi đánh giá thành công"))
+                    {
+                        <p style="margin-left: 30px; font-size: 24px; font-weight: bold; color: #49DE80;">
+                            @TempData["msg"]
+                        </p>
                     }
-
-                    function findAllOrder() {
-                        $(".order-record").each(function () {
-                            $(this).attr("style", "display:table-row;");
-                        });
+                    else
+                    {
+                        <p style="margin-left: 30px; font-size: 24px; font-weight: bold; color: red;">
+                            @TempData["msg"]
+                        </p>
                     }
-
-                    function cancelOrder(id, el) {
-                        if (!confirm("Bạn có chắc chắn sẽ huỷ đơn hàng này ?")) {
-                            return;
-                        }
-                        $(el).addClass("disable");
-                        $(el).prop("onclick", null).off("click");
-                        console.log("abc" + id.trim() + "xyz");
-                        $.ajax({
-                            type: 'POST',
-                            data: {
-                                id: id
-                            },
-                            url: '/customer/customer/Cancel',
-                            success: function (result) {
-
-                                console.log(result);
-                                if (result.message == 'ok') {
-                                    alert('Huỷ đơn thành công');
-                                    $('#state-'+id.trim()).text('Đã huỷ đơn');
-                                }
-                                else if (result.message == 'sent') {
-                                    alert('Đã gửi yêu cầu huỷ đơn chờ cửa hàng xác nhận');
-                                    $('#state-' + id.trim()).text('Đã gửi yêu cầu huỷ đơn');
-                                }
-                                else if (result.message == 'unable') {
-                                    alert('Đơn hàng đang giao không thể yêu cầu huỷ đơn');
-                                }
-                            }
-                        });
-                    }
-
-
-                </script>
-                <div class="order-list__wrapper">
-                    <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
-                        <thead>
-                            <tr>
-                                <th scope="col"></th>
-                                <th scope="col" style="text-align:center;">Mã đơn</th>
-                                <th scope="col" style="text-align:center;">sản phẩm</th>
-                                <th scope="col">Giá thực</th>
-                                <th scope="col">Tình trạng thanh toán</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col">Thao tác đặt hàng</th>
-                                <th scope="col">Ngày tạo</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <td colspan="3">Dữ liệu được cập nhật mỗi 15 phút </td>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @if (ViewBag.orders != null)
+                }
+                <table style="width: 100%; border-collapse: separate; border-spacing: 0 10px;">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="text-align:center;">sản phẩm</th>
+                            <th scope="col">Chủ đề </th>
+                            <th scope="col">Nội dung</th>
+                            <th scope="col">Đánh giá sản phẩm</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Dữ liệu được cập nhật mỗi 15 phút </td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @if (ViewBag.order != null)
+                        {
+                            @foreach (var item in ViewBag.order.OrderDetails)
                             {
-                                @foreach (var item in ViewBag.orders)
-                                {
-                                    <tr class="order-record" data-status="@item.OrderState" data-payment="@item.PayType">
-                                        <td><a asp-area="customer" asp-controller="customer" asp-action="review" asp-route-id="@item.Id"><i class="fa fa-comment"></i></a></td>
-                                        <td style="text-align:center;">
-                                            <span>@item.Id</span>
-                                        </td>
-                                        <td style="text-align:center;">
-
-                                            @foreach (var order_detail in item.OrderDetails)
-                                            {
-                                                <div class="product-info">
-                                                    <span class="product_name">@order_detail.ProductDetail.Product.Name</span>
-                                                    <img style="border:1px solid #E5E5E5;display:block;margin-left:auto;margin-right:auto;" src="~/admin/images/products/@order_detail.ProductDetail.Product.Image" width="60" height="75" />
-                                                    <span class="product_quantity">@order_detail.Quantity</span> sản phẩm
-                                                </div>
-                                            }
-                                        </td>
-                                        <td>
-                                            <span class="product_price">@item.TotalPay $<span>
-                                        <td>
-                                            <span class="payment_status">@item.PayType</span>
-                                        </td>
-                                        <td>
-                                            <span class="order_status" id="state-@item.Id.Trim()">@item.OrderState</span>
-                                        </td>
-                                        <td>
-
-                                            @if (item.OrderState == "Chờ xác nhận" || item.OrderState == "Đã xác nhận" || item.OrderState == "Đang giao hàng")
-                                            {
-                                                <a class="btn btn-cancel" onclick="cancelOrder('@item.Id',this);" href="javascript:void(0);">Huỷ đặt hàng</a>
-                                            }
-                                            else
-                                            {
-                                                <a class="btn btn-cancel disable" onclick="cancelOrder('@item.Id',this);" href="javascript:void(0);">Huỷ đặt hàng</a>
-                                            }
-
-                                        </td>
-                                        <td>
-                                            <span>@item.DateCreated.ToString("dd/MM/yyyy")</span>
-                                        </td>
-                                    </tr>
-                                }
+                                <form method="post" asp-area="customer" asp-controller="customer" asp-action="addreview">
+                                <tr>
+                                    <input type="hidden" name="order_id" value="@item.OrderId" />
+                                    <td style="text-align:center;">
+                                        <div class="product-info">
+                                            <span class="product_name">@item.ProductDetail.Product.Name</span>
+                                            <img style="border:1px solid #E5E5E5;display:block;margin-left:auto;margin-right:auto;" src="~/admin/images/products/@item.ProductDetail.Product.Image" width="60" height="75" />
+                                            <span class="product_quantity">@item.Quantity</span> sản phẩm
+                                            <input type="hidden" asp-for="ProductId" value="@item.ProductDetail.ProductId" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="title">
+                                            <input type="text" asp-for="Title" name="title" id="title-input" required class="title-input" />
+                                            <span class="title-holder">Chủ đề đánh giá*</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="content__wrapper">
+                                            <span class="content_title">Cảm nhận của bạn*</span>
+                                            <textarea name="content" asp-for="Content" required id="content-input"></textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <svg style="display: none;">
+                                            <symbol id="star" viewBox="0 0 98 92">
+                                                <title>star</title>
+                                                <path stroke='#000' stroke-width='5' d='M49 73.5L22.55 87.406l5.05-29.453-21.398-20.86 29.573-4.296L49 6l13.225 26.797 29.573 4.297-21.4 20.86 5.052 29.452z' fill-rule='evenodd' />
+                                        </svg>
+                                        <div class="rating">
+                                            <a href="javascript:;" data-value="1" class="rating__button" href="#"><svg class="rating__star"><use xlink:href="#star"></use></svg></a>
+                                            <a href="javascript:;" data-value="2" class="rating__button" href="#"><svg class="rating__star"><use xlink:href="#star"></use></svg></a>
+                                            <a href="javascript:;" data-value="3" class="rating__button" href="#"><svg class="rating__star"><use xlink:href="#star"></use></svg></a>
+                                            <a href="javascript:;" data-value="4" class="rating__button" href="#"><svg class="rating__star"><use xlink:href="#star"></use></svg></a>
+                                            <a href="javascript:;" data-value="5" class="rating__button" href="#"><svg class="rating__star"><use xlink:href="#star"></use></svg></a>
+                                        </div>
+                                        <input type="hidden" asp-for="Rate" class="customer_rate" value="0" />
+                                    </td>
+                                    <td>
+                                        <input type="submit" class="btn btn-save-review" value="Gửi đánh giá" />
+                                    </td>
+                                </tr>
+                                </form>
                             }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -366,3 +290,26 @@
 </body>
 
 </html>
+
+<script>
+    $(function () {
+
+        $('.rating__button').on('click', function (e) {
+            var $t = $(this), // the clicked star
+                $ct = $t.parent(); // the stars container
+
+
+            // Gan danh gia cho input type hidden
+
+            console.log($t.attr('data-value'));
+            $(this).closest('td').find('.customer_rate').val($t.attr('data-value'));
+
+            // add .is--active to the user selected star
+
+            $t.siblings().removeClass('is--active').end().toggleClass('is--active');
+            // add .has--rating to the rating container, if there's a star selected. remove it if there's no star selected.
+
+            $ct.find('.rating__button.is--active').length ? $ct.addClass('has--rating') : $ct.removeClass('has--rating');
+        });
+    });
+</script>
