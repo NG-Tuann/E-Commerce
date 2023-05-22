@@ -227,7 +227,7 @@
                             });
                         } else if (action == 'process') {
                             $(".order-record").each(function () {
-                                if ($(this).attr('data-status') == 'Đang xử lý') {
+                                if ($(this).attr('data-status') == 'Đã xác nhận') {
                                     $(this).attr("style", "display:table-row !important;");
                                 }
                                 else
@@ -237,7 +237,7 @@
                             });
                         } else if (action == 'shipped') {
                             $(".order-record").each(function () {
-                                if ($(this).attr('data-status') == 'Đã vận chuyển') {
+                                if ($(this).attr('data-status') == 'Đang giao hàng') {
                                     $(this).attr("style", "display:table-row !important;");
                                 }
                                 else {

@@ -148,7 +148,7 @@ function confirmAddToCart(id, size) {
                                 <div class="header__cart-item-head">
                                     <h5 class="header__cart-item-name">${result.name}</h5>
                                     <div class="header__cart-item-price-wrap">
-                                        <span class="header__cart-item-price">${result.price} đ</span>
+                                        <span class="header__cart-item-price">${result.price} $</span>
                                         <span class="header__cart-item-multiply">x</span>
                                         <span class="header__cart-item-quantity" id="${result.product_detail_id.trim()}" >${result.quantity}</span>
                                         <input type="hidden" value="${result.price}" class="subPrice"/>
@@ -289,7 +289,10 @@ function clickChooseSize(size,id) {
         url: '/customer/product/findPriceBySizeAndId',
         success: function (result) {
             console.log(result);
-            var priceFormatted = result.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+            var priceFormatted = result.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
             $('.product-price').text(priceFormatted.replace('.', ','));
         }
     });

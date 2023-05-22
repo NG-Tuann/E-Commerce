@@ -82,6 +82,7 @@ namespace ElectronicCommerce
                 options.IdleTimeout = TimeSpan.FromMinutes(240);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                //options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
             });
 
         }
@@ -96,7 +97,7 @@ namespace ElectronicCommerce
 
             app.UseSession();
 
-            app.UseMiddleware<AdminMiddleware>();
+            //app.UseMiddleware<AdminMiddleware>();
             //app.UseMiddleware<CustomerMiddleware>();
 
             app.UseRouting();

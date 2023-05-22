@@ -23,9 +23,11 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [Route("index")]
         [Route("")]
+        //[Route("~/")]
         public IActionResult Index()
         {
-            // lấy danh sách các httt đến view
+            // lấy danh sách các trạng thái đơn hàng và httt đến view
+            List<string> lstStatus = new List<string>();
             List<string> lstHttt = new List<string>();
             HashSet<string> visitedIds = new HashSet<string>();
             foreach (var item in _baseRepoOrderProduct.GetAll().ToList())
