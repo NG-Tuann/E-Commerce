@@ -20,11 +20,11 @@ namespace ElectronicCommerce.Areas.Admin.Services
         {
             return _db.SaleReports.FromSqlRaw("exec sp_ThongKeDoanhSo " + time).ToList();
         }
-        public List<SaleReportOption> sp_ThongKeDoanhSo_TuyChon(DateTime batdau, DateTime ketthuc, string trangthai, string httt)
+        public List<SaleReportOption> sp_ThongKeDoanhSo_TuyChon(DateTime batdau, DateTime ketthuc, string httt)
         {
             string formattedDateBD = batdau.ToString("yyyy/MM/dd");
             string formattedDateKT = ketthuc.ToString("yyyy/MM/dd");
-            return _db.SaleReportOptions.FromSqlRaw($"exec sp_ThongKeDoanhSo_TuyChon '{batdau}' , '{ketthuc}', N'{trangthai}' , N'{httt}'").ToList();
+            return _db.SaleReportOptions.FromSqlRaw($"exec sp_ThongKeDoanhSo_TuyChon '{batdau}' , '{ketthuc}', N'{httt}'").ToList();
         }
     }
 }

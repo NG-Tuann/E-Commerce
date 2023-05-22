@@ -32,11 +32,6 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
             HashSet<string> visitedIds = new HashSet<string>();
             foreach (var item in _baseRepoOrderProduct.GetAll().ToList())
             {
-                if (!visitedIds.Contains(item.OrderState))
-                {
-                    lstStatus.Add(item.OrderState);
-                    visitedIds.Add(item.OrderState);
-                }
                 if (!visitedIds.Contains(item.PayType))
                 {
                     lstHttt.Add(item.PayType);
@@ -44,7 +39,6 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
                 }
             }
 
-            ViewBag.lstStatus = lstStatus;
             ViewBag.lstHttt = lstHttt;
             return View();
         }
@@ -60,9 +54,9 @@ namespace ElectronicCommerce.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("getReportByOption")]
-        public IActionResult getReportByOption(DateTime batdau, DateTime ketthuc, string trangthai, string httt)
+        public IActionResult getReportByOption(DateTime batdau, DateTime ketthuc, string httt)
         {
-            var lstData = _saleReportService.sp_ThongKeDoanhSo_TuyChon(batdau,ketthuc, trangthai, httt);
+            var lstData = _saleReportService.sp_ThongKeDoanhSo_TuyChon(batdau,ketthuc, httt);
             
             return new JsonResult(lstData);
         }
